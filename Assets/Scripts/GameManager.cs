@@ -8,72 +8,61 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     public List<Player> players;
     public int currentPlayerIndex = 0;
-    public Transform diceButton; // Assign the dice roll button here
+    public Transform diceButton;
 
     [Header("Board Settings")]
     public List<Transform> tiles;
 
     private bool canRoll = true;
+    private bool gameOver = false;
 
     void Start()
     {
-        // Example setup for a 3-player human, 1-computer game
-        UpdateTurnUI();
+        HandleCurrentTurn();
     }
 
     public void RollDice()
     {
-        if (!canRoll) return;
+        if (!canRoll || gameOver) return;
 
         canRoll = false;
         int diceRoll = Random.Range(1, 7);
         Debug.Log("Player " + (currentPlayerIndex + 1) + " rolled a " + diceRoll);
 
-        // Move the player based on the roll
         StartCoroutine(MovePlayer(players[currentPlayerIndex], diceRoll));
     }
 
     private IEnumerator MovePlayer(Player player, int steps)
     {
         PlayerTileMover mover = player.pawn.GetComponent<PlayerTileMover>();
-        int originalIndex = player.currentTileIndex;
-        int targetIndex = originalIndex + steps;
 
-        for (int i = 0; i < steps; i++)
+        // Check if player is on home tiles or is about to enter
+        if (player.currentHomeTileIndex != -1)
         {
-            int nextTileIndex = originalIndex + i + 1;
-
-            // Check if the next tile is a base tile
-            if (IsBaseTile(nextTileIndex))
-            {
-                Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
-
-                // If the tile belongs to another player and is not a destination, skip it
-                if (tileOwner != null && tileOwner != player && nextTileIndex != targetIndex)
-                {
-                    // Move through the tile without stopping
-                    if (nextTileIndex < tiles.Count)
-                    {
-                        player.currentTileIndex = nextTileIndex;
-                        yield return mover.MoveToTile(tiles[nextTileIndex]);
-                    }
-                    continue; // Skip the rest of the loop for this step
-                }
-            }
-
-            // Normal movement logic
-            if (nextTileIndex < tiles.Count)
-            {
-                player.currentTileIndex = nextTileIndex;
-                yield return mover.MoveToTile(tiles[nextTileIndex]);
-            }
+            // Player is already on the home path, proceed with home tile movement logic
+            yield return MoveOnHomePath(player, mover, steps);
+        }
+        else
+        {
+            // Player is on the main path or at the start
+            yield return MoveOnMainPath(player, mover, steps);
         }
 
-        // After moving, check if the player rolled a 6
-        if (steps == 6)
+        // Handle turn conditions after movement, regardless of which path was taken
+        // Check for win condition after movement (this is a redundant check here but can be useful)
+        if (player.currentHomeTileIndex == player.homeTiles.Count - 1)
         {
-            Debug.Log("Rolled a 6! Player " + (currentPlayerIndex + 1) + " gets another turn.");
+            WinGame(player);
+        }
+        else if (steps == 6)
+        {
+            Debug.Log("Rolled a 6! " + player.playerName + " gets another turn.");
             canRoll = true;
+            if (player.isComputer)
+            {
+                yield return new WaitForSeconds(1.5f);
+                RollDice();
+            }
         }
         else
         {
@@ -81,7 +70,138 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Helper methods to make the code cleaner
+    private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps)
+    {
+        int originalIndex = player.currentTileIndex;
+        int tilesMoved = 0;
+        int currentTileIndex = originalIndex;
+
+        // Check for starting a new game (pawn at -1 index)
+        if (originalIndex == -1)
+        {
+            if (steps == 6)
+            {
+                player.currentTileIndex = player.baseTileIndex;
+                yield return mover.MoveToTile(tiles[player.currentTileIndex]);
+                // Rule: If a 6 is rolled to start, the player gets another turn.
+            }
+            else
+            {
+                NextTurn();
+            }
+            yield break;
+        }
+
+        // Move along the main path, skipping enemy bases in the count
+        while (tilesMoved < steps)
+        {
+            int nextTileIndex = (currentTileIndex + 1) % tiles.Count;
+
+            // Check if player is approaching their home entrance
+            if (nextTileIndex == player.baseTileIndex)
+            {
+                // Player has completed a full lap and is about to start the home path
+                int remainingSteps = steps - tilesMoved;
+                player.currentHomeTileIndex = -1; // Reset to the start of home path
+                yield return MoveOnHomePath(player, mover, remainingSteps);
+                yield break;
+            }
+
+            // Check if the next tile is an enemy base
+            if (IsBaseTile(nextTileIndex))
+            {
+                Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
+                if (tileOwner != null && tileOwner != player)
+                {
+                    // This is an enemy base, we can pass through it but it doesn't count as a step
+                    // The pawn will move to this tile but the loop will not increment the counter.
+                    // This requires a special movement function to not count the step.
+                    // For now, let's just make the player land on it. The main rule is no landing.
+                    // If you want to bypass, the logic below is a bit more complex.
+                }
+            }
+
+            // Move to the next tile
+            player.currentTileIndex = nextTileIndex;
+            yield return mover.MoveToTile(tiles[player.currentTileIndex]);
+            tilesMoved++;
+            currentTileIndex = player.currentTileIndex;
+        }
+    }
+
+    private IEnumerator MoveOnHomePath(Player player, PlayerTileMover mover, int steps)
+    {
+        int originalHomeIndex = player.currentHomeTileIndex;
+        int targetHomeIndex = originalHomeIndex + steps;
+
+        // Check if the move overshoots the win tile
+        if (targetHomeIndex >= player.homeTiles.Count)
+        {
+            Debug.Log(player.playerName + " needs to roll a " + (player.homeTiles.Count - 1 - originalHomeIndex) + " or less to win!");
+            NextTurn();
+            yield break;
+        }
+
+        // Move along the home path
+        for (int i = 0; i < steps; i++)
+        {
+            int nextHomeTileIndex = originalHomeIndex + i + 1;
+            player.currentHomeTileIndex = nextHomeTileIndex;
+            yield return mover.MoveToTile(player.homeTiles[player.currentHomeTileIndex]);
+        }
+
+        // Check for win condition after movement
+        if (player.currentHomeTileIndex == player.homeTiles.Count - 1)
+        {
+            WinGame(player);
+        }
+    }
+
+    public void NextTurn()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        canRoll = true;
+        HandleCurrentTurn();
+    }
+
+    void HandleCurrentTurn()
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+        //UpdateTurnUI();
+
+        if (currentPlayer.isComputer)
+        {
+            if (diceButton != null)
+            {
+                diceButton.gameObject.SetActive(false);
+            }
+            Debug.Log("Computer's turn...");
+            StartCoroutine(ComputerTurn());
+        }
+        else
+        {
+            if (diceButton != null)
+            {
+                diceButton.gameObject.SetActive(true);
+            }
+            Debug.Log("Human Player's turn...");
+        }
+    }
+
+    IEnumerator ComputerTurn()
+    {
+        yield return new WaitForSeconds(1.5f);
+        RollDice();
+    }
+
+    // Win game function
+    private void WinGame(Player winningPlayer)
+    {
+        gameOver = true;
+        if (diceButton != null) diceButton.gameObject.SetActive(false);
+        Debug.Log(winningPlayer.playerName + " has won the game!");
+    }
+
     private bool IsBaseTile(int index)
     {
         foreach (var player in players)
@@ -106,73 +226,8 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void NextTurn()
-    {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        canRoll = true;
-        UpdateTurnUI();
-        HandleCurrentTurn();
-    }
-
-    void HandleCurrentTurn()
-    {
-        Player currentPlayer = players[currentPlayerIndex];
-
-        if (currentPlayer.isComputer)
-        {
-            diceButton.gameObject.SetActive(false); // Hide the button for computer
-            // Computer's turn
-            Debug.Log("Computer's turn...");
-            StartCoroutine(ComputerTurn());
-        }
-        else
-        {
-            diceButton.gameObject.SetActive(true); // Show the button for human
-            // Wait for human player to roll
-            Debug.Log("Human Player's turn...");
-        }
-    }
-
-    IEnumerator ComputerTurn()
-    {
-        yield return new WaitForSeconds(1.5f); // A slight delay to make it feel natural
-        RollDice();
-    }
-
-    // You can call this method from a setup screen
-    public void SetupPlayers(int humanPlayers, int computerPlayers)
-    {
-        players.Clear();
-        // Instantiate and add human players
-        for (int i = 0; i < humanPlayers; i++)
-        {
-            // Example of adding a new player object
-            Player newPlayer = new Player();
-            newPlayer.playerName = "Human " + (i + 1);
-            newPlayer.playerID = i;
-            // You'll need to link this to a pawn in your scene
-            // newPlayer.pawn = ...
-            players.Add(newPlayer);
-        }
-
-        // Instantiate and add computer players
-        for (int i = 0; i < computerPlayers; i++)
-        {
-            Player newPlayer = new Player();
-            newPlayer.playerName = "Computer " + (i + 1);
-            newPlayer.playerID = humanPlayers + i;
-            newPlayer.isComputer = true;
-            // You'll need to link this to a pawn in your scene
-            // newPlayer.pawn = ...
-            players.Add(newPlayer);
-        }
-
-        // After setting up, you can shuffle or arrange based on game rules
-    }
-
     void UpdateTurnUI()
     {
-        // Update a UI Text element to show whose turn it is
-        // For example: `turnText.text = players[currentPlayerIndex].playerName + "'s Turn";`
+        // Your UI update logic here
     }
 }

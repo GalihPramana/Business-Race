@@ -1720,24 +1720,36 @@ MonoBehaviour:
     currentTileIndex: 0
     isComputer: 0
     baseTileIndex: 0
+    homeTiles:
+    - {fileID: 1989067818}
+    currentHomeTileIndex: -1
   - playerName: Galih
     playerID: 1
     pawn: {fileID: 135659326}
     currentTileIndex: 9
     isComputer: 0
-    baseTileIndex: 0
+    baseTileIndex: 9
+    homeTiles:
+    - {fileID: 1332060087}
+    currentHomeTileIndex: -1
   - playerName: Cahyo
     playerID: 2
     pawn: {fileID: 1902782516}
     currentTileIndex: 18
     isComputer: 0
-    baseTileIndex: 0
+    baseTileIndex: 18
+    homeTiles:
+    - {fileID: 955273883}
+    currentHomeTileIndex: -1
   - playerName: AI
     playerID: 3
     pawn: {fileID: 1399056314}
     currentTileIndex: 27
     isComputer: 1
-    baseTileIndex: 0
+    baseTileIndex: 27
+    homeTiles:
+    - {fileID: 398967337}
+    currentHomeTileIndex: -1
   currentPlayerIndex: 0
   diceButton: {fileID: 1220401371}
   tiles:
