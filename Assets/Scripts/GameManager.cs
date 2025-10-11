@@ -26,48 +26,54 @@ public class GameManager : MonoBehaviour
         if (!canRoll || gameOver) return;
 
         canRoll = false;
-        int diceRoll = Random.Range(1, 7);
-        Debug.Log("Player " + (currentPlayerIndex + 1) + " rolled a " + diceRoll);
 
-        StartCoroutine(MovePlayer(players[currentPlayerIndex], diceRoll));
+        // Use the new SpinWheel method instead of a dice roll
+        int wheelResult = SpinWheel();
+        Debug.Log("Player " + (currentPlayerIndex + 1) + " spun the wheel and got " + wheelResult + " steps.");
+
+        // For now, move the player directly. Trivia questions will be added later.
+        StartCoroutine(MovePlayer(players[currentPlayerIndex], wheelResult));
+    }
+
+    private int SpinWheel()
+    {
+        int spinResult = Random.Range(1, 101); // 1-100 to work with percentages
+
+        if (spinResult <= 45) // Easy (45%)
+        {
+            return Random.Range(1, 4); // 1-3 steps
+        }
+        else if (spinResult <= 80) // Normal (45% + 35% = 80%)
+        {
+            return Random.Range(4, 7); // 4-6 steps
+        }
+        else if (spinResult <= 95) // Hard (80% + 15% = 95%)
+        {
+            return Random.Range(7, 10); // 7-9 steps
+        }
+        else // Lucky (5%)
+        {
+            // Lucky grants a specific number of steps without a question
+            return 6;
+        }
     }
 
     private IEnumerator MovePlayer(Player player, int steps)
     {
         PlayerTileMover mover = player.pawn.GetComponent<PlayerTileMover>();
 
-        // Check if player is on home tiles or is about to enter
+        // Simplified movement logic
         if (player.currentHomeTileIndex != -1)
         {
-            // Player is already on the home path, proceed with home tile movement logic
             yield return MoveOnHomePath(player, mover, steps);
         }
         else
         {
-            // Player is on the main path or at the start
             yield return MoveOnMainPath(player, mover, steps);
         }
 
-        // Handle turn conditions after movement, regardless of which path was taken
-        // Check for win condition after movement (this is a redundant check here but can be useful)
-        if (player.currentHomeTileIndex == player.homeTiles.Count - 1)
-        {
-            WinGame(player);
-        }
-        else if (steps == 6)
-        {
-            Debug.Log("Rolled a 6! " + player.playerName + " gets another turn.");
-            canRoll = true;
-            if (player.isComputer)
-            {
-                yield return new WaitForSeconds(1.5f);
-                RollDice();
-            }
-        }
-        else
-        {
-            NextTurn();
-        }
+        // The turn ends after a move, no extra turns for a 6
+        NextTurn();
     }
 
     private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps)
@@ -83,7 +89,6 @@ public class GameManager : MonoBehaviour
             {
                 player.currentTileIndex = player.baseTileIndex;
                 yield return mover.MoveToTile(tiles[player.currentTileIndex]);
-                // Rule: If a 6 is rolled to start, the player gets another turn.
             }
             else
             {
@@ -92,7 +97,7 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        // Move along the main path, skipping enemy bases in the count
+        // Move along the main path, skipping enemy bases
         while (tilesMoved < steps)
         {
             int nextTileIndex = (currentTileIndex + 1) % tiles.Count;
@@ -100,9 +105,8 @@ public class GameManager : MonoBehaviour
             // Check if player is approaching their home entrance
             if (nextTileIndex == player.baseTileIndex)
             {
-                // Player has completed a full lap and is about to start the home path
                 int remainingSteps = steps - tilesMoved;
-                player.currentHomeTileIndex = -1; // Reset to the start of home path
+                player.currentHomeTileIndex = -1;
                 yield return MoveOnHomePath(player, mover, remainingSteps);
                 yield break;
             }
@@ -113,15 +117,15 @@ public class GameManager : MonoBehaviour
                 Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
                 if (tileOwner != null && tileOwner != player)
                 {
-                    // This is an enemy base, we can pass through it but it doesn't count as a step
-                    // The pawn will move to this tile but the loop will not increment the counter.
-                    // This requires a special movement function to not count the step.
-                    // For now, let's just make the player land on it. The main rule is no landing.
-                    // If you want to bypass, the logic below is a bit more complex.
+                    // Move visually but don't count the step
+                    player.currentTileIndex = nextTileIndex;
+                    yield return mover.MoveToTile(tiles[player.currentTileIndex]);
+                    currentTileIndex = player.currentTileIndex;
+                    continue; // Continue to the next iteration without counting a step
                 }
             }
 
-            // Move to the next tile
+            // Normal movement
             player.currentTileIndex = nextTileIndex;
             yield return mover.MoveToTile(tiles[player.currentTileIndex]);
             tilesMoved++;
@@ -134,7 +138,6 @@ public class GameManager : MonoBehaviour
         int originalHomeIndex = player.currentHomeTileIndex;
         int targetHomeIndex = originalHomeIndex + steps;
 
-        // Check if the move overshoots the win tile
         if (targetHomeIndex >= player.homeTiles.Count)
         {
             Debug.Log(player.playerName + " needs to roll a " + (player.homeTiles.Count - 1 - originalHomeIndex) + " or less to win!");
@@ -142,7 +145,6 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        // Move along the home path
         for (int i = 0; i < steps; i++)
         {
             int nextHomeTileIndex = originalHomeIndex + i + 1;
@@ -150,7 +152,6 @@ public class GameManager : MonoBehaviour
             yield return mover.MoveToTile(player.homeTiles[player.currentHomeTileIndex]);
         }
 
-        // Check for win condition after movement
         if (player.currentHomeTileIndex == player.homeTiles.Count - 1)
         {
             WinGame(player);
@@ -194,7 +195,6 @@ public class GameManager : MonoBehaviour
         RollDice();
     }
 
-    // Win game function
     private void WinGame(Player winningPlayer)
     {
         gameOver = true;
@@ -224,10 +224,5 @@ public class GameManager : MonoBehaviour
             }
         }
         return null;
-    }
-
-    void UpdateTurnUI()
-    {
-        // Your UI update logic here
     }
 }
