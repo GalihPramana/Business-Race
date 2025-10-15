@@ -13,12 +13,23 @@ public class GameManager : MonoBehaviour
     [Header("Board Settings")]
     public List<Transform> tiles;
 
+    [Header("Wheel Settings")]
+    public GameObject spinWheelUI;
+    public RotateWheel spinWheel;
+
     private bool canRoll = true;
     private bool gameOver = false;
 
     void Start()
     {
-        HandleCurrentTurn();
+        if (spinWheel != null)
+            spinWheel.OnSpinComplete += OnWheelComplete;
+
+        //HandleCurrentTurn();
+
+        // Make sure the spin wheel is hidden at start
+        if (spinWheelUI != null)
+            spinWheelUI.SetActive(false);
     }
 
     public void RollDice()
@@ -27,34 +38,38 @@ public class GameManager : MonoBehaviour
 
         canRoll = false;
 
-        // Use the new SpinWheel method instead of a dice roll
-        int wheelResult = SpinWheel();
-        Debug.Log("Player " + (currentPlayerIndex + 1) + " spun the wheel and got " + wheelResult + " steps.");
+        // Show spin wheel
+        if (spinWheelUI != null)
+            spinWheelUI.SetActive(true);
 
-        // For now, move the player directly. Trivia questions will be added later.
-        StartCoroutine(MovePlayer(players[currentPlayerIndex], wheelResult));
+        // Hide dice button during spin
+        if (diceButton != null)
+            diceButton.gameObject.SetActive(false);
     }
 
-    private int SpinWheel()
+    private void OnWheelComplete(string difficulty)
     {
-        int spinResult = Random.Range(1, 101); // 1-100 to work with percentages
+        // Hide wheel after spin ends
+        if (spinWheelUI != null)
+            spinWheelUI.SetActive(false);
 
-        if (spinResult <= 45) // Easy (45%)
+        // Determine step count from difficulty
+        int steps = GetStepsFromDifficulty(difficulty);
+        Debug.Log($"Player {currentPlayerIndex + 1} got {difficulty} ? {steps} steps.");
+
+        // Start moving the current player
+        StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+    }
+
+    private int GetStepsFromDifficulty(string difficulty)
+    {
+        switch (difficulty)
         {
-            return Random.Range(1, 4); // 1-3 steps
-        }
-        else if (spinResult <= 80) // Normal (45% + 35% = 80%)
-        {
-            return Random.Range(4, 7); // 4-6 steps
-        }
-        else if (spinResult <= 95) // Hard (80% + 15% = 95%)
-        {
-            return Random.Range(7, 10); // 7-9 steps
-        }
-        else // Lucky (5%)
-        {
-            // Lucky grants a specific number of steps without a question
-            return 6;
+            case "Easy": return Random.Range(1, 4);   // 1–3
+            case "Normal": return Random.Range(4, 7); // 4–6
+            case "Hard": return Random.Range(7, 10);  // 7–9
+            case "Lucky": return 6;
+            default: return 3;
         }
     }
 
@@ -72,7 +87,7 @@ public class GameManager : MonoBehaviour
             yield return MoveOnMainPath(player, mover, steps);
         }
 
-        // The turn ends after a move, no extra turns for a 6
+        // End turn after movement
         NextTurn();
     }
 
@@ -82,7 +97,7 @@ public class GameManager : MonoBehaviour
         int tilesMoved = 0;
         int currentTileIndex = originalIndex;
 
-        // Check for starting a new game (pawn at -1 index)
+        // Starting a new game (pawn not on board yet)
         if (originalIndex == -1)
         {
             if (steps == 6)
@@ -97,12 +112,12 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        // Move along the main path, skipping enemy bases
+        // Move along main path
         while (tilesMoved < steps)
         {
             int nextTileIndex = (currentTileIndex + 1) % tiles.Count;
 
-            // Check if player is approaching their home entrance
+            // Check if player is reaching home entrance
             if (nextTileIndex == player.baseTileIndex)
             {
                 int remainingSteps = steps - tilesMoved;
@@ -111,17 +126,17 @@ public class GameManager : MonoBehaviour
                 yield break;
             }
 
-            // Check if the next tile is an enemy base
+            // Skip enemy base tiles
             if (IsBaseTile(nextTileIndex))
             {
                 Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
                 if (tileOwner != null && tileOwner != player)
                 {
-                    // Move visually but don't count the step
+                    // Move visually but don’t count the step
                     player.currentTileIndex = nextTileIndex;
                     yield return mover.MoveToTile(tiles[player.currentTileIndex]);
                     currentTileIndex = player.currentTileIndex;
-                    continue; // Continue to the next iteration without counting a step
+                    continue;
                 }
             }
 
@@ -168,23 +183,20 @@ public class GameManager : MonoBehaviour
     void HandleCurrentTurn()
     {
         Player currentPlayer = players[currentPlayerIndex];
-        //UpdateTurnUI();
 
         if (currentPlayer.isComputer)
         {
             if (diceButton != null)
-            {
                 diceButton.gameObject.SetActive(false);
-            }
+
             Debug.Log("Computer's turn...");
             StartCoroutine(ComputerTurn());
         }
         else
         {
             if (diceButton != null)
-            {
                 diceButton.gameObject.SetActive(true);
-            }
+
             Debug.Log("Human Player's turn...");
         }
     }
@@ -198,7 +210,8 @@ public class GameManager : MonoBehaviour
     private void WinGame(Player winningPlayer)
     {
         gameOver = true;
-        if (diceButton != null) diceButton.gameObject.SetActive(false);
+        if (diceButton != null)
+            diceButton.gameObject.SetActive(false);
         Debug.Log(winningPlayer.playerName + " has won the game!");
     }
 
@@ -207,9 +220,7 @@ public class GameManager : MonoBehaviour
         foreach (var player in players)
         {
             if (player.baseTileIndex == index)
-            {
                 return true;
-            }
         }
         return false;
     }
@@ -219,9 +230,7 @@ public class GameManager : MonoBehaviour
         foreach (var player in players)
         {
             if (player.baseTileIndex == index)
-            {
                 return player;
-            }
         }
         return null;
     }
