@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/scanelucywheel/spinwheel/Scenes/SampleScene.unity
+    path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/scanelucywheel/spinwheel/Scenes/MainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 2ff4b1b05be8ba0459bcc37e73294b6c
   - enabled: 1
-    path: Assets/scanelucywheel/spinwheel/Scenes/Scene.unity
+    path: Assets/Scenes/Scene.unity
     guid: 317dcf6480b278e4fb8d6f4dde175a94
   m_configObjects: {}
