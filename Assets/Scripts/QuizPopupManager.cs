@@ -23,67 +23,132 @@ public class QuizPopupManager : MonoBehaviour
     private float timeLeft;
     private Coroutine timerCoroutine;
 
-    private Dictionary<string, Question> questions = new Dictionary<string, Question>();
+    // Bank soal per kategori
+    private Dictionary<string, List<Question>> questionBank = new Dictionary<string, List<Question>>();
+
+    // Tracker untuk soal yang belum pernah muncul
+    private Dictionary<string, List<Question>> remainingQuestions = new Dictionary<string, List<Question>>();
 
     void Start()
     {
         quizPanel.SetActive(false);
 
-        // Dummy data soal (1 per kategori)
-        questions["Easy"] = new Question
+        // === EASY ===
+        questionBank["Easy"] = new List<Question>
         {
-            questionText = "Berapa hasil dari 2 + 2?",
-            options = new string[] { "3", "4", "5", "2" },
-            correctIndex = 1
+            new Question
+            {
+                questionText = "Berapa hasil dari 2 + 2?",
+                options = new string[] { "3", "4", "5", "2" },
+                correctIndex = 1
+            },
+            new Question
+            {
+                questionText = "Warna langit saat siang hari biasanya?",
+                options = new string[] { "Merah", "Hijau", "Biru", "Kuning" },
+                correctIndex = 2
+            },
+            new Question
+            {
+                questionText = "Huruf pertama dalam alfabet adalah?",
+                options = new string[] { "A", "B", "C", "Z" },
+                correctIndex = 0
+            }
         };
 
-        questions["Normal"] = new Question
+        // === NORMAL ===
+        questionBank["Normal"] = new List<Question>
         {
-            questionText = "Bahasa pemrograman yang digunakan untuk Unity adalah?",
-            options = new string[] { "Python", "C++", "C#", "Java" },
-            correctIndex = 2
+            new Question
+            {
+                questionText = "Bahasa pemrograman yang digunakan untuk Unity adalah?",
+                options = new string[] { "Python", "C++", "C#", "Java" },
+                correctIndex = 2
+            },
+            new Question
+            {
+                questionText = "Komponen utama CPU terdiri dari?",
+                options = new string[] { "ALU, CU, Register", "RAM, SSD, HDD", "GPU, PSU, RAM", "Fan, Kabel, Slot" },
+                correctIndex = 0
+            },
+            new Question
+            {
+                questionText = "Apa fungsi utama sistem operasi?",
+                options = new string[] { "Mengatur perangkat keras dan perangkat lunak", "Mematikan komputer", "Menampilkan iklan", "Menghapus data" },
+                correctIndex = 0
+            }
         };
 
-        questions["Hard"] = new Question
+        // === HARD ===
+        questionBank["Hard"] = new List<Question>
         {
-            questionText = "Siapa penemu algoritma Dijkstra?",
-            options = new string[] { "Alan Turing", "Edsger Dijkstra", "Charles Babbage", "John von Neumann" },
-            correctIndex = 1
+            new Question
+            {
+                questionText = "Siapa penemu algoritma Dijkstra?",
+                options = new string[] { "Alan Turing", "Edsger Dijkstra", "Charles Babbage", "John von Neumann" },
+                correctIndex = 1
+            },
+            new Question
+            {
+                questionText = "Kompleksitas waktu dari algoritma quicksort rata-rata adalah?",
+                options = new string[] { "O(n)", "O(n log n)", "O(n^2)", "O(log n)" },
+                correctIndex = 1
+            },
+            new Question
+            {
+                questionText = "Apa nama proses untuk mengubah kode sumber menjadi kode mesin?",
+                options = new string[] { "Compiling", "Debugging", "Interpreting", "Executing" },
+                correctIndex = 0
+            }
         };
+
+        // Copy semua soal ke remainingQuestions di awal
+        ResetRemainingQuestions();
+    }
+
+    private void ResetRemainingQuestions()
+    {
+        remainingQuestions.Clear();
+        foreach (var kvp in questionBank)
+        {
+            // Copy list dan acak urutannya
+            List<Question> shuffled = new List<Question>(kvp.Value);
+            Shuffle(shuffled);
+            remainingQuestions[kvp.Key] = shuffled;
+        }
     }
 
     public void ShowQuiz(string difficulty)
     {
-        if (!questions.ContainsKey(difficulty))
+        if (!remainingQuestions.ContainsKey(difficulty) || remainingQuestions[difficulty].Count == 0)
         {
-            Debug.LogWarning($"Tidak ada soal untuk kategori {difficulty}");
-            return;
+            Debug.Log($"Semua soal {difficulty} sudah pernah muncul, reset ulang...");
+            ResetRemainingQuestions();
         }
 
-        quizPanel.SetActive(true);
-        Question q = questions[difficulty];
+        // Ambil soal pertama dari daftar tersisa
+        Question q = remainingQuestions[difficulty][0];
+        remainingQuestions[difficulty].RemoveAt(0);
 
-        // tampilkan pertanyaan
+        quizPanel.SetActive(true);
         questionText.text = q.questionText;
 
-        // tampilkan pilihan ke tombol
+        // Tampilkan pilihan
         for (int i = 0; i < optionButtons.Length; i++)
         {
             TMP_Text btnText = optionButtons[i].GetComponentInChildren<TMP_Text>();
             btnText.text = q.options[i];
 
-            // hapus listener lama dulu
             optionButtons[i].onClick.RemoveAllListeners();
 
-            // tambahkan listener baru
-            int index = i; // local copy
+            int index = i;
             optionButtons[i].onClick.AddListener(() =>
             {
                 OnAnswerSelected(index == q.correctIndex);
             });
         }
 
-        // mulai timer
+        // Mulai timer
         if (timerCoroutine != null) StopCoroutine(timerCoroutine);
         timerCoroutine = StartCoroutine(StartTimer());
     }
@@ -104,8 +169,19 @@ public class QuizPopupManager : MonoBehaviour
             yield return null;
         }
 
-        // waktu habis
         Debug.Log("Waktu habis!");
         quizPanel.SetActive(false);
+    }
+
+    // Fungsi acak list
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            T temp = list[i];
+            int randomIndex = Random.Range(i, list.Count);
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
     }
 }
