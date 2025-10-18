@@ -23,6 +23,8 @@ public class QuizPopupManager : MonoBehaviour
     private float timeLeft;
     private Coroutine timerCoroutine;
 
+    public System.Action<bool> OnQuizFinished;
+
     // Bank soal per kategori
     private Dictionary<string, List<Question>> questionBank = new Dictionary<string, List<Question>>();
 
@@ -157,6 +159,8 @@ public class QuizPopupManager : MonoBehaviour
     {
         Debug.Log(correct ? "Jawaban Benar!" : "Jawaban Salah!");
         quizPanel.SetActive(false);
+        OnQuizFinished?.Invoke(correct);
+
     }
 
     private IEnumerator StartTimer()

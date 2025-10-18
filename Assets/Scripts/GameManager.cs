@@ -49,17 +49,38 @@ public class GameManager : MonoBehaviour
 
     private void OnWheelComplete(string difficulty)
     {
-        // Hide wheel after spin ends
         if (spinWheelUI != null)
             spinWheelUI.SetActive(false);
 
-        // Determine step count from difficulty
-        int steps = GetStepsFromDifficulty(difficulty);
-        Debug.Log($"Player {currentPlayerIndex + 1} got {difficulty} ? {steps} steps.");
+        // Jika Lucky  langsung gerak
+        if (difficulty == "Lucky")
+        {
+            int steps = GetStepsFromDifficulty(difficulty);
+            Debug.Log($"Lucky spin! Player {currentPlayerIndex + 1} moves {steps} steps automatically!");
+            StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+            return;
+        }
 
-        // Start moving the current player
-        StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+        // Jika bukan Lucky tunggu quiz
+        if (spinWheel.quizPopup != null)
+        {
+            spinWheel.quizPopup.OnQuizFinished = (correct) =>
+            {
+                if (correct)
+                {
+                    int steps = GetStepsFromDifficulty(difficulty);
+                    Debug.Log($"Player {currentPlayerIndex + 1} answered correctly! Moving {steps} steps.");
+                    StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+                }
+                else
+                {
+                    Debug.Log("Player answered wrong. No movement this turn.");
+                    NextTurn();
+                }
+            };
+        }
     }
+
 
     private int GetStepsFromDifficulty(string difficulty)
     {

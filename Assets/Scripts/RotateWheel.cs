@@ -19,6 +19,13 @@ public class RotateWheel : MonoBehaviour
         // Hubungkan event hanya sekali
         OnSpinComplete += (difficulty) =>
         {
+            // Jangan tampilkan quiz untuk "Lucky"
+            if (difficulty == "Lucky")
+            {
+                Debug.Log("Lucky spin! No quiz this time.");
+                return;
+            }
+
             if (quizPopup != null)
                 quizPopup.ShowQuiz(difficulty);
             else
