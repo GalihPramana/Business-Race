@@ -8,8 +8,23 @@ public class RotateWheel : MonoBehaviour
     private float spinDuration = 7f;
     private float finalAngle;
 
-    // Callback for when spin finishes
+    [Header("References")]
+    public QuizPopupManager quizPopup;  // drag QuizPopupManager dari scene ke sini lewat Inspector
+
+    // Callback untuk GameManager jika dibutuhkan
     public Action<string> OnSpinComplete;
+
+    private void Start()
+    {
+        // Hubungkan event hanya sekali
+        OnSpinComplete += (difficulty) =>
+        {
+            if (quizPopup != null)
+                quizPopup.ShowQuiz(difficulty);
+            else
+                Debug.LogWarning("QuizPopupManager belum di-assign di RotateWheel!");
+        };
+    }
 
     public void Spin()
     {
@@ -20,6 +35,7 @@ public class RotateWheel : MonoBehaviour
     private IEnumerator SpinWheel()
     {
         isSpinning = true;
+
         float speed = UnityEngine.Random.Range(500f, 1000f);
         float elapsed = 0f;
 
@@ -32,6 +48,7 @@ public class RotateWheel : MonoBehaviour
             yield return null;
         }
 
+        // pastikan rotasi berhenti pada posisi akhir yang valid
         Vector3 finalRotation = transform.eulerAngles;
         finalRotation.z = Mathf.Repeat(finalRotation.z, 360f);
         transform.eulerAngles = finalRotation;
@@ -41,11 +58,14 @@ public class RotateWheel : MonoBehaviour
         string reward = GetReward(finalAngle);
 
         Debug.Log($"Reward: {reward}");
-        OnSpinComplete?.Invoke(reward); // notify GameManager
+
+      
+        OnSpinComplete?.Invoke(reward);
     }
 
     private string GetReward(float rot)
     {
+      
         if (rot >= 0 && rot < 45)
             return "Hard";
         else if (rot >= 45 && rot < 135)
@@ -55,6 +75,6 @@ public class RotateWheel : MonoBehaviour
         else if (rot >= 225 && rot < 315)
             return "Normal";
         else
-            return "Hard";
+            return "Hard"; 
     }
 }
