@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 106608660}
   - component: {fileID: 106608659}
   m_Layer: 5
-  m_Name: Button (Legacy) (3)
+  m_Name: Button Merah
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1292,7 +1292,7 @@ GameObject:
   - component: {fileID: 485526131}
   - component: {fileID: 485526133}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: Button Oren
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1332,7 +1332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1924,7 +1924,7 @@ GameObject:
   - component: {fileID: 685672906}
   - component: {fileID: 685672908}
   m_Layer: 5
-  m_Name: Button (Legacy) (2)
+  m_Name: Button Coklat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1964,7 +1964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2731,7 +2731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1012943113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4628,10 +4628,10 @@ MonoBehaviour:
   questionText: {fileID: 400116047}
   timerText: {fileID: 43710649}
   optionButtons:
-  - {fileID: 485526133}
+  - {fileID: 106608659}
   - {fileID: 2143112553}
   - {fileID: 685672908}
-  - {fileID: 106608659}
+  - {fileID: 485526133}
 --- !u!4 &1693194316
 Transform:
   m_ObjectHideFlags: 0
@@ -5626,7 +5626,7 @@ GameObject:
   - component: {fileID: 2143112551}
   - component: {fileID: 2143112553}
   m_Layer: 5
-  m_Name: Button (Legacy) (1)
+  m_Name: Button Hijau
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5666,7 +5666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

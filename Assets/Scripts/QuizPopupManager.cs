@@ -11,7 +11,7 @@ public class QuizPopupManager : MonoBehaviour
     {
         public string questionText;
         public string[] options; // 4 opsi jawaban
-        public int correctIndex;
+        public string correctAnswer;
     }
 
     public GameObject quizPanel;
@@ -42,19 +42,19 @@ public class QuizPopupManager : MonoBehaviour
             {
                 questionText = "Berapa hasil dari 2 + 2?",
                 options = new string[] { "3", "4", "5", "2" },
-                correctIndex = 1
+                correctAnswer = "4"
             },
             new Question
             {
                 questionText = "Warna langit saat siang hari biasanya?",
                 options = new string[] { "Merah", "Hijau", "Biru", "Kuning" },
-                correctIndex = 2
+                correctAnswer = "Biru"
             },
             new Question
             {
                 questionText = "Huruf pertama dalam alfabet adalah?",
                 options = new string[] { "A", "B", "C", "Z" },
-                correctIndex = 0
+                correctAnswer = "A"
             }
         };
 
@@ -65,19 +65,19 @@ public class QuizPopupManager : MonoBehaviour
             {
                 questionText = "Bahasa pemrograman yang digunakan untuk Unity adalah?",
                 options = new string[] { "Python", "C++", "C#", "Java" },
-                correctIndex = 2
+                correctAnswer = "C#"
             },
             new Question
             {
                 questionText = "Komponen utama CPU terdiri dari?",
                 options = new string[] { "ALU, CU, Register", "RAM, SSD, HDD", "GPU, PSU, RAM", "Fan, Kabel, Slot" },
-                correctIndex = 0
+                correctAnswer = "ALU, CU, Register"
             },
             new Question
             {
                 questionText = "Apa fungsi utama sistem operasi?",
                 options = new string[] { "Mengatur perangkat keras dan perangkat lunak", "Mematikan komputer", "Menampilkan iklan", "Menghapus data" },
-                correctIndex = 0
+                correctAnswer = "Mengatur perangkat keras dan perangkat lunak"
             }
         };
 
@@ -88,23 +88,22 @@ public class QuizPopupManager : MonoBehaviour
             {
                 questionText = "Siapa penemu algoritma Dijkstra?",
                 options = new string[] { "Alan Turing", "Edsger Dijkstra", "Charles Babbage", "John von Neumann" },
-                correctIndex = 1
+                correctAnswer = "Edsger Dijkstra"
             },
             new Question
             {
                 questionText = "Kompleksitas waktu dari algoritma quicksort rata-rata adalah?",
                 options = new string[] { "O(n)", "O(n log n)", "O(n^2)", "O(log n)" },
-                correctIndex = 1
+                correctAnswer = "O(n log n)"
             },
             new Question
             {
                 questionText = "Apa nama proses untuk mengubah kode sumber menjadi kode mesin?",
                 options = new string[] { "Compiling", "Debugging", "Interpreting", "Executing" },
-                correctIndex = 0
+                correctAnswer = "Compiling"
             }
         };
 
-        // Copy semua soal ke remainingQuestions di awal
         ResetRemainingQuestions();
     }
 
@@ -113,7 +112,6 @@ public class QuizPopupManager : MonoBehaviour
         remainingQuestions.Clear();
         foreach (var kvp in questionBank)
         {
-            // Copy list dan acak urutannya
             List<Question> shuffled = new List<Question>(kvp.Value);
             Shuffle(shuffled);
             remainingQuestions[kvp.Key] = shuffled;
@@ -128,29 +126,40 @@ public class QuizPopupManager : MonoBehaviour
             ResetRemainingQuestions();
         }
 
-        // Ambil soal pertama dari daftar tersisa
         Question q = remainingQuestions[difficulty][0];
         remainingQuestions[difficulty].RemoveAt(0);
 
         quizPanel.SetActive(true);
         questionText.text = q.questionText;
 
-        // Tampilkan pilihan
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            TMP_Text btnText = optionButtons[i].GetComponentInChildren<TMP_Text>();
+            Button btn = optionButtons[i]; // capture the actual button instance
+            TMP_Text btnText = btn.GetComponentInChildren<TMP_Text>();
             btnText.text = q.options[i];
 
-            optionButtons[i].onClick.RemoveAllListeners();
+            // Clear previous listeners
+            btn.onClick.RemoveAllListeners();
 
-            int index = i;
-            optionButtons[i].onClick.AddListener(() =>
+            string buttonName = btn.gameObject.name;
+            Debug.Log($"Button '{buttonName}' assigned text: {q.options[i]}");
+
+            // Capture the text locally for this specific button
+            string optionText = q.options[i];
+
+            btn.onClick.AddListener(() =>
             {
-                OnAnswerSelected(index == q.correctIndex);
+                string clickedByEventSystem = UnityEngine.EventSystems.EventSystem.current?.currentSelectedGameObject?.name ?? "null";
+                Debug.Log($"Listener btn.name: {btn.gameObject.name} | EventSystem.currentSelected: {clickedByEventSystem} | Btn text: {optionText}");
+
+                bool correct = optionText == q.correctAnswer;
+                Debug.Log($"Clicked Button: {btn.gameObject.name} | Text: {optionText} | Correct Answer: {q.correctAnswer} | Result: {correct}");
+
+                OnAnswerSelected(correct);
             });
         }
 
-        // Mulai timer
+
         if (timerCoroutine != null) StopCoroutine(timerCoroutine);
         timerCoroutine = StartCoroutine(StartTimer());
     }
@@ -160,7 +169,6 @@ public class QuizPopupManager : MonoBehaviour
         Debug.Log(correct ? "Jawaban Benar!" : "Jawaban Salah!");
         quizPanel.SetActive(false);
         OnQuizFinished?.Invoke(correct);
-
     }
 
     private IEnumerator StartTimer()
@@ -177,7 +185,6 @@ public class QuizPopupManager : MonoBehaviour
         quizPanel.SetActive(false);
     }
 
-    // Fungsi acak list
     private void Shuffle<T>(List<T> list)
     {
         for (int i = 0; i < list.Count; i++)
