@@ -2731,7 +2731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1012943113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4120,6 +4120,7 @@ MonoBehaviour:
     homeTiles:
     - {fileID: 1989067818}
     currentHomeTileIndex: -1
+    coin: 0
   - playerName: Galih
     playerID: 1
     pawn: {fileID: 135659326}
@@ -4129,6 +4130,7 @@ MonoBehaviour:
     homeTiles:
     - {fileID: 1332060087}
     currentHomeTileIndex: -1
+    coin: 0
   - playerName: Cahyo
     playerID: 2
     pawn: {fileID: 1902782516}
@@ -4138,6 +4140,7 @@ MonoBehaviour:
     homeTiles:
     - {fileID: 955273883}
     currentHomeTileIndex: -1
+    coin: 0
   - playerName: AI
     playerID: 3
     pawn: {fileID: 1399056314}
@@ -4147,6 +4150,7 @@ MonoBehaviour:
     homeTiles:
     - {fileID: 398967337}
     currentHomeTileIndex: -1
+    coin: 0
   currentPlayerIndex: 0
   diceButton: {fileID: 1220401371}
   tiles:

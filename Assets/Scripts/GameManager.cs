@@ -66,15 +66,30 @@ public class GameManager : MonoBehaviour
         {
             spinWheel.quizPopup.OnQuizFinished = (correct) =>
             {
+                Player currentPlayer = players[currentPlayerIndex];
+
                 if (correct)
                 {
                     int steps = GetStepsFromDifficulty(difficulty);
+
+                    // === COIN REWARD BASED ON DIFFICULTY ===
+                    int coinReward = 0;
+                    switch (difficulty)
+                    {
+                        case "Easy": coinReward = 25; break;
+                        case "Normal": coinReward = 50; break;
+                        case "Hard": coinReward = 75; break;
+                    }
+
+                    currentPlayer.coin += coinReward;
+
+                    Debug.Log($"{currentPlayer.playerName} answered correctly! Gained {coinReward} coins. Total coins: {currentPlayer.coin}");
                     Debug.Log($"Player {currentPlayerIndex + 1} answered correctly! Moving {steps} steps.");
-                    StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+                    StartCoroutine(MovePlayer(currentPlayer, steps));
                 }
                 else
                 {
-                    Debug.Log("Player answered wrong. No movement this turn.");
+                    Debug.Log($"{players[currentPlayerIndex].playerName} answered wrong. No movement and no coins.");
                     NextTurn();
                 }
             };

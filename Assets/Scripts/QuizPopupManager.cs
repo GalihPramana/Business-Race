@@ -167,6 +167,11 @@ public class QuizPopupManager : MonoBehaviour
     private void OnAnswerSelected(bool correct)
     {
         Debug.Log(correct ? "Jawaban Benar!" : "Jawaban Salah!");
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+            timerCoroutine = null;
+        }
         quizPanel.SetActive(false);
         OnQuizFinished?.Invoke(correct);
     }
@@ -182,7 +187,9 @@ public class QuizPopupManager : MonoBehaviour
         }
 
         Debug.Log("Waktu habis!");
+        timerCoroutine = null;
         quizPanel.SetActive(false);
+        OnQuizFinished?.Invoke(false);
     }
 
     private void Shuffle<T>(List<T> list)

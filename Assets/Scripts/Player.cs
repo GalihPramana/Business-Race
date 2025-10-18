@@ -14,4 +14,5 @@ public class Player
     // You could also add a color or team ID here
     public List<Transform> homeTiles;
     public int currentHomeTileIndex = -1; // -1 indicates the pawn is not on the home path
+    public int coin;
 }
