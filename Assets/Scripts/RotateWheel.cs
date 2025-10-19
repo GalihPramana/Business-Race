@@ -19,13 +19,6 @@ public class RotateWheel : MonoBehaviour
         // Hubungkan event hanya sekali
         OnSpinComplete += (difficulty) =>
         {
-            // Jangan tampilkan quiz untuk "Lucky"
-            if (difficulty == "Lucky")
-            {
-                Debug.Log("Lucky spin! No quiz this time.");
-                return;
-            }
-
             if (quizPopup != null)
                 quizPopup.ShowQuiz(difficulty);
             else
@@ -66,7 +59,7 @@ public class RotateWheel : MonoBehaviour
 
         Debug.Log($"Reward: {reward}");
 
-      
+        // Jalankan event selesai spin
         OnSpinComplete?.Invoke(reward);
     }
 
@@ -82,6 +75,6 @@ public class RotateWheel : MonoBehaviour
         else if (rot >= 225 && rot < 315)
             return "Normal";
         else
-            return "Hard"; 
+            return "Hard"; // fallback
     }
 }

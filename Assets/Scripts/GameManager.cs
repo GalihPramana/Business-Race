@@ -17,6 +17,12 @@ public class GameManager : MonoBehaviour
     public GameObject spinWheelUI;
     public RotateWheel spinWheel;
 
+    [Header("Turn Choice UI")]
+    public GameObject choicePanel;   // panel berisi 2 tombol: SpinWheel & Shop
+    public Button spinWheelButton;   // tombol untuk Spin Wheel
+    public Button shopButton;        // tombol untuk buka Shop
+    public GameObject shopPanel;     // panel Shop milikmu (GameObject "Shop")
+
     private bool canRoll = true;
     private bool gameOver = false;
 
@@ -25,24 +31,94 @@ public class GameManager : MonoBehaviour
         if (spinWheel != null)
             spinWheel.OnSpinComplete += OnWheelComplete;
 
-        //HandleCurrentTurn();
-
-        // Make sure the spin wheel is hidden at start
         if (spinWheelUI != null)
             spinWheelUI.SetActive(false);
+
+        if (choicePanel != null)
+            choicePanel.SetActive(false);
+
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
+
+        HandleCurrentTurn();
     }
 
+    // === PHASE 1: Player chooses between Shop or Spin Wheel ===
+    void HandleCurrentTurn()
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+
+        // pastikan UI pilihan selalu mati saat giliran berganti
+        if (choicePanel != null) choicePanel.SetActive(false);
+        if (shopPanel != null) shopPanel.SetActive(false);
+        if (spinWheelUI != null) spinWheelUI.SetActive(false);
+
+        if (currentPlayer.isComputer)
+        {
+            if (diceButton != null)
+                diceButton.gameObject.SetActive(false);
+
+            Debug.Log("Computer's turn...");
+            StartCoroutine(ComputerTurn());
+        }
+        else
+        {
+            Debug.Log($"Giliran {currentPlayer.playerName}, pilih Spin Wheel atau Shop...");
+
+            if (choicePanel != null)
+                choicePanel.SetActive(true);
+
+            if (diceButton != null)
+                diceButton.gameObject.SetActive(false);
+
+            // bersihkan listener sebelumnya
+            spinWheelButton.onClick.RemoveAllListeners();
+            shopButton.onClick.RemoveAllListeners();
+
+            // jika pilih spin wheel
+            spinWheelButton.onClick.AddListener(() =>
+            {
+                Debug.Log("Pemain memilih Spin Wheel");
+                choicePanel.SetActive(false);
+                RollDice();
+            });
+
+            // jika pilih shop
+            shopButton.onClick.AddListener(() =>
+            {
+                Debug.Log("Pemain memilih Shop");
+                choicePanel.SetActive(false);
+                OpenShop();
+            });
+        }
+    }
+
+    void OpenShop()
+    {
+        if (shopPanel != null)
+            shopPanel.SetActive(true);
+    }
+
+    // ini dipanggil dari tombol "Close" di panel Shop
+    public void CloseShop()
+    {
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
+
+        Debug.Log("Shop ditutup, lanjut ke Spin Wheel");
+        NextTurn();
+    }
+
+    // === PHASE 2: Spin wheel logic ===
     public void RollDice()
     {
         if (!canRoll || gameOver) return;
 
         canRoll = false;
 
-        // Show spin wheel
         if (spinWheelUI != null)
             spinWheelUI.SetActive(true);
 
-        // Hide dice button during spin
         if (diceButton != null)
             diceButton.gameObject.SetActive(false);
     }
@@ -52,7 +128,6 @@ public class GameManager : MonoBehaviour
         if (spinWheelUI != null)
             spinWheelUI.SetActive(false);
 
-        // Jika Lucky  langsung gerak
         if (difficulty == "Lucky")
         {
             int steps = GetStepsFromDifficulty(difficulty);
@@ -61,7 +136,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Jika bukan Lucky tunggu quiz
         if (spinWheel.quizPopup != null)
         {
             spinWheel.quizPopup.OnQuizFinished = (correct) =>
@@ -71,9 +145,8 @@ public class GameManager : MonoBehaviour
                 if (correct)
                 {
                     int steps = GetStepsFromDifficulty(difficulty);
-
-                    // === COIN REWARD BASED ON DIFFICULTY ===
                     int coinReward = 0;
+
                     switch (difficulty)
                     {
                         case "Easy": coinReward = 25; break;
@@ -82,28 +155,25 @@ public class GameManager : MonoBehaviour
                     }
 
                     currentPlayer.coin += coinReward;
-
-                    Debug.Log($"{currentPlayer.playerName} answered correctly! Gained {coinReward} coins. Total coins: {currentPlayer.coin}");
-                    Debug.Log($"Player {currentPlayerIndex + 1} answered correctly! Moving {steps} steps.");
+                    Debug.Log($"{currentPlayer.playerName} benar! Dapat {coinReward} coin. Total: {currentPlayer.coin}");
                     StartCoroutine(MovePlayer(currentPlayer, steps));
                 }
                 else
                 {
-                    Debug.Log($"{players[currentPlayerIndex].playerName} answered wrong. No movement and no coins.");
+                    Debug.Log($"{currentPlayer.playerName} salah. Tidak bergerak & tidak dapat coin.");
                     NextTurn();
                 }
             };
         }
     }
 
-
     private int GetStepsFromDifficulty(string difficulty)
     {
         switch (difficulty)
         {
-            case "Easy": return Random.Range(1, 4);   // 1–3
-            case "Normal": return Random.Range(4, 7); // 4–6
-            case "Hard": return Random.Range(7, 10);  // 7–9
+            case "Easy": return Random.Range(1, 4);
+            case "Normal": return Random.Range(4, 7);
+            case "Hard": return Random.Range(7, 10);
             case "Lucky": return 6;
             default: return 3;
         }
@@ -113,7 +183,6 @@ public class GameManager : MonoBehaviour
     {
         PlayerTileMover mover = player.pawn.GetComponent<PlayerTileMover>();
 
-        // Simplified movement logic
         if (player.currentHomeTileIndex != -1)
         {
             yield return MoveOnHomePath(player, mover, steps);
@@ -123,7 +192,6 @@ public class GameManager : MonoBehaviour
             yield return MoveOnMainPath(player, mover, steps);
         }
 
-        // End turn after movement
         NextTurn();
     }
 
@@ -133,7 +201,6 @@ public class GameManager : MonoBehaviour
         int tilesMoved = 0;
         int currentTileIndex = originalIndex;
 
-        // Starting a new game (pawn not on board yet)
         if (originalIndex == -1)
         {
             if (steps == 6)
@@ -148,12 +215,10 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        // Move along main path
         while (tilesMoved < steps)
         {
             int nextTileIndex = (currentTileIndex + 1) % tiles.Count;
 
-            // Check if player is reaching home entrance
             if (nextTileIndex == player.baseTileIndex)
             {
                 int remainingSteps = steps - tilesMoved;
@@ -162,13 +227,11 @@ public class GameManager : MonoBehaviour
                 yield break;
             }
 
-            // Skip enemy base tiles
             if (IsBaseTile(nextTileIndex))
             {
                 Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
                 if (tileOwner != null && tileOwner != player)
                 {
-                    // Move visually but don’t count the step
                     player.currentTileIndex = nextTileIndex;
                     yield return mover.MoveToTile(tiles[player.currentTileIndex]);
                     currentTileIndex = player.currentTileIndex;
@@ -176,7 +239,6 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            // Normal movement
             player.currentTileIndex = nextTileIndex;
             yield return mover.MoveToTile(tiles[player.currentTileIndex]);
             tilesMoved++;
@@ -216,30 +278,14 @@ public class GameManager : MonoBehaviour
         HandleCurrentTurn();
     }
 
-    void HandleCurrentTurn()
-    {
-        Player currentPlayer = players[currentPlayerIndex];
-
-        if (currentPlayer.isComputer)
-        {
-            if (diceButton != null)
-                diceButton.gameObject.SetActive(false);
-
-            Debug.Log("Computer's turn...");
-            StartCoroutine(ComputerTurn());
-        }
-        else
-        {
-            if (diceButton != null)
-                diceButton.gameObject.SetActive(true);
-
-            Debug.Log("Human Player's turn...");
-        }
-    }
-
     IEnumerator ComputerTurn()
     {
         yield return new WaitForSeconds(1.5f);
+
+        // pastikan semua choice UI mati sebelum AI berjalan
+        if (choicePanel != null) choicePanel.SetActive(false);
+        if (shopPanel != null) shopPanel.SetActive(false);
+
         RollDice();
     }
 
