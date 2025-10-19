@@ -26,8 +26,14 @@ public class GameManager : MonoBehaviour
     private bool canRoll = true;
     private bool gameOver = false;
 
+    public static GameManager Instance;
+    private bool waitingForPawnSelection = false;
+
+
     void Start()
     {
+        Instance = this;
+
         if (spinWheel != null)
             spinWheel.OnSpinComplete += OnWheelComplete;
 
@@ -40,58 +46,128 @@ public class GameManager : MonoBehaviour
         if (shopPanel != null)
             shopPanel.SetActive(false);
 
+        // Initialize PawnSelector2D for all pawns
+        foreach (Player player in players)
+        {
+            for (int i = 0; i < player.pawns.Count; i++)
+            {
+                Transform pawn = player.pawns[i];
+
+                if (pawn == null)
+                {
+                    Debug.LogError(player.playerName + " has a null pawn at index " + i + ". Check the Player Inspector.");
+                    continue;
+                }
+
+                PawnSelector2D selector = pawn.GetComponent<PawnSelector2D>();
+                if (selector != null)
+                {
+                    selector.Initialize(player, i);
+                    Debug.Log("Initialized " + player.playerName + "'s pawn " + (i + 1) + ": " + pawn.name);
+                }
+                else
+                {
+                    Debug.LogWarning(pawn.name + " has no PawnSelector2D component!");
+                }
+            }
+        }
+
         HandleCurrentTurn();
     }
+
+
+
+    public void OnPawnClicked(Player player, int pawnIndex)
+    {
+        if (!waitingForPawnSelection) return;
+        Player currentPlayer = players[currentPlayerIndex];
+        if (player != currentPlayer) return;
+
+        currentPlayer.activePawnIndex = pawnIndex;
+        waitingForPawnSelection = false;
+
+        Debug.Log(player.playerName + " selected pawn " + (pawnIndex + 1));
+        HighlightPawn(player.ActivePawn, true);
+
+        // Disable pawn colliders
+        foreach (var pawn in currentPlayer.pawns)
+        {
+            Collider2D col = pawn.GetComponent<Collider2D>();
+            if (col != null) col.enabled = false;
+        }
+
+        // Show and set up the choice UI
+        SetupTurnChoiceUI();
+    }
+
+
+    private void HighlightPawn(Transform pawn, bool active)
+    {
+        Renderer rend = pawn.GetComponent<Renderer>();
+        if (rend != null)
+        {
+            rend.material.color = active ? Color.yellow : Color.white;
+        }
+    }
+
 
     // === PHASE 1: Player chooses between Shop or Spin Wheel ===
     void HandleCurrentTurn()
     {
         Player currentPlayer = players[currentPlayerIndex];
 
-        // pastikan UI pilihan selalu mati saat giliran berganti
+        // Reset UI
         if (choicePanel != null) choicePanel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false);
         if (spinWheelUI != null) spinWheelUI.SetActive(false);
 
         if (currentPlayer.isComputer)
         {
-            if (diceButton != null)
-                diceButton.gameObject.SetActive(false);
-
-            Debug.Log("Computer's turn...");
             StartCoroutine(ComputerTurn());
+            return;
         }
-        else
+
+        Debug.Log(currentPlayer.playerName + "'s turn! Click a pawn to select.");
+
+        waitingForPawnSelection = true;
+
+        // Re-enable pawn colliders
+        foreach (var pawn in currentPlayer.pawns)
         {
-            Debug.Log($"Giliran {currentPlayer.playerName}, pilih Spin Wheel atau Shop...");
-
-            if (choicePanel != null)
-                choicePanel.SetActive(true);
-
-            if (diceButton != null)
-                diceButton.gameObject.SetActive(false);
-
-            // bersihkan listener sebelumnya
-            spinWheelButton.onClick.RemoveAllListeners();
-            shopButton.onClick.RemoveAllListeners();
-
-            // jika pilih spin wheel
-            spinWheelButton.onClick.AddListener(() =>
-            {
-                Debug.Log("Pemain memilih Spin Wheel");
-                choicePanel.SetActive(false);
-                RollDice();
-            });
-
-            // jika pilih shop
-            shopButton.onClick.AddListener(() =>
-            {
-                Debug.Log("Pemain memilih Shop");
-                choicePanel.SetActive(false);
-                OpenShop();
-            });
+            Collider2D col = pawn.GetComponent<Collider2D>();
+            if (col != null) col.enabled = true;
+            HighlightPawn(pawn, false);
         }
     }
+
+    private void SetupTurnChoiceUI()
+    {
+        if (choicePanel == null) return;
+
+        choicePanel.SetActive(true);
+
+        // Clear previous listeners
+        spinWheelButton.onClick.RemoveAllListeners();
+        shopButton.onClick.RemoveAllListeners();
+
+        // Spin Wheel button
+        spinWheelButton.onClick.AddListener(() =>
+        {
+            Debug.Log("Player chose Spin Wheel");
+            choicePanel.SetActive(false);
+            RollDice();
+        });
+
+        // Shop button
+        shopButton.onClick.AddListener(() =>
+        {
+            Debug.Log("Player chose Shop");
+            choicePanel.SetActive(false);
+            OpenShop();
+        });
+    }
+
+
 
     void OpenShop()
     {
@@ -181,7 +257,26 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MovePlayer(Player player, int steps)
     {
-        PlayerTileMover mover = player.pawn.GetComponent<PlayerTileMover>();
+        if (player == null)
+        {
+            Debug.LogError("MovePlayer called with null player!");
+            yield break;
+        }
+
+        Transform activePawn = player.ActivePawn;
+
+        if (activePawn == null)
+        {
+            Debug.LogError($"{player.playerName} has no ActivePawn selected! Did you forget to click a pawn?");
+            yield break;
+        }
+
+        PlayerTileMover mover = activePawn.GetComponent<PlayerTileMover>();
+        if (mover == null)
+        {
+            Debug.LogError($"Active pawn '{activePawn.name}' has no PlayerTileMover component!");
+            yield break;
+        }
 
         if (player.currentHomeTileIndex != -1)
         {
@@ -194,6 +289,7 @@ public class GameManager : MonoBehaviour
 
         NextTurn();
     }
+
 
     private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps)
     {
