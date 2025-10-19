@@ -376,26 +376,51 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ComputerTurn()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
 
-        // Hide all UI to make sure it doesn't appear
+        Player aiPlayer = players[currentPlayerIndex];
+
+        // Hide all player UI completely
         if (choicePanel != null) choicePanel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false);
         if (spinWheelUI != null) spinWheelUI.SetActive(false);
-        if (spinWheel.quizPopup != null) spinWheel.quizPopup.quizPanel.SetActive(false);
 
-        Debug.Log("Computer's turn (silent mode).");
+        // Also hide quiz popup if somehow open
+        if (spinWheel != null && spinWheel.quizPopup != null)
+            spinWheel.quizPopup.quizPanel.SetActive(false);
 
-        // Simulate random difficulty as if from the wheel
+        Debug.Log("Computer's turn started...");
+
+        // 1. Randomly select a pawn
+        if (aiPlayer.pawns.Count > 0)
+        {
+            int randomPawnIndex = Random.Range(0, aiPlayer.pawns.Count);
+            aiPlayer.activePawnIndex = randomPawnIndex;
+
+            Transform chosenPawn = aiPlayer.ActivePawn;
+            Debug.Log("Computer selected pawn " + (randomPawnIndex + 1) + " (" + chosenPawn.name + ")");
+
+            // Optional: highlight the chosen pawn
+            HighlightPawn(chosenPawn, true);
+        }
+        else
+        {
+            Debug.LogWarning("AI player has no pawns assigned!");
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.5f); // small pause before spin
+
+        // 2. Simulate spin result (no UI shown)
         string[] difficulties = { "Easy", "Normal", "Hard", "Lucky" };
         string chosenDifficulty = difficulties[Random.Range(0, difficulties.Length)];
-        Player aiPlayer = players[currentPlayerIndex];
+        Debug.Log("Computer spun: " + chosenDifficulty);
 
-        // Simulate quiz result: 70% chance correct
-        bool correct = Random.value < 0.7f;
-
+        // 3. Simulate quiz result internally (no popup)
+        bool correct = Random.value < 0.7f; // 70% chance success
         int steps = GetStepsFromDifficulty(chosenDifficulty);
         int coinReward = 0;
+
         switch (chosenDifficulty)
         {
             case "Easy": coinReward = 25; break;
@@ -404,19 +429,22 @@ public class GameManager : MonoBehaviour
             case "Lucky": coinReward = 100; break;
         }
 
+        // 4. Apply results and move or fail
         if (chosenDifficulty == "Lucky" || correct)
         {
             aiPlayer.coin += coinReward;
-            Debug.Log($"Computer got '{chosenDifficulty}' and answered {(correct ? "correctly" : "by luck")}! Moves {steps} steps, earns {coinReward} coins.");
+            Debug.Log("Computer answered correctly (or got Lucky)! Moves " + steps + " steps, earns " + coinReward + " coins.");
             yield return MovePlayer(aiPlayer, steps);
         }
         else
         {
-            Debug.Log($"Computer failed the '{chosenDifficulty}' quiz! No movement.");
+            Debug.Log("Computer failed the '" + chosenDifficulty + "' quiz! No movement.");
             yield return new WaitForSeconds(1f);
             NextTurn();
         }
     }
+
+
 
 
     private void WinGame(Player winningPlayer)
