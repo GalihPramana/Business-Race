@@ -282,12 +282,46 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        // pastikan semua choice UI mati sebelum AI berjalan
+        // Hide all UI to make sure it doesn't appear
         if (choicePanel != null) choicePanel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false);
+        if (spinWheelUI != null) spinWheelUI.SetActive(false);
+        if (spinWheel.quizPopup != null) spinWheel.quizPopup.quizPanel.SetActive(false);
 
-        RollDice();
+        Debug.Log("Computer's turn (silent mode).");
+
+        // Simulate random difficulty as if from the wheel
+        string[] difficulties = { "Easy", "Normal", "Hard", "Lucky" };
+        string chosenDifficulty = difficulties[Random.Range(0, difficulties.Length)];
+        Player aiPlayer = players[currentPlayerIndex];
+
+        // Simulate quiz result: 70% chance correct
+        bool correct = Random.value < 0.7f;
+
+        int steps = GetStepsFromDifficulty(chosenDifficulty);
+        int coinReward = 0;
+        switch (chosenDifficulty)
+        {
+            case "Easy": coinReward = 25; break;
+            case "Normal": coinReward = 50; break;
+            case "Hard": coinReward = 75; break;
+            case "Lucky": coinReward = 100; break;
+        }
+
+        if (chosenDifficulty == "Lucky" || correct)
+        {
+            aiPlayer.coin += coinReward;
+            Debug.Log($"Computer got '{chosenDifficulty}' and answered {(correct ? "correctly" : "by luck")}! Moves {steps} steps, earns {coinReward} coins.");
+            yield return MovePlayer(aiPlayer, steps);
+        }
+        else
+        {
+            Debug.Log($"Computer failed the '{chosenDifficulty}' quiz! No movement.");
+            yield return new WaitForSeconds(1f);
+            NextTurn();
+        }
     }
+
 
     private void WinGame(Player winningPlayer)
     {
