@@ -624,6 +624,7 @@ GameObject:
   - component: {fileID: 135659327}
   - component: {fileID: 135659329}
   - component: {fileID: 135659330}
+  - component: {fileID: 135659331}
   m_Layer: 0
   m_Name: Player 2
   m_TagString: Untagged
@@ -758,6 +759,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &135659331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135659325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 9
+  currentHomeTileIndex: -1
 --- !u!1 &151008804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,6 +1202,7 @@ GameObject:
   - component: {fileID: 370725422}
   - component: {fileID: 370725421}
   - component: {fileID: 370725424}
+  - component: {fileID: 370725425}
   m_Layer: 0
   m_Name: Player 1 (1)
   m_TagString: Untagged
@@ -1321,6 +1337,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &370725425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370725419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 0
+  currentHomeTileIndex: -1
 --- !u!1 &398967336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,6 +2331,7 @@ GameObject:
   - component: {fileID: 587287253}
   - component: {fileID: 587287254}
   - component: {fileID: 587287255}
+  - component: {fileID: 587287256}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -2435,6 +2466,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &587287256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587287250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 0
+  currentHomeTileIndex: -1
 --- !u!1 &617355328
 GameObject:
   m_ObjectHideFlags: 0
@@ -3583,6 +3628,7 @@ GameObject:
   - component: {fileID: 942102471}
   - component: {fileID: 942102470}
   - component: {fileID: 942102473}
+  - component: {fileID: 942102474}
   m_Layer: 0
   m_Name: Player 3 (1)
   m_TagString: Untagged
@@ -3717,6 +3763,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &942102474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942102468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 18
+  currentHomeTileIndex: -1
 --- !u!1 &955273882
 GameObject:
   m_ObjectHideFlags: 0
@@ -3761,6 +3821,7 @@ GameObject:
   - component: {fileID: 966471171}
   - component: {fileID: 966471170}
   - component: {fileID: 966471173}
+  - component: {fileID: 966471174}
   m_Layer: 0
   m_Name: Player 4 (1)
   m_TagString: Untagged
@@ -3895,6 +3956,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &966471174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966471168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 27
+  currentHomeTileIndex: -1
 --- !u!1 &1012943112
 GameObject:
   m_ObjectHideFlags: 0
@@ -5185,6 +5260,7 @@ GameObject:
   - component: {fileID: 1399056315}
   - component: {fileID: 1399056317}
   - component: {fileID: 1399056318}
+  - component: {fileID: 1399056319}
   m_Layer: 0
   m_Name: Player 4
   m_TagString: Untagged
@@ -5319,6 +5395,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1399056319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399056313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 27
+  currentHomeTileIndex: -1
 --- !u!1 &1487704968
 GameObject:
   m_ObjectHideFlags: 0
@@ -5610,12 +5700,10 @@ MonoBehaviour:
     - {fileID: 587287252}
     - {fileID: 370725420}
     activePawnIndex: -1
-    currentTileIndex: 0
     isComputer: 0
     baseTileIndex: 0
     homeTiles:
     - {fileID: 1989067818}
-    currentHomeTileIndex: -1
     coin: 0
   - playerName: Galih
     playerID: 1
@@ -5623,12 +5711,10 @@ MonoBehaviour:
     - {fileID: 135659326}
     - {fileID: 1641676397}
     activePawnIndex: -1
-    currentTileIndex: 9
     isComputer: 0
     baseTileIndex: 9
     homeTiles:
     - {fileID: 1332060087}
-    currentHomeTileIndex: -1
     coin: 0
   - playerName: Cahyo
     playerID: 2
@@ -5636,12 +5722,10 @@ MonoBehaviour:
     - {fileID: 1902782516}
     - {fileID: 942102469}
     activePawnIndex: -1
-    currentTileIndex: 18
     isComputer: 0
     baseTileIndex: 18
     homeTiles:
     - {fileID: 955273883}
-    currentHomeTileIndex: -1
     coin: 0
   - playerName: AI
     playerID: 3
@@ -5649,12 +5733,10 @@ MonoBehaviour:
     - {fileID: 1399056314}
     - {fileID: 966471169}
     activePawnIndex: -1
-    currentTileIndex: 27
     isComputer: 1
     baseTileIndex: 27
     homeTiles:
     - {fileID: 398967337}
-    currentHomeTileIndex: -1
     coin: 0
   currentPlayerIndex: 0
   diceButton: {fileID: 1220401371}
@@ -6002,6 +6084,7 @@ GameObject:
   - component: {fileID: 1641676399}
   - component: {fileID: 1641676398}
   - component: {fileID: 1641676401}
+  - component: {fileID: 1641676402}
   m_Layer: 0
   m_Name: Player 2 (1)
   m_TagString: Untagged
@@ -6136,6 +6219,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1641676402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641676396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 9
+  currentHomeTileIndex: -1
 --- !u!1 &1667467219
 GameObject:
   m_ObjectHideFlags: 0
@@ -6860,6 +6957,7 @@ GameObject:
   - component: {fileID: 1902782517}
   - component: {fileID: 1902782519}
   - component: {fileID: 1902782520}
+  - component: {fileID: 1902782521}
   m_Layer: 0
   m_Name: Player 3
   m_TagString: Untagged
@@ -6994,6 +7092,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1217899192cd841b52fcc565e70d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1902782521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902782515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466d118ccc21a348ab38febb1b4c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTileIndex: 18
+  currentHomeTileIndex: -1
 --- !u!1 &1939088372
 GameObject:
   m_ObjectHideFlags: 0

@@ -280,6 +280,7 @@ public class GameManager : MonoBehaviour
 
                     currentPlayer.coin += coinReward;
                     Debug.Log($"{currentPlayer.playerName} benar! Dapat {coinReward} coin. Total: {currentPlayer.coin}");
+                    Debug.Log($"{currentPlayer.playerName} mendapat {steps} langkah!");
                     StartCoroutine(MovePlayer(currentPlayer, steps));
                 }
                 else
@@ -315,33 +316,38 @@ public class GameManager : MonoBehaviour
 
         if (activePawn == null)
         {
-            Debug.LogError($"{player.playerName} has no ActivePawn selected! Did you forget to click a pawn?");
+            yield break;
+        }
+
+        PawnTracker tracker = activePawn.GetComponent<PawnTracker>();
+        if (tracker == null)
+        {
+            Debug.LogError($"Active pawn '{activePawn.name}' missing PawnTracker component!");
             yield break;
         }
 
         PlayerTileMover mover = activePawn.GetComponent<PlayerTileMover>();
         if (mover == null)
         {
-            Debug.LogError($"Active pawn '{activePawn.name}' has no PlayerTileMover component!");
             yield break;
         }
 
-        if (player.currentHomeTileIndex != -1)
+        if (tracker.currentHomeTileIndex != -1)
         {
-            yield return MoveOnHomePath(player, mover, steps);
+            yield return MoveOnHomePath(player, mover, steps, tracker);
         }
         else
         {
-            yield return MoveOnMainPath(player, mover, steps);
+            yield return MoveOnMainPath(player, mover, steps, tracker);
         }
 
         NextTurn();
     }
 
 
-    private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps)
+    private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker)
     {
-        int originalIndex = player.currentTileIndex;
+        int originalIndex = tracker.currentTileIndex; 
         int tilesMoved = 0;
         int currentTileIndex = originalIndex;
 
@@ -349,8 +355,8 @@ public class GameManager : MonoBehaviour
         {
             if (steps == 6)
             {
-                player.currentTileIndex = player.baseTileIndex;
-                yield return mover.MoveToTile(tiles[player.currentTileIndex]);
+                tracker.currentTileIndex = player.baseTileIndex; 
+                yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
             }
             else
             {
@@ -366,8 +372,8 @@ public class GameManager : MonoBehaviour
             if (nextTileIndex == player.baseTileIndex)
             {
                 int remainingSteps = steps - tilesMoved;
-                player.currentHomeTileIndex = -1;
-                yield return MoveOnHomePath(player, mover, remainingSteps);
+                tracker.currentHomeTileIndex = -1; 
+                yield return MoveOnHomePath(player, mover, remainingSteps, tracker); 
                 yield break;
             }
 
@@ -376,40 +382,40 @@ public class GameManager : MonoBehaviour
                 Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
                 if (tileOwner != null && tileOwner != player)
                 {
-                    player.currentTileIndex = nextTileIndex;
-                    yield return mover.MoveToTile(tiles[player.currentTileIndex]);
-                    currentTileIndex = player.currentTileIndex;
+                    tracker.currentTileIndex = nextTileIndex; 
+                    yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
+                    currentTileIndex = tracker.currentTileIndex;
                     continue;
                 }
             }
 
-            player.currentTileIndex = nextTileIndex;
-            yield return mover.MoveToTile(tiles[player.currentTileIndex]);
+            tracker.currentTileIndex = nextTileIndex; 
+            yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
             tilesMoved++;
-            currentTileIndex = player.currentTileIndex;
+            currentTileIndex = tracker.currentTileIndex;
         }
     }
 
-    private IEnumerator MoveOnHomePath(Player player, PlayerTileMover mover, int steps)
+
+    private IEnumerator MoveOnHomePath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker) 
     {
-        int originalHomeIndex = player.currentHomeTileIndex;
+        int originalHomeIndex = tracker.currentHomeTileIndex; 
         int targetHomeIndex = originalHomeIndex + steps;
 
         if (targetHomeIndex >= player.homeTiles.Count)
         {
-            Debug.Log(player.playerName + " needs to roll a " + (player.homeTiles.Count - 1 - originalHomeIndex) + " or less to win!");
-            NextTurn();
+            
             yield break;
         }
 
         for (int i = 0; i < steps; i++)
         {
             int nextHomeTileIndex = originalHomeIndex + i + 1;
-            player.currentHomeTileIndex = nextHomeTileIndex;
-            yield return mover.MoveToTile(player.homeTiles[player.currentHomeTileIndex]);
+            tracker.currentHomeTileIndex = nextHomeTileIndex; 
+            yield return mover.MoveToTile(player.homeTiles[tracker.currentHomeTileIndex]);
         }
 
-        if (player.currentHomeTileIndex == player.homeTiles.Count - 1)
+        if (tracker.currentHomeTileIndex == player.homeTiles.Count - 1) 
         {
             WinGame(player);
         }
