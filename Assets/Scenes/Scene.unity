@@ -5624,6 +5624,7 @@ MonoBehaviour:
   spinWheelButton: {fileID: 1803231678}
   shopButton: {fileID: 1251826258}
   shopPanel: {fileID: 1606260131}
+  coinDisplayInShop: {fileID: 500241871}
 --- !u!1 &1579924126
 GameObject:
   m_ObjectHideFlags: 0
@@ -7221,7 +7222,7 @@ GameObject:
   - component: {fileID: 2030422052}
   - component: {fileID: 2030422051}
   m_Layer: 5
-  m_Name: icon
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

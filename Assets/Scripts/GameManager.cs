@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
     public Button spinWheelButton;   // tombol untuk Spin Wheel
     public Button shopButton;        // tombol untuk buka Shop
     public GameObject shopPanel;     // panel Shop milikmu (GameObject "Shop")
+
+    public TMP_Text coinDisplayInShop;    
 
     private bool canRoll = true;
     private bool gameOver = false;
@@ -75,7 +78,16 @@ public class GameManager : MonoBehaviour
         HandleCurrentTurn();
     }
 
+    public void UpdateCoinDisplay()
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+        string coinText = currentPlayer.coin.ToString();
 
+        if (coinDisplayInShop != null)
+        {
+            coinDisplayInShop.text = coinText;
+        }
+    }
 
     public void OnPawnClicked(Player player, int pawnIndex)
     {
@@ -172,7 +184,10 @@ public class GameManager : MonoBehaviour
     void OpenShop()
     {
         if (shopPanel != null)
+        {
             shopPanel.SetActive(true);
+            UpdateCoinDisplay();
+        }
     }
 
     // ini dipanggil dari tombol "Close" di panel Shop
