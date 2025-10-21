@@ -32,6 +32,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private bool waitingForPawnSelection = false;
 
+    private Dictionary<string, int> itemPrices = new Dictionary<string, int>()
+    {
+        {"Bom", 200},
+        {"Iceball", 175},
+        {"TimeReverse-3", 100},
+        {"TimeReverse-5", 125},
+        {"TimeReverse-7", 150}
+    };
 
     void Start()
     {
@@ -87,6 +95,31 @@ public class GameManager : MonoBehaviour
         {
             coinDisplayInShop.text = coinText;
         }
+    }
+
+    // === SISTEM ITEM SHOP ===
+    public void BuyItem(string itemName)
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+
+        if (!itemPrices.ContainsKey(itemName))
+        {
+            Debug.LogWarning("Item tidak dikenal: " + itemName);
+            return;
+        }
+
+        int itemCost = itemPrices[itemName];
+
+        if (currentPlayer.coin < itemCost)
+        {
+            Debug.LogWarning($"{currentPlayer.playerName} tidak punya cukup coin untuk membeli {itemName}");
+            return;
+        }
+
+        currentPlayer.coin -= itemCost;
+        UpdateCoinDisplay();
+
+        Debug.Log($"{currentPlayer.playerName} membeli item {itemName} seharga {itemCost}. Sisa coin: {currentPlayer.coin}");
     }
 
     public void OnPawnClicked(Player player, int pawnIndex)
@@ -387,6 +420,7 @@ public class GameManager : MonoBehaviour
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         canRoll = true;
         HandleCurrentTurn();
+        UpdateCoinDisplay();
     }
 
     IEnumerator ComputerTurn()
