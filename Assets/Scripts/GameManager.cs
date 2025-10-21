@@ -417,10 +417,33 @@ public class GameManager : MonoBehaviour
 
         if (tracker.currentHomeTileIndex == player.homeTiles.Count - 1) 
         {
-            WinGame(player);
+            // Cek apakah semua pawn sudah di base terakhir
+            if (AllPawnsInBase(player))
+            {
+                WinGame(player);
+            }
+            else
+            {
+                Debug.Log($"{player.playerName} berhasil membawa 1 pawn ke base, masih ada pawn lain di luar.");
+            }
         }
     }
 
+    private bool AllPawnsInBase(Player player)
+    {
+        foreach (Transform pawn in player.pawns)
+        {
+            PawnTracker tracker = pawn.GetComponent<PawnTracker>();
+            if (tracker == null) continue;
+
+            // Jika belum mencapai tile terakhir di home path, berarti belum finish
+            if (tracker.currentHomeTileIndex != player.homeTiles.Count - 1)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public void NextTurn()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
