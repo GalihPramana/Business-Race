@@ -252,11 +252,24 @@ public class GameManager : MonoBehaviour
         if (spinWheelUI != null)
             spinWheelUI.SetActive(false);
 
+        Player currentPlayer = players[currentPlayerIndex];
+
         if (difficulty == "Lucky")
         {
             int steps = GetStepsFromDifficulty(difficulty);
-            Debug.Log($"Lucky spin! Player {currentPlayerIndex + 1} moves {steps} steps automatically!");
-            StartCoroutine(MovePlayer(players[currentPlayerIndex], steps));
+            Debug.Log($"Lucky spin! Player {currentPlayer.playerName} moves {steps} steps automatically!");
+
+            // Tambahkan validasi exact roll juga di Lucky spin
+            if (IsExactRollValid(currentPlayer, steps))
+            {
+                StartCoroutine(MovePlayer(currentPlayer, steps));
+            }
+            else
+            {
+                Debug.LogWarning($"{currentPlayer.playerName} tidak bisa bergerak karena hasil Lucky tidak tepat untuk mencapai base!");
+                NextTurn();
+            }
+
             return;
         }
 
@@ -264,8 +277,6 @@ public class GameManager : MonoBehaviour
         {
             spinWheel.quizPopup.OnQuizFinished = (correct) =>
             {
-                Player currentPlayer = players[currentPlayerIndex];
-
                 if (correct)
                 {
                     int steps = GetStepsFromDifficulty(difficulty);
@@ -281,7 +292,16 @@ public class GameManager : MonoBehaviour
                     currentPlayer.coin += coinReward;
                     Debug.Log($"{currentPlayer.playerName} benar! Dapat {coinReward} coin. Total: {currentPlayer.coin}");
                     Debug.Log($"{currentPlayer.playerName} mendapat {steps} langkah!");
-                    StartCoroutine(MovePlayer(currentPlayer, steps));
+
+                    if (IsExactRollValid(currentPlayer, steps))
+                    {
+                        StartCoroutine(MovePlayer(currentPlayer, steps));
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{currentPlayer.playerName} tidak bisa bergerak karena hasil spin tidak tepat untuk mencapai base!");
+                        NextTurn();
+                    }
                 }
                 else
                 {
@@ -291,6 +311,7 @@ public class GameManager : MonoBehaviour
             };
         }
     }
+
 
     private int GetStepsFromDifficulty(string difficulty)
     {
@@ -347,84 +368,102 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker)
     {
-        int originalIndex = tracker.currentTileIndex; 
+        int originalIndex = tracker.currentTileIndex;
         int tilesMoved = 0;
         int currentTileIndex = originalIndex;
 
+        // Kalau pawn masih di luar papan (belum keluar base)
         if (originalIndex == -1)
         {
-            if (steps == 6)
-            {
-                tracker.currentTileIndex = player.baseTileIndex; 
-                yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
-            }
-            else
-            {
-                NextTurn();
-            }
-            yield break;
+            // Langsung keluarkan pawn ke tile awal milik player
+            tracker.currentTileIndex = player.baseTileIndex;
+            yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
+            currentTileIndex = tracker.currentTileIndex;
+
+            // Lanjutkan sisa langkah (steps - 1) karena sudah keluar 1 tile
+            steps -= 1;
         }
 
         while (tilesMoved < steps)
         {
             int nextTileIndex = (currentTileIndex + 1) % tiles.Count;
 
+            // --- Masuk ke jalur home (base) ---
             if (nextTileIndex == player.baseTileIndex)
             {
-                int remainingSteps = steps - tilesMoved;
-                tracker.currentHomeTileIndex = -1; 
-                yield return MoveOnHomePath(player, mover, remainingSteps, tracker); 
+                int remainingSteps = steps - tilesMoved - 1; // -1 karena sudah sampai base tile
+
+                // Kalau tidak punya home path, lanjut jalan biasa
+                if (player.homeTiles == null || player.homeTiles.Count == 0)
+                    break;
+
+                // Fix off-by-one: remainingSteps > player.homeTiles.Count is invalid.
+                if (remainingSteps > player.homeTiles.Count)
+                {
+                    int stepsNeeded = player.homeTiles.Count; // how many steps inside home are required from entry
+                    Debug.LogWarning($"Aturan Exact Roll: {player.playerName} butuh tepat {stepsNeeded} langkah untuk menang, tetapi mendapat {steps}. Tidak bisa bergerak.");
+                    // Do NOT call NextTurn() here — MovePlayer will call NextTurn() once after the coroutine returns.
+                    yield break;
+                }
+
+                // Kalau valid mulai jalur home
+                tracker.currentHomeTileIndex = -1;
+                yield return MoveOnHomePath(player, mover, remainingSteps, tracker);
                 yield break;
             }
 
-            if (IsBaseTile(nextTileIndex))
+            // Cek apakah tile berikut adalah base milik lawan
+            Player ownerOfBase = GetPlayerByBaseTileIndex(nextTileIndex);
+            if (ownerOfBase != null && ownerOfBase != player)
             {
-                Player tileOwner = GetPlayerByBaseTileIndex(nextTileIndex);
-                if (tileOwner != null && tileOwner != player)
-                {
-                    tracker.currentTileIndex = nextTileIndex; 
-                    yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
-                    currentTileIndex = tracker.currentTileIndex;
-                    continue;
-                }
+                Debug.LogWarning($"{player.playerName} tidak bisa berhenti di base milik {ownerOfBase.playerName}. Melewati tile tersebut.");
+                nextTileIndex = (nextTileIndex + 1) % tiles.Count; // skip tile lawan
             }
 
-            tracker.currentTileIndex = nextTileIndex; 
+            // Pindahkan ke tile berikut yang valid
+            tracker.currentTileIndex = nextTileIndex;
             yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
             tilesMoved++;
             currentTileIndex = tracker.currentTileIndex;
         }
     }
 
-
-    private IEnumerator MoveOnHomePath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker) 
+    private IEnumerator MoveOnHomePath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker)
     {
-        int originalHomeIndex = tracker.currentHomeTileIndex; 
+        int originalHomeIndex = tracker.currentHomeTileIndex;
         int targetHomeIndex = originalHomeIndex + steps;
 
-        if (targetHomeIndex >= player.homeTiles.Count)
+        // --- LOGIKA TEPAT SASARAN (EXACT ROLL) ---
+        int finalIndex = player.homeTiles.Count - 1;
+
+        if (targetHomeIndex > finalIndex)
         {
-            
+            int stepsNeeded = finalIndex - originalHomeIndex;
+            // If originalHomeIndex is -1, stepsNeeded will be player.homeTiles.Count (correct)
+            Debug.LogWarning($"Aturan Exact Roll: {player.playerName} butuh tepat {stepsNeeded} langkah untuk menang, tetapi mendapat {steps}. Tidak bisa bergerak.");
+
+            // Do NOT call NextTurn() here — MovePlayer will call NextTurn() once after the coroutine returns.
             yield break;
         }
 
+        // Jika langkah cukup atau tepat sasaran
         for (int i = 0; i < steps; i++)
         {
             int nextHomeTileIndex = originalHomeIndex + i + 1;
-            tracker.currentHomeTileIndex = nextHomeTileIndex; 
+            tracker.currentHomeTileIndex = nextHomeTileIndex;
             yield return mover.MoveToTile(player.homeTiles[tracker.currentHomeTileIndex]);
         }
 
-        if (tracker.currentHomeTileIndex == player.homeTiles.Count - 1) 
+        // Cek Kemenangan
+        if (tracker.currentHomeTileIndex == finalIndex)
         {
-            // Cek apakah semua pawn sudah di base terakhir
             if (AllPawnsInBase(player))
             {
                 WinGame(player);
             }
             else
             {
-                Debug.Log($"{player.playerName} berhasil membawa 1 pawn ke base, masih ada pawn lain di luar.");
+                Debug.Log($"{player.playerName} berhasil membawa 1 pawn ke base. Masih ada pawn lain di luar.");
             }
         }
     }
@@ -552,4 +591,33 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+
+    private bool IsExactRollValid(Player player, int steps)
+    {
+        Transform activePawn = player.ActivePawn;
+        if (activePawn == null) return false;
+
+        PawnTracker tracker = activePawn.GetComponent<PawnTracker>();
+        if (tracker == null) return false;
+
+        // Pawn masih di jalur home
+        if (tracker.currentHomeTileIndex != -1)
+        {
+            int stepsNeeded = (player.homeTiles.Count - 1) - tracker.currentHomeTileIndex;
+            return steps == stepsNeeded;
+        }
+
+        // Pawn masih di main path: boleh jalan biasa
+        return true;
+    }
+
+    // Helper to get the currently active pawn reliably
+    private Transform GetActivePawn(Player player)
+    {
+        if (player == null) return null;
+        if (player.activePawnIndex >= 0 && player.activePawnIndex < player.pawns.Count)
+            return player.pawns[player.activePawnIndex];
+        return null;
+    }
+
 }
