@@ -375,6 +375,7 @@ public class GameManager : MonoBehaviour
         if (player.homeTiles != null && player.homeTiles.Count > 0)
         {
             int stepsToBaseEntry = StepsToReachBaseEntry(player, tracker);
+            int stepToBaseEntry = stepsToBaseEntry - 1;
             if (steps >= stepsToBaseEntry)
             {
                 int remainingInsideHome = steps - stepsToBaseEntry;
@@ -617,43 +618,61 @@ public class GameManager : MonoBehaviour
 
     private bool IsExactRollValid(Player player, int steps)
     {
+        if (player == null || steps <= 0) return false;
+
         Transform activePawn = player.ActivePawn;
         if (activePawn == null) return false;
 
         PawnTracker tracker = activePawn.GetComponent<PawnTracker>();
         if (tracker == null) return false;
 
-        // Pawn masih di jalur home
+        // If player has no home tiles, no exact rule needed.
+        if (player.homeTiles == null || player.homeTiles.Count == 0)
+            return true;
+
+        // Case 1: Pawn already on home path -> must be exact to finish.
         if (tracker.currentHomeTileIndex != -1)
         {
             int stepsNeeded = (player.homeTiles.Count - 1) - tracker.currentHomeTileIndex;
             return steps == stepsNeeded;
         }
 
-        // Pawn masih di main path: validasi dilakukan di MoveOnMainPath pre-check.
-        return true;
+        // Case 2: Pawn on main path.
+        // If this move would enter home path, ensure it doesn't overshoot the final home tile.
+        int stepsToBaseEntry = StepsToReachBaseEntry(player, tracker);
+
+        // If we won't reach the base entry crossing this turn, move is legal.
+        if (steps < stepsToBaseEntry)
+            return true;
+
+        // Otherwise, check remaining steps inside home path.
+        int remainingInsideHome = steps - stepsToBaseEntry;
+
+        // Legal if remaining steps inside home do not exceed the number of home tiles to traverse (from -1 to finalIndex = Count - 1 => Count steps max).
+        return remainingInsideHome <= player.homeTiles.Count;
     }
 
-    // Helper to get the currently active pawn reliably
-    private Transform GetActivePawn(Player player)
-    {
-        if (player == null) return null;
-        if (player.activePawnIndex >= 0 && player.activePawnIndex < player.pawns.Count)
-            return player.pawns[player.activePawnIndex];
-        return null;
-    }
-
-    // Helper: steps required to land on the player's base entry from current position on main path.
-    // - Returns 1 if currently in nest (-1): one step to pop out to base entry.
-    // - If already on the base entry tile, returns tiles.Count (next lap), so we don't treat it as entering home immediately.
+    // Helper: steps required to land on the player's base entry from current position on main path,
+    // counting the step that moves onto the base entry tile and starts home-path traversal in this turn.
+    //
+    // - If currently in nest (-1): one step to pop out to base entry + a full loop to re-encounter base entry
+    //   for entering home path => tiles.Count + 1.
+    // - If already on the base entry tile, it takes a full loop to re-encounter it => tiles.Count.
+    // - Else: positive distance to land on the base entry tile (1..tiles.Count-1).
     private int StepsToReachBaseEntry(Player player, PawnTracker tracker)
     {
         if (tracker.currentHomeTileIndex != -1) return int.MaxValue; // already on home path, not relevant here
-        if (tracker.currentTileIndex == -1) return 1;
 
         int total = tiles.Count;
-        int dist = (player.baseTileIndex - tracker.currentTileIndex + total) % total; // steps to land on base entry
+
+        // From nest: pop out (1) + full loop to re-encounter base entry.
+        if (tracker.currentTileIndex == -1)
+            return total + 1;
+
+        // Distance to land on base entry tile.
+        int dist = (player.baseTileIndex - tracker.currentTileIndex + total) % total;
         if (dist == 0) dist = total; // same tile -> next occurrence after a full loop
+
         return dist;
     }
 }
