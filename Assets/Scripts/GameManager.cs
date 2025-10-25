@@ -369,13 +369,31 @@ public class GameManager : MonoBehaviour
     private IEnumerator MoveOnMainPath(Player player, PlayerTileMover mover, int steps, PawnTracker tracker)
     {
         int originalIndex = tracker.currentTileIndex;
+
+        // === Pre-check for exact-roll when this move would enter home path ===
+        // If this roll would reach the base entry tile and then overshoot inside home, cancel the entire move.
+        if (player.homeTiles != null && player.homeTiles.Count > 0)
+        {
+            int stepsToBaseEntry = StepsToReachBaseEntry(player, tracker);
+            if (steps >= stepsToBaseEntry)
+            {
+                int remainingInsideHome = steps - stepsToBaseEntry;
+                if (remainingInsideHome > player.homeTiles.Count)
+                {
+                    int neededExact = stepsToBaseEntry + player.homeTiles.Count;
+                    Debug.LogWarning($"Aturan Exact Roll: {player.playerName} butuh tepat {neededExact} langkah untuk finish, tetapi mendapat {steps}. Tidak bisa bergerak.");
+                    yield break; // Do not move at all this turn
+                }
+            }
+        }
+
         int tilesMoved = 0;
         int currentTileIndex = originalIndex;
 
         // Kalau pawn masih di luar papan (belum keluar base)
         if (originalIndex == -1)
         {
-            // Langsung keluarkan pawn ke tile awal milik player
+            // Langsung keluarkan pawn ke tile awal milik player (base entry di main path)
             tracker.currentTileIndex = player.baseTileIndex;
             yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
             currentTileIndex = tracker.currentTileIndex;
@@ -391,22 +409,27 @@ public class GameManager : MonoBehaviour
             // --- Masuk ke jalur home (base) ---
             if (nextTileIndex == player.baseTileIndex)
             {
-                int remainingSteps = steps - tilesMoved - 1; // -1 karena sudah sampai base tile
+                int remainingSteps = steps - tilesMoved - 1; // -1 untuk langkah ke base entry
 
                 // Kalau tidak punya home path, lanjut jalan biasa
                 if (player.homeTiles == null || player.homeTiles.Count == 0)
                     break;
 
-                // Fix off-by-one: remainingSteps > player.homeTiles.Count is invalid.
+                // Validasi exact roll masih diperlukan di sini (double-safety)
                 if (remainingSteps > player.homeTiles.Count)
                 {
-                    int stepsNeeded = player.homeTiles.Count; // how many steps inside home are required from entry
-                    Debug.LogWarning($"Aturan Exact Roll: {player.playerName} butuh tepat {stepsNeeded} langkah untuk menang, tetapi mendapat {steps}. Tidak bisa bergerak.");
-                    // Do NOT call NextTurn() here — MovePlayer will call NextTurn() once after the coroutine returns.
+                    int stepsNeeded = player.homeTiles.Count;
+                    Debug.LogWarning($"Aturan Exact Roll: {player.playerName} butuh tepat {stepsNeeded} langkah di jalur home, tetapi mendapat {remainingSteps}. Tidak bisa bergerak.");
                     yield break;
                 }
 
-                // Kalau valid mulai jalur home
+                // 1) Pindah ke base entry (konsumsi 1 langkah)
+                tracker.currentTileIndex = nextTileIndex;
+                yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
+                tilesMoved++;
+                currentTileIndex = tracker.currentTileIndex;
+
+                // 2) Mulai jalur home menggunakan sisa langkah
                 tracker.currentHomeTileIndex = -1;
                 yield return MoveOnHomePath(player, mover, remainingSteps, tracker);
                 yield break;
@@ -607,7 +630,7 @@ public class GameManager : MonoBehaviour
             return steps == stepsNeeded;
         }
 
-        // Pawn masih di main path: boleh jalan biasa
+        // Pawn masih di main path: validasi dilakukan di MoveOnMainPath pre-check.
         return true;
     }
 
@@ -620,4 +643,17 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    // Helper: steps required to land on the player's base entry from current position on main path.
+    // - Returns 1 if currently in nest (-1): one step to pop out to base entry.
+    // - If already on the base entry tile, returns tiles.Count (next lap), so we don't treat it as entering home immediately.
+    private int StepsToReachBaseEntry(Player player, PawnTracker tracker)
+    {
+        if (tracker.currentHomeTileIndex != -1) return int.MaxValue; // already on home path, not relevant here
+        if (tracker.currentTileIndex == -1) return 1;
+
+        int total = tiles.Count;
+        int dist = (player.baseTileIndex - tracker.currentTileIndex + total) % total; // steps to land on base entry
+        if (dist == 0) dist = total; // same tile -> next occurrence after a full loop
+        return dist;
+    }
 }
