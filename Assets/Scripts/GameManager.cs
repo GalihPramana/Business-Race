@@ -132,7 +132,6 @@ public class GameManager : MonoBehaviour
         waitingForPawnSelection = false;
 
         Debug.Log(player.playerName + " selected pawn " + (pawnIndex + 1));
-        HighlightPawn(player.ActivePawn, true);
 
         // Disable pawn colliders
         foreach (var pawn in currentPlayer.pawns)
@@ -144,17 +143,6 @@ public class GameManager : MonoBehaviour
         // Show and set up the choice UI
         SetupTurnChoiceUI();
     }
-
-
-    private void HighlightPawn(Transform pawn, bool active)
-    {
-        Renderer rend = pawn.GetComponent<Renderer>();
-        if (rend != null)
-        {
-            rend.material.color = active ? Color.yellow : Color.white;
-        }
-    }
-
 
     // === PHASE 1: Player chooses between Shop or Spin Wheel ===
     void HandleCurrentTurn()
@@ -181,7 +169,6 @@ public class GameManager : MonoBehaviour
         {
             Collider2D col = pawn.GetComponent<Collider2D>();
             if (col != null) col.enabled = true;
-            HighlightPawn(pawn, false);
         }
     }
 
@@ -540,9 +527,6 @@ public class GameManager : MonoBehaviour
 
             Transform chosenPawn = aiPlayer.ActivePawn;
             Debug.Log("Computer selected pawn " + (randomPawnIndex + 1) + " (" + chosenPawn.name + ")");
-
-            // Optional: highlight the chosen pawn
-            HighlightPawn(chosenPawn, true);
         }
         else
         {
@@ -567,7 +551,7 @@ public class GameManager : MonoBehaviour
             case "Easy": coinReward = 25; break;
             case "Normal": coinReward = 50; break;
             case "Hard": coinReward = 75; break;
-            case "Lucky": coinReward = 100; break;
+            case "Lucky": coinReward = 0; break;
         }
 
         // 4. Apply results and move or fail
