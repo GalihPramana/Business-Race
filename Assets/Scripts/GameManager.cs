@@ -633,7 +633,7 @@ public class GameManager : MonoBehaviour
         int remainingInsideHome = steps - stepsToBaseEntry;
 
         // Legal if remaining steps inside home do not exceed the number of home tiles to traverse (from -1 to finalIndex = Count - 1 => Count steps max).
-        return remainingInsideHome <= player.homeTiles.Count;
+        return remainingInsideHome < player.homeTiles.Count;
     }
 
     // Helper: steps required to land on the player's base entry from current position on main path,
