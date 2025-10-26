@@ -397,7 +397,7 @@ public class GameManager : MonoBehaviour
             // --- Masuk ke jalur home (base) ---
             if (nextTileIndex == player.baseTileIndex)
             {
-                int remainingSteps = steps - tilesMoved - 1; // -1 untuk langkah ke base entry
+                int remainingSteps = steps - tilesMoved;
 
                 // Kalau tidak punya home path, lanjut jalan biasa
                 if (player.homeTiles == null || player.homeTiles.Count == 0)
@@ -461,7 +461,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < steps; i++)
         {
             int nextHomeTileIndex = originalHomeIndex + i + 1;
-            tracker.currentHomeTileIndex = nextHomeTileIndex;
+            tracker.currentHomeTileIndex = Mathf.Min(nextHomeTileIndex, player.homeTiles.Count - 1);
             yield return mover.MoveToTile(player.homeTiles[tracker.currentHomeTileIndex]);
         }
 
