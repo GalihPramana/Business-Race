@@ -11,6 +11,8 @@ public class Player
 
     public bool isComputer = false;
     public bool isFrozen = false;
+    public bool isFinished = false;
+    public bool isBom = false;
     public int baseTileIndex;
 
     public List<Transform> homeTiles;

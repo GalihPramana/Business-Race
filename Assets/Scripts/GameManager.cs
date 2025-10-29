@@ -235,6 +235,8 @@ public class GameManager : MonoBehaviour
                 tracker.currentTileIndex = -1;
                 tracker.currentHomeTileIndex = -1;
                 targetPawn.position = targetPlayer.homeTiles[0].position;
+                targetPlayer.isBom = true;
+                targetPlayer.isFinished = false;
                 break;
 
             case "Iceball":
@@ -262,18 +264,38 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveBackward(Player targetPlayer, Transform pawn, PawnTracker tracker, PlayerTileMover mover, int steps)
     {
+        // --- Cek apakah pawn masih di base ---
+        if (tracker.currentTileIndex == targetPlayer.baseTileIndex)
+        {
+            Debug.LogWarning($"{targetPlayer.playerName} masih di base. Efek TimeReverse tidak berlaku.");
+            yield break;
+        }
+
         Debug.Log($"{targetPlayer.playerName} mundur {steps} langkah!");
+
         for (int i = 0; i < steps; i++)
         {
+            // Hitung tile sebelumnya
             tracker.currentTileIndex--;
             if (tracker.currentTileIndex < 0)
                 tracker.currentTileIndex = tiles.Count - 1;
 
+            // --- Cek apakah tile berikut adalah base milik lawan ---
+            Player ownerOfBase = GetPlayerByBaseTileIndex(tracker.currentTileIndex);
+            if (ownerOfBase != null && ownerOfBase != targetPlayer)
+            {
+                Debug.LogWarning($"{targetPlayer.playerName} tidak bisa berhenti di base milik {ownerOfBase.playerName}. Melewati tile tersebut.");
+
+                // Loncat mundur satu tile lagi untuk lewati base lawan
+                tracker.currentTileIndex--;
+                if (tracker.currentTileIndex < 0)
+                    tracker.currentTileIndex = tiles.Count - 1;
+            }
+
+            // --- Pindahkan pawn ke tile valid ---
             yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
         }
     }
-
-
 
 
     // === PHASE 1: Player chooses between Shop or Spin Wheel ===
@@ -285,6 +307,11 @@ public class GameManager : MonoBehaviour
         if (shopPanel != null) shopPanel.SetActive(false);
         if (spinWheelUI != null) spinWheelUI.SetActive(false);
 
+        if (currentPlayer.isBom)
+        {
+            Debug.Log($"{currentPlayer.playerName} baru saja terkena BOM, status reset!");
+            currentPlayer.isBom = false; // reset efek bom
+        }
 
         if (currentPlayer.isFrozen)
         {
@@ -606,8 +633,9 @@ public class GameManager : MonoBehaviour
         }
 
         // Cek Kemenangan
-        if (tracker.currentHomeTileIndex == finalIndex)
+        if (tracker.currentHomeTileIndex == finalIndex && player.isBom == false)
         {
+            player.isFinished = true;
             if (AllPawnsInBase(player))
             {
                 WinGame(player);
