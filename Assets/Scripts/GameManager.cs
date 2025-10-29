@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
     private bool canRoll = true;
     private bool gameOver = false;
 
+    private string pendingItem = null;
+    private bool waitingForTargetPawnSelection = false;
+
     public static GameManager Instance;
     private bool waitingForPawnSelection = false;
 
@@ -120,39 +123,176 @@ public class GameManager : MonoBehaviour
         UpdateCoinDisplay();
 
         Debug.Log($"{currentPlayer.playerName} membeli item {itemName} seharga {itemCost}. Sisa coin: {currentPlayer.coin}");
+
+        pendingItem = itemName;
+
+        // Tutup shop dan masuk mode pilih target
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
+
+        StartCoroutine(WaitForTargetSelection());
     }
+
+    private IEnumerator WaitForTargetSelection()
+    {
+        waitingForTargetPawnSelection = true;
+        Debug.Log($"Pilih pawn lawan untuk menggunakan item {pendingItem}");
+
+        // Aktifkan collider semua pawn milik LAWAN
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (i == currentPlayerIndex) continue; // lewati diri sendiri
+
+            foreach (Transform pawn in players[i].pawns)
+            {
+                Collider2D col = pawn.GetComponent<Collider2D>();
+                if (col != null) col.enabled = true;
+            }
+        }
+
+        // Tunggu sampai pemain klik pawn target
+        yield return new WaitUntil(() => waitingForTargetPawnSelection == false);
+
+        pendingItem = null; // reset
+    }
+
 
     public void OnPawnClicked(Player player, int pawnIndex)
     {
-        if (!waitingForPawnSelection) return;
         Player currentPlayer = players[currentPlayerIndex];
-        if (player != currentPlayer) return;
 
+        // ==========================================================
+        // MODE ITEM — memilih target pawn untuk efek item
+        // ==========================================================
+        if (waitingForTargetPawnSelection && pendingItem != null)
+        {
+            // Cegah penggunaan item ke diri sendiri
+            if (player == currentPlayer)
+            {
+                Debug.LogWarning("Tidak bisa menggunakan item ke diri sendiri!");
+                return;
+            }
+
+            Transform targetPawn = player.pawns[pawnIndex];
+            Debug.Log($"{currentPlayer.playerName} menggunakan {pendingItem} pada {player.playerName}'s pawn {pawnIndex + 1}");
+
+            ApplyItemEffect(pendingItem, currentPlayer, player, targetPawn);
+
+            // Matikan semua collider setelah target dipilih
+            foreach (var p in players)
+            {
+                foreach (var pawn in p.pawns)
+                {
+                    Collider2D col = pawn.GetComponent<Collider2D>();
+                    if (col != null) col.enabled = false;
+                }
+            }
+
+            // Reset state item
+            waitingForTargetPawnSelection = false;
+            pendingItem = null;
+
+            // Lanjutkan ke giliran berikutnya
+            NextTurn();
+            return;
+        }
+
+        // ==========================================================
+        // MODE PEMILIHAN PAWN (awal giliran)
+        // ==========================================================
+        if (!waitingForPawnSelection)
+            return; // Tidak dalam mode pemilihan pawn
+
+        if (player != currentPlayer)
+            return; // Pastikan hanya pawn pemain aktif yang bisa diklik
+
+        // Simpan pawn aktif yang dipilih
         currentPlayer.activePawnIndex = pawnIndex;
         waitingForPawnSelection = false;
 
-        Debug.Log(player.playerName + " selected pawn " + (pawnIndex + 1));
+        Debug.Log(currentPlayer.playerName + " memilih pawn " + (pawnIndex + 1));
 
-        // Disable pawn colliders
+        // Nonaktifkan semua collider pawn pemain ini
         foreach (var pawn in currentPlayer.pawns)
         {
             Collider2D col = pawn.GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
         }
 
-        // Show and set up the choice UI
+        // Tampilkan UI untuk langkah berikutnya (lempar dadu / spin roda)
         SetupTurnChoiceUI();
     }
+
+    private void ApplyItemEffect(string itemName, Player user, Player targetPlayer, Transform targetPawn)
+    {
+        PawnTracker tracker = targetPawn.GetComponent<PawnTracker>();
+        PlayerTileMover mover = targetPawn.GetComponent<PlayerTileMover>();
+
+        switch (itemName)
+        {
+            case "Bom":
+                Debug.Log($"BOM {targetPlayer.playerName}'s pawn kembali ke base!");
+                tracker.currentTileIndex = -1;
+                tracker.currentHomeTileIndex = -1;
+                targetPawn.position = targetPlayer.homeTiles[0].position;
+                break;
+
+            case "Iceball":
+                Debug.Log($"Freeze {targetPlayer.playerName} di-freeze untuk 1 turn!");
+                targetPlayer.isFrozen = true;
+                break;
+
+            case "TimeReverse-3":
+                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 3));
+                break;
+
+            case "TimeReverse-5":
+                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 5));
+                break;
+
+            case "TimeReverse-7":
+                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 7));
+                break;
+
+            default:
+                Debug.LogWarning("Efek item belum didefinisikan: " + itemName);
+                break;
+        }
+    }
+
+    private IEnumerator MoveBackward(Player targetPlayer, Transform pawn, PawnTracker tracker, PlayerTileMover mover, int steps)
+    {
+        Debug.Log($"{targetPlayer.playerName} mundur {steps} langkah!");
+        for (int i = 0; i < steps; i++)
+        {
+            tracker.currentTileIndex--;
+            if (tracker.currentTileIndex < 0)
+                tracker.currentTileIndex = tiles.Count - 1;
+
+            yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
+        }
+    }
+
+
+
 
     // === PHASE 1: Player chooses between Shop or Spin Wheel ===
     void HandleCurrentTurn()
     {
         Player currentPlayer = players[currentPlayerIndex];
-
         // Reset UI
         if (choicePanel != null) choicePanel.SetActive(false);
         if (shopPanel != null) shopPanel.SetActive(false);
         if (spinWheelUI != null) spinWheelUI.SetActive(false);
+
+
+        if (currentPlayer.isFrozen)
+        {
+            Debug.Log($"{currentPlayer.playerName} sedang beku (Iceball)! Melewati giliran ini.");
+            currentPlayer.isFrozen = false;
+            NextTurn();
+            return;
+        }
 
         if (currentPlayer.isComputer)
         {
@@ -568,9 +708,6 @@ public class GameManager : MonoBehaviour
             NextTurn();
         }
     }
-
-
-
 
     private void WinGame(Player winningPlayer)
     {

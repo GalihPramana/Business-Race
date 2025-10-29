@@ -10,6 +10,7 @@ public class Player
     public int activePawnIndex = -1; // 0 or 1 when selected
 
     public bool isComputer = false;
+    public bool isFrozen = false;
     public int baseTileIndex;
 
     public List<Transform> homeTiles;
