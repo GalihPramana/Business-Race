@@ -9,4 +9,7 @@ public class PawnTracker : MonoBehaviour
 
     // Indeks petak di home path. -1 berarti masih di main path.
     public int currentHomeTileIndex = -1;
+
+    public bool isHome = false;
+    public bool notyetStarted = true;
 }

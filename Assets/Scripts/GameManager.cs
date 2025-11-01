@@ -174,27 +174,49 @@ public class GameManager : MonoBehaviour
             }
 
             Transform targetPawn = player.pawns[pawnIndex];
-            Debug.Log($"{currentPlayer.playerName} menggunakan {pendingItem} pada {player.playerName}'s pawn {pawnIndex + 1}");
-
-            ApplyItemEffect(pendingItem, currentPlayer, player, targetPawn);
-
-            // Matikan semua collider setelah target dipilih
-            foreach (var p in players)
+            PawnTracker trackerTarget = targetPawn.GetComponent<PawnTracker>();
+            if (trackerTarget == null)
             {
-                foreach (var pawn in p.pawns)
-                {
-                    Collider2D col = pawn.GetComponent<Collider2D>();
-                    if (col != null) col.enabled = false;
-                }
+                Debug.LogWarning("Pawn target tidak memiliki PawnTracker!");
+                return;
             }
 
-            // Reset state item
-            waitingForTargetPawnSelection = false;
-            pendingItem = null;
+            // NEW RULE: Larang BOM pada pawn yang belum bergerak dari base
+            if (pendingItem == "Bom" && trackerTarget.notyetStarted)
+            {
+                Debug.LogWarning("Tidak bisa menggunakan BOM karena pawn target belum bergerak dari base!");
+                return;
+            }
 
-            // Lanjutkan ke giliran berikutnya
-            NextTurn();
-            return;
+            if (trackerTarget.isHome == false)
+            {
+                Debug.Log($"{currentPlayer.playerName} menggunakan {pendingItem} pada {player.playerName}'s pawn {pawnIndex + 1}");
+
+                ApplyItemEffect(pendingItem, currentPlayer, player, targetPawn);
+
+                // Matikan semua collider setelah target dipilih
+                foreach (var p in players)
+                {
+                    foreach (var pawn in p.pawns)
+                    {
+                        Collider2D col = pawn.GetComponent<Collider2D>();
+                        if (col != null) col.enabled = false;
+                    }
+                }
+
+                // Reset state item
+                waitingForTargetPawnSelection = false;
+                pendingItem = null;
+
+                // Lanjutkan ke giliran berikutnya
+                NextTurn();
+                return;
+            }
+            else if (trackerTarget.isHome == true)
+            {
+                Debug.LogWarning("Tidak bisa menggunakan item pada pawn yang sudah di base!");
+                return;
+            }
         }
 
         // ==========================================================
@@ -206,21 +228,30 @@ public class GameManager : MonoBehaviour
         if (player != currentPlayer)
             return; // Pastikan hanya pawn pemain aktif yang bisa diklik
 
-        // Simpan pawn aktif yang dipilih
-        currentPlayer.activePawnIndex = pawnIndex;
-        waitingForPawnSelection = false;
-
-        Debug.Log(currentPlayer.playerName + " memilih pawn " + (pawnIndex + 1));
-
-        // Nonaktifkan semua collider pawn pemain ini
-        foreach (var pawn in currentPlayer.pawns)
+        PawnTracker trackerOwn = player.pawns[pawnIndex].GetComponent<PawnTracker>();
+        if (trackerOwn.isHome == true)
         {
-            Collider2D col = pawn.GetComponent<Collider2D>();
-            if (col != null) col.enabled = false;
+            Debug.LogWarning("Tidak bisa memilih pawn yang sudah di Home!");
+            return;
         }
+        else if (trackerOwn.isHome == false)
+        {
+            // Simpan pawn aktif yang dipilih
+            currentPlayer.activePawnIndex = pawnIndex;
+            waitingForPawnSelection = false;
 
-        // Tampilkan UI untuk langkah berikutnya (lempar dadu / spin roda)
-        SetupTurnChoiceUI();
+            Debug.Log(currentPlayer.playerName + " memilih pawn " + (pawnIndex + 1));
+
+            // Nonaktifkan semua collider pawn pemain ini
+            foreach (var pawn in currentPlayer.pawns)
+            {
+                Collider2D col = pawn.GetComponent<Collider2D>();
+                if (col != null) col.enabled = false;
+            }
+
+            // Tampilkan UI untuk langkah berikutnya (lempar dadu / spin roda)
+            SetupTurnChoiceUI();
+        }
     }
 
     private void ApplyItemEffect(string itemName, Player user, Player targetPlayer, Transform targetPawn)
@@ -237,6 +268,7 @@ public class GameManager : MonoBehaviour
                 targetPawn.position = targetPlayer.homeTiles[0].position;
                 targetPlayer.isBom = true;
                 targetPlayer.isFinished = false;
+                tracker.notyetStarted = true;
                 break;
 
             case "Iceball":
@@ -506,17 +538,23 @@ public class GameManager : MonoBehaviour
         {
             yield break;
         }
-
-        if (tracker.currentHomeTileIndex != -1)
+        if (tracker.isHome == false)
         {
-            yield return MoveOnHomePath(player, mover, steps, tracker);
+            if (tracker.currentHomeTileIndex != -1)
+            {
+                yield return MoveOnHomePath(player, mover, steps, tracker);
+            }
+            else
+            {
+                yield return MoveOnMainPath(player, mover, steps, tracker);
+            }
+            tracker.notyetStarted = false;
         }
-        else
+        else 
         {
-            yield return MoveOnMainPath(player, mover, steps, tracker);
+                Debug.LogWarning($"{player.playerName} sudah di base, tidak bisa bergerak.");
         }
-
-        NextTurn();
+            NextTurn();
     }
 
 
@@ -635,6 +673,7 @@ public class GameManager : MonoBehaviour
         // Cek Kemenangan
         if (tracker.currentHomeTileIndex == finalIndex && player.isBom == false)
         {
+            tracker.isHome = true;
             player.isFinished = true;
             if (AllPawnsInBase(player))
             {
