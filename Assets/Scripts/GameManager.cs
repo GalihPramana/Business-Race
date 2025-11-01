@@ -20,9 +20,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Turn Choice UI")]
     public GameObject choicePanel;   // panel berisi 2 tombol: SpinWheel & Shop
+    public GameObject achievementPanel; //panel achievement
     public Button spinWheelButton;   // tombol untuk Spin Wheel
     public Button shopButton;        // tombol untuk buka Shop
     public GameObject shopPanel;     // panel Shop milikmu (GameObject "Shop")
+    public Button ButtonAchievement;  //tombol untuk achievement
 
     public TMP_Text coinDisplayInShop;    
 
@@ -359,6 +361,16 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //achievement button
+        ButtonAchievement.onClick.AddListener(() =>
+        {
+            Debug.Log("Player chose achievement");
+            achievementPanel.SetActive(true);
+            
+        });
+
+
+
         Debug.Log(currentPlayer.playerName + "'s turn! Click a pawn to select.");
 
         waitingForPawnSelection = true;
@@ -369,6 +381,14 @@ public class GameManager : MonoBehaviour
             Collider2D col = pawn.GetComponent<Collider2D>();
             if (col != null) col.enabled = true;
         }
+    }
+
+    public void CloseAchievement()
+    {
+        if (achievementPanel != null)
+            achievementPanel.SetActive(false);
+
+        Debug.Log("Achievement ditutup, lanjut ke pilih pawn");
     }
 
     private void SetupTurnChoiceUI()
