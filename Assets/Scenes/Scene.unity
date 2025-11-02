@@ -6669,6 +6669,7 @@ MonoBehaviour:
   shopPanel: {fileID: 1606260131}
   ButtonAchievement: {fileID: 1341839921}
   coinDisplayInShop: {fileID: 500241871}
+  coinDisplayInAchievement: {fileID: 201582445}
 --- !u!1 &1579924126
 GameObject:
   m_ObjectHideFlags: 0

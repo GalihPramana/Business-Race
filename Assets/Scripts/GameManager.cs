@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     public GameObject shopPanel;     // panel Shop milikmu (GameObject "Shop")
     public Button ButtonAchievement;  //tombol untuk achievement
 
-    public TMP_Text coinDisplayInShop;    
+    public TMP_Text coinDisplayInShop;
+    public TMP_Text coinDisplayInAchievement;
 
     private bool canRoll = true;
     private bool gameOver = false;
@@ -99,6 +100,10 @@ public class GameManager : MonoBehaviour
         if (coinDisplayInShop != null)
         {
             coinDisplayInShop.text = coinText;
+        }
+        if (coinDisplayInAchievement != null)
+        {
+            coinDisplayInAchievement.text = coinText;
         }
     }
 
@@ -366,6 +371,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Player chose achievement");
             achievementPanel.SetActive(true);
+            UpdateCoinDisplay();
             
         });
 
