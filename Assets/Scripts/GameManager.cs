@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text coinDisplayInShop;
     public TMP_Text coinDisplayInAchievement;
 
+    [Header("Achievement UI Binder")]
+    public AchievementsUI achievementsUI;
+
     private bool canRoll = true;
     private bool gameOver = false;
 
@@ -105,6 +108,9 @@ public class GameManager : MonoBehaviour
         {
             coinDisplayInAchievement.text = coinText;
         }
+
+        // Achievement: 300 coins
+        CheckCoinAchievement(currentPlayer);
     }
 
     // === SISTEM ITEM SHOP ===
@@ -276,11 +282,17 @@ public class GameManager : MonoBehaviour
                 targetPlayer.isBom = true;
                 targetPlayer.isFinished = false;
                 tracker.notyetStarted = true;
+
+                // Achievement: user threw opponent back to base
+                IncrementThrowToBase(user);
                 break;
 
             case "Iceball":
                 Debug.Log($"Freeze {targetPlayer.playerName} di-freeze untuk 1 turn!");
                 targetPlayer.isFrozen = true;
+
+                // Achievement: user froze opponent
+                IncrementFreeze(user);
                 break;
 
             case "TimeReverse-3":
@@ -366,16 +378,15 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //achievement button
+        //achievement button (clear listeners to avoid stacking each turn)
+        ButtonAchievement.onClick.RemoveAllListeners();
         ButtonAchievement.onClick.AddListener(() =>
         {
             Debug.Log("Player chose achievement");
             achievementPanel.SetActive(true);
             UpdateCoinDisplay();
-            
+            if (achievementsUI != null) achievementsUI.Sync(currentPlayer);
         });
-
-
 
         Debug.Log(currentPlayer.playerName + "'s turn! Click a pawn to select.");
 
@@ -471,6 +482,8 @@ public class GameManager : MonoBehaviour
             int steps = GetStepsFromDifficulty(difficulty);
             Debug.Log($"Lucky spin! Player {currentPlayer.playerName} moves {steps} steps automatically!");
 
+            // Lucky spin does not affect the correct-answer streak.
+
             // Tambahkan validasi exact roll juga di Lucky spin
             if (IsExactRollValid(currentPlayer, steps))
             {
@@ -505,6 +518,10 @@ public class GameManager : MonoBehaviour
                     Debug.Log($"{currentPlayer.playerName} benar! Dapat {coinReward} coin. Total: {currentPlayer.coin}");
                     Debug.Log($"{currentPlayer.playerName} mendapat {steps} langkah!");
 
+                    // Achievements: coin and streak
+                    CheckCoinAchievement(currentPlayer);
+                    UpdateConsecutiveCorrect(currentPlayer, true);
+
                     if (IsExactRollValid(currentPlayer, steps))
                     {
                         StartCoroutine(MovePlayer(currentPlayer, steps));
@@ -518,6 +535,8 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.Log($"{currentPlayer.playerName} salah. Tidak bergerak & tidak dapat coin.");
+                    // Reset streak on wrong answer
+                    UpdateConsecutiveCorrect(currentPlayer, false);
                     NextTurn();
                 }
             };
@@ -792,11 +811,17 @@ public class GameManager : MonoBehaviour
         {
             aiPlayer.coin += coinReward;
             Debug.Log("Computer answered correctly (or got Lucky)! Moves " + steps + " steps, earns " + coinReward + " coins.");
+
+            // Achievements for AI also tracked
+            CheckCoinAchievement(aiPlayer);
+            if (chosenDifficulty != "Lucky") UpdateConsecutiveCorrect(aiPlayer, true);
+
             yield return MovePlayer(aiPlayer, steps);
         }
         else
         {
             Debug.Log("Computer failed the '" + chosenDifficulty + "' quiz! No movement.");
+            UpdateConsecutiveCorrect(aiPlayer, false);
             yield return new WaitForSeconds(1f);
             NextTurn();
         }
@@ -888,5 +913,66 @@ public class GameManager : MonoBehaviour
         if (dist == 0) dist = total; // same tile -> next occurrence after a full loop
 
         return dist;
+    }
+
+    // ----------------------------
+    // Achievements helpers
+    // ----------------------------
+    private void CheckCoinAchievement(Player p)
+    {
+        if (p == null) return;
+        if (!p.achievements.got300Coins && p.coin >= 300)
+        {
+            p.achievements.got300Coins = true;
+            if (achievementsUI != null) achievementsUI.Sync(p);
+            Debug.Log($"{p.playerName} unlocked achievement: 300 Coins");
+        }
+    }
+
+    private void UpdateConsecutiveCorrect(Player p, bool correct)
+    {
+        if (p == null) return;
+
+        if (correct)
+        {
+            p.achievements.consecutiveCorrect++;
+            if (!p.achievements.fiveConsecutiveCorrect && p.achievements.consecutiveCorrect >= 5)
+            {
+                p.achievements.fiveConsecutiveCorrect = true;
+                Debug.Log($"{p.playerName} unlocked achievement: 5 correct answers in a row");
+            }
+        }
+        else
+        {
+            p.achievements.consecutiveCorrect = 0;
+        }
+
+        if (achievementsUI != null) achievementsUI.Sync(p);
+    }
+
+    private void IncrementFreeze(Player p)
+    {
+        if (p == null) return;
+
+        p.achievements.frozeOpponentsCount++;
+        if (!p.achievements.frozeOpponents5Times && p.achievements.frozeOpponentsCount >= 5)
+        {
+            p.achievements.frozeOpponents5Times = true;
+            Debug.Log($"{p.playerName} unlocked achievement: Freeze opponents 5x");
+        }
+        if (achievementsUI != null) achievementsUI.Sync(p);
+    }
+
+    private void IncrementThrowToBase(Player p)
+    {
+        if (p == null) return;
+
+        p.achievements.threwToBaseCount++;
+        if (!p.achievements.threwOpponentsToBase3Times && p.achievements.threwToBaseCount >= 3)
+        {
+            p.achievements.threwOpponentsToBase3Times = true;
+            Debug.Log($"{p.playerName} unlocked achievement: Throw opponents to base 3x");
+        }
+        if (achievementsUI != null) achievementsUI.Sync(p);
     }
 }

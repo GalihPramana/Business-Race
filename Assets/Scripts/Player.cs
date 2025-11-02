@@ -18,7 +18,25 @@ public class Player
     public List<Transform> homeTiles;
     public int coin;
 
+    // Achievement progress tracking
+    public AchievementProgress achievements = new AchievementProgress();
+
     // Helper function to get the currently active pawn
     public Transform ActivePawn =>
         (activePawnIndex >= 0 && activePawnIndex < pawns.Count) ? pawns[activePawnIndex] : null;
+}
+
+[System.Serializable]
+public class AchievementProgress
+{
+    // Unlock flags
+    public bool got300Coins;
+    public bool fiveConsecutiveCorrect;
+    public bool frozeOpponents5Times;
+    public bool threwOpponentsToBase3Times;
+
+    // Counters
+    public int consecutiveCorrect;     // streak of correct answers
+    public int frozeOpponentsCount;    // how many times this player froze others (Iceball)
+    public int threwToBaseCount;       // how many times this player threw others back to base (Bom)
 }
