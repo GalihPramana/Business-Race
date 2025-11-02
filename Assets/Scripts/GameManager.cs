@@ -296,20 +296,31 @@ public class GameManager : MonoBehaviour
                 break;
 
             case "TimeReverse-3":
-                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 3));
+                StartCoroutine(TimeReverseAndCheckBase(user, targetPlayer, targetPawn, tracker, mover, 3));
                 break;
 
             case "TimeReverse-5":
-                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 5));
+                StartCoroutine(TimeReverseAndCheckBase(user, targetPlayer, targetPawn, tracker, mover, 5));
                 break;
 
             case "TimeReverse-7":
-                StartCoroutine(MoveBackward(targetPlayer, targetPawn, tracker, mover, 7));
+                StartCoroutine(TimeReverseAndCheckBase(user, targetPlayer, targetPawn, tracker, mover, 7));
                 break;
 
             default:
                 Debug.LogWarning("Efek item belum didefinisikan: " + itemName);
                 break;
+        }
+    }
+
+    // New helper: run Time Reverse, then if pawn ends up back at base, increment throw-to-base achievement for the user
+    private IEnumerator TimeReverseAndCheckBase(Player user, Player targetPlayer, Transform pawn, PawnTracker tracker, PlayerTileMover mover, int steps)
+    {
+        yield return MoveBackward(targetPlayer, pawn, tracker, mover, steps);
+
+        if (tracker.currentHomeTileIndex == -1)
+        {
+            IncrementThrowToBase(user);
         }
     }
 
