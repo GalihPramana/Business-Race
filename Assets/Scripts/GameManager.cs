@@ -753,6 +753,9 @@ public class GameManager : MonoBehaviour
         {
             tracker.isHome = true;
             player.isFinished = true;
+            //set tracker z index to be above other pawns
+            Vector3 pos = tracker.transform.position;
+            tracker.transform.position = new Vector3(pos.x, pos.y, pos.z + 1f);
             if (AllPawnsInBase(player))
             {
                 WinGame(player);
