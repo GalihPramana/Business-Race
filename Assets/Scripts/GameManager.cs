@@ -318,7 +318,8 @@ public class GameManager : MonoBehaviour
     {
         yield return MoveBackward(targetPlayer, pawn, tracker, mover, steps);
 
-        if (tracker.currentHomeTileIndex == -1)
+        // Count as thrown to base only if pawn is off the board (nest)
+        if (tracker.currentTileIndex == -1)
         {
             IncrementThrowToBase(user);
         }
@@ -326,10 +327,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveBackward(Player targetPlayer, Transform pawn, PawnTracker tracker, PlayerTileMover mover, int steps)
     {
-        // --- Cek apakah pawn masih di base ---
-        if (tracker.currentTileIndex == targetPlayer.baseTileIndex)
+        // --- Pawn still in base/nest (off-board) ---
+        if (tracker.currentTileIndex == -1)
         {
-            Debug.LogWarning($"{targetPlayer.playerName} masih di base. Efek TimeReverse tidak berlaku.");
+            Debug.LogWarning($"{targetPlayer.playerName} masih di base/nest. Efek TimeReverse tidak berlaku.");
             yield break;
         }
 
@@ -337,24 +338,45 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            // Hitung tile sebelumnya
-            tracker.currentTileIndex--;
-            if (tracker.currentTileIndex < 0)
-                tracker.currentTileIndex = tiles.Count - 1;
+            // Hitung tile sebelumnya (calon tujuan)
+            int nextIndex = tracker.currentTileIndex - 1;
+            if (nextIndex < 0)
+                nextIndex = tiles.Count - 1;
 
-            // --- Cek apakah tile berikut adalah base milik lawan ---
-            Player ownerOfBase = GetPlayerByBaseTileIndex(tracker.currentTileIndex);
+            // --- Jika akan mendarat di base sendiri, kembalikan ke base/nest dan hentikan ---
+            if (nextIndex == targetPlayer.baseTileIndex)
+            {
+                Debug.Log($"{targetPlayer.playerName} mencapai base sendiri saat mundur. Kembali ke base/nest.");
+                tracker.currentTileIndex = -1;
+                tracker.currentHomeTileIndex = -1;
+                tracker.notyetStarted = true;
+
+                // Pindahkan visual pawn ke posisi base/nest (mengikuti pola BOM yang memakai homeTiles[0]).
+                if (targetPlayer.homeTiles != null && targetPlayer.homeTiles.Count > 0)
+                {
+                    yield return mover.MoveToTile(targetPlayer.homeTiles[0]);
+                }
+                else
+                {
+                    // Fallback minimal jika homeTiles tidak tersedia
+                    pawn.position = tiles[targetPlayer.baseTileIndex].position;
+                }
+
+                yield break;
+            }
+
+            // --- Cek apakah tile berikut adalah base milik lawan; jika ya, lewati ---
+            Player ownerOfBase = GetPlayerByBaseTileIndex(nextIndex);
             if (ownerOfBase != null && ownerOfBase != targetPlayer)
             {
                 Debug.LogWarning($"{targetPlayer.playerName} tidak bisa berhenti di base milik {ownerOfBase.playerName}. Melewati tile tersebut.");
-
-                // Loncat mundur satu tile lagi untuk lewati base lawan
-                tracker.currentTileIndex--;
-                if (tracker.currentTileIndex < 0)
-                    tracker.currentTileIndex = tiles.Count - 1;
+                nextIndex--;
+                if (nextIndex < 0)
+                    nextIndex = tiles.Count - 1;
             }
 
             // --- Pindahkan pawn ke tile valid ---
+            tracker.currentTileIndex = nextIndex;
             yield return mover.MoveToTile(tiles[tracker.currentTileIndex]);
         }
     }
