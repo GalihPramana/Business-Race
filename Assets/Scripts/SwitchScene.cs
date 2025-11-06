@@ -10,15 +10,26 @@ public class SwitchScene : MonoBehaviour
     {
         SceneManager.LoadScene("Scene");
     }
-    // Start is called before the first frame update
-    void Start()
+
+    public void PilihMapKeuangan()
     {
-        
+        // 1. Simpan pilihan player ke PlayerPrefs
+        PlayerPrefs.SetString("SelectedMap", "Keuangan");
+
+        // 2. Pindah ke scene gameplay
+        SceneManager.LoadScene("Scene");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PilihMapMarketing()
     {
-        
+        PlayerPrefs.SetString("SelectedMap", "Marketing");
+        SceneManager.LoadScene("Scene");
     }
+
+    public void PilihMapPajak()
+    {
+        PlayerPrefs.SetString("SelectedMap", "Pajak");
+        SceneManager.LoadScene("Scene");
+    }
+
 }

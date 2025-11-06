@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
     [Header("Achievement UI Binder")]
     public AchievementsUI achievementsUI;
 
+    [Header("Map Settings")]
+    public GameObject backgroundKeuangan;
+    public GameObject backgroundMarketing;
+    public GameObject backgroundPajak;
+
     private bool canRoll = true;
     private bool gameOver = false;
 
@@ -65,6 +70,32 @@ public class GameManager : MonoBehaviour
 
         if (shopPanel != null)
             shopPanel.SetActive(false);
+
+        // 1. Ambil data yang disimpan dari Main Menu
+        // "Keuangan" adalah nilai default jika data tidak ditemukan
+        string SelectedMap = PlayerPrefs.GetString("SelectedMap", "Keuangan");
+
+        // 2. Matikan semua background (untuk jaga-jaga)
+        if (backgroundKeuangan != null) backgroundKeuangan.SetActive(false);
+        if (backgroundMarketing != null) backgroundMarketing.SetActive(false);
+        if (backgroundPajak != null) backgroundPajak.SetActive(false);
+
+        // 3. Aktifkan background yang sesuai dengan pilihan
+        if (SelectedMap == "Keuangan")
+        {
+            if (backgroundKeuangan != null) backgroundKeuangan.SetActive(true);
+            Debug.Log("Background Keuangan Diaktifkan.");
+        }
+        else if (SelectedMap == "Marketing")
+        {
+            if (backgroundMarketing != null) backgroundMarketing.SetActive(true);
+            Debug.Log("Background Marketing Diaktifkan.");
+        }
+        else if (SelectedMap == "Pajak")
+        {
+            if (backgroundPajak != null) backgroundPajak.SetActive(true);
+            Debug.Log("Background Pajak Diaktifkan.");
+        }
 
         // Initialize PawnSelector2D for all pawns
         foreach (Player player in players)
