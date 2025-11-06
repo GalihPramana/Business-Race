@@ -5931,12 +5931,12 @@ GameObject:
   - component: {fileID: 1316780465}
   - component: {fileID: 1316780464}
   m_Layer: 0
-  m_Name: backgroundTax
+  m_Name: backgroundAdventure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1316780464
 SpriteRenderer:
   m_ObjectHideFlags: 0
