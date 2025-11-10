@@ -423,6 +423,8 @@ public class GameManager : MonoBehaviour
     // === PHASE 1: Player chooses between Shop or Spin Wheel ===
     void HandleCurrentTurn()
     {
+        UpdateAllPawnSorting();
+
         Player currentPlayer = players[currentPlayerIndex];
         // Reset UI
         if (choicePanel != null) choicePanel.SetActive(false);
@@ -1048,5 +1050,22 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{p.playerName} unlocked achievement: Throw opponents to base 3x");
         }
         if (achievementsUI != null) achievementsUI.Sync(p);
+    }
+
+    private void UpdateAllPawnSorting()
+    {
+        for (int p = 0; p < players.Count; p++)
+        {
+            int baseOrder = (p == currentPlayerIndex ? 100 : p * 10);
+
+            for (int i = 0; i < players[p].pawns.Count; i++)
+            {
+                SpriteRenderer sr = players[p].pawns[i].GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.sortingOrder = baseOrder + i;
+                }
+            }
+        }
     }
 }
