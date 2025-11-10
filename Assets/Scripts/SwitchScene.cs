@@ -1,15 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SwitchScene : MonoBehaviour
 {
+    [Header("UI Panels")]
+    public GameObject mainPanel;        // DRAG Panel utama (yg ada tombol StartGame) ke sini
+    public GameObject mapSelectionPanel; // DRAG Panel (PanelPilihMap) ke sini
+
+
+    void Start()
+    {
+        // Saat scene menu pertama kali nyala,
+        // pastikan panel utama terlihat dan panel map tersembunyi.
+        if (mainPanel != null) mainPanel.SetActive(true);
+        if (mapSelectionPanel != null) mapSelectionPanel.SetActive(false);
+    }
+
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Scene");
+        //SceneManager.LoadScene("Scene");
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (mapSelectionPanel != null) mapSelectionPanel.SetActive(true);
     }
+
+    public void QuitGame()
+    {
+        // This will quit the built application
+        Application.Quit();
+    }
+
+    // (OPSIONAL) Fungsi untuk tombol "Back" di panel map
+    public void ShowMainPanel()
+    {
+        if (mapSelectionPanel != null) mapSelectionPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
+    }
+
 
     public void PilihMapKeuangan()
     {
@@ -32,4 +62,9 @@ public class SwitchScene : MonoBehaviour
         SceneManager.LoadScene("Scene");
     }
 
+    public void PilihMapAdventure()
+    {
+        PlayerPrefs.SetString("SelectedMap", "Adventure");
+        SceneManager.LoadScene("Scene");
+    }
 }

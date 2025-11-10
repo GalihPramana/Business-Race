@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public GameObject backgroundKeuangan;
     public GameObject backgroundMarketing;
     public GameObject backgroundPajak;
+    public GameObject backgroundAdventure;
 
     private bool canRoll = true;
     private bool gameOver = false;
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
         if (backgroundKeuangan != null) backgroundKeuangan.SetActive(false);
         if (backgroundMarketing != null) backgroundMarketing.SetActive(false);
         if (backgroundPajak != null) backgroundPajak.SetActive(false);
+        if (backgroundAdventure !=null) backgroundAdventure.SetActive(false);
 
         // 3. Aktifkan background yang sesuai dengan pilihan
         if (SelectedMap == "Keuangan")
@@ -95,6 +97,11 @@ public class GameManager : MonoBehaviour
         {
             if (backgroundPajak != null) backgroundPajak.SetActive(true);
             Debug.Log("Background Pajak Diaktifkan.");
+        }
+        else if (SelectedMap == "Adventure")
+        {
+            if (backgroundAdventure != null) backgroundAdventure.SetActive(true);
+            Debug.Log("Background Adventure Diaktifkan.");
         }
 
         // Initialize PawnSelector2D for all pawns
