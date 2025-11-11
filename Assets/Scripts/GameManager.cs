@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instance = this;
+        ApplyPlayerSettings();
 
         if (spinWheel != null)
             spinWheel.OnSpinComplete += OnWheelComplete;
@@ -1068,4 +1069,35 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private void ApplyPlayerSettings()
+    {
+        int count = PlayerPrefs.GetInt("PlayerCount", 4);
+
+        string[] names = new string[4];
+        names[0] = PlayerPrefs.GetString("P1Name", "");
+        names[1] = PlayerPrefs.GetString("P2Name", "");
+        names[2] = PlayerPrefs.GetString("P3Name", "");
+        names[3] = PlayerPrefs.GetString("P4Name", "");
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (i < count)
+            {
+                // HUMAN PLAYER
+                if (string.IsNullOrWhiteSpace(names[i]))
+                    players[i].playerName = "Player " + (i + 1);
+                else
+                    players[i].playerName = names[i];
+
+                players[i].isComputer = false;
+            }
+            else
+            {
+                // AI PLAYER
+                players[i].playerName = "AI " + (i + 1);
+                players[i].isComputer = true;
+            }
+        }
+    }
+
 }

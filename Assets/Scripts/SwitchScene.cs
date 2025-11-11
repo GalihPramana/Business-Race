@@ -4,11 +4,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SwitchScene : MonoBehaviour
 {
     [Header("UI Panels")]
     public GameObject mainPanel;        // DRAG Panel utama (yg ada tombol StartGame) ke sini
     public GameObject mapSelectionPanel; // DRAG Panel (PanelPilihMap) ke sini
+
+    public UIManager uiManager;
+
 
 
     void Start()
@@ -43,6 +47,7 @@ public class SwitchScene : MonoBehaviour
 
     public void PilihMapKeuangan()
     {
+        uiManager.SavePlayerSettings();
         // 1. Simpan pilihan player ke PlayerPrefs
         PlayerPrefs.SetString("SelectedMap", "Keuangan");
 
@@ -52,18 +57,21 @@ public class SwitchScene : MonoBehaviour
 
     public void PilihMapMarketing()
     {
+        uiManager.SavePlayerSettings();
         PlayerPrefs.SetString("SelectedMap", "Marketing");
         SceneManager.LoadScene("Scene");
     }
 
     public void PilihMapPajak()
     {
+        uiManager.SavePlayerSettings();
         PlayerPrefs.SetString("SelectedMap", "Pajak");
         SceneManager.LoadScene("Scene");
     }
 
     public void PilihMapAdventure()
     {
+        uiManager.SavePlayerSettings();
         PlayerPrefs.SetString("SelectedMap", "Adventure");
         SceneManager.LoadScene("Scene");
     }

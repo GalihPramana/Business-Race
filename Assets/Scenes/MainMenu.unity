@@ -2610,6 +2610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPanel: {fileID: 1903535171}
   mapSelectionPanel: {fileID: 1041622913}
+  uiManager: {fileID: 1985624077}
 --- !u!1 &1041622913
 GameObject:
   m_ObjectHideFlags: 0
@@ -4419,6 +4420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPanel: {fileID: 1184796316}
   mapSelectionPanel: {fileID: 1903535171}
+  uiManager: {fileID: 1985624077}
 --- !u!1 &1713712009
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,7 +5226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1903535172
 RectTransform:
   m_ObjectHideFlags: 0
