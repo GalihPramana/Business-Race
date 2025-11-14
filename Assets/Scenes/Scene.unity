@@ -8086,6 +8086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e9bfbea595772409052edd51838291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  correctSound: {fileID: 8300000, guid: 30088423480ed544fbecf59790d8c5fa, type: 3}
+  wrongSound: {fileID: 8300000, guid: 611716c597b512d4583d59aa7b1213c3, type: 3}
   quizPanel: {fileID: 1012943112}
   questionText: {fileID: 400116047}
   timerText: {fileID: 43710649}

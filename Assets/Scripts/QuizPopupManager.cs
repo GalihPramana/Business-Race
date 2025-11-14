@@ -14,6 +14,9 @@ public class QuizPopupManager : MonoBehaviour
         public string correctAnswer;
     }
 
+    public AudioClip correctSound;
+    public AudioClip wrongSound;
+
     public GameObject quizPanel;
     public TMP_Text questionText;
     public TMP_Text timerText;
@@ -25,12 +28,26 @@ public class QuizPopupManager : MonoBehaviour
 
     public System.Action<bool> OnQuizFinished;
 
+    // AudioSource untuk memainkan suara benar/salah
+    private AudioSource audioSource;
+
     // === Struktur data dua level ===
     private Dictionary<string, Dictionary<string, List<Question>>> questionBank =
         new Dictionary<string, Dictionary<string, List<Question>>>();
 
     private Dictionary<string, Dictionary<string, List<Question>>> remainingQuestions =
         new Dictionary<string, Dictionary<string, List<Question>>>();
+
+    void Awake()
+    {
+        // Pastikan ada AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+        }
+    }
 
     void Start()
     {
@@ -490,6 +507,7 @@ public class QuizPopupManager : MonoBehaviour
     private void OnAnswerSelected(bool correct)
     {
         Debug.Log(correct ? "Jawaban Benar!" : "Jawaban Salah!");
+        PlayFeedbackSound(correct);
         if (timerCoroutine != null)
         {
             StopCoroutine(timerCoroutine);
@@ -510,9 +528,20 @@ public class QuizPopupManager : MonoBehaviour
         }
 
         Debug.Log("Waktu habis!");
+        PlayFeedbackSound(false); // Waktu habis dianggap salah
         timerCoroutine = null;
         quizPanel.SetActive(false);
         OnQuizFinished?.Invoke(false);
+    }
+
+    private void PlayFeedbackSound(bool correct)
+    {
+        if (audioSource == null) return;
+        AudioClip clip = correct ? correctSound : wrongSound;
+        if (clip == null) return;
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     private void Shuffle<T>(List<T> list)
