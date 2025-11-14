@@ -41,6 +41,14 @@ public class GameManager : MonoBehaviour
     private bool canRoll = true;
     private bool gameOver = false;
 
+    [Header("Audio Clips")]
+    public AudioClip freezeSound;
+    public AudioClip bombSound;
+    public AudioClip timeReverseSound;
+
+    // SFX AudioSource to play item sounds
+    private AudioSource sfxSource;
+
     private string pendingItem = null;
     private bool waitingForTargetPawnSelection = false;
 
@@ -55,6 +63,17 @@ public class GameManager : MonoBehaviour
         {"TimeReverse-5", 125},
         {"TimeReverse-7", 150}
     };
+
+    private void Awake()
+    {
+        // Ensure an AudioSource exists for SFX
+        sfxSource = GetComponent<AudioSource>();
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+        }
+        sfxSource.playOnAwake = false;
+    }
 
     void Start()
     {
@@ -308,6 +327,9 @@ public class GameManager : MonoBehaviour
 
     private void ApplyItemEffect(string itemName, Player user, Player targetPlayer, Transform targetPawn)
     {
+        // Play SFX based on the chosen item
+        PlayItemSfx(itemName);
+
         PawnTracker tracker = targetPawn.GetComponent<PawnTracker>();
         PlayerTileMover mover = targetPawn.GetComponent<PlayerTileMover>();
 
@@ -349,6 +371,33 @@ public class GameManager : MonoBehaviour
             default:
                 Debug.LogWarning("Efek item belum didefinisikan: " + itemName);
                 break;
+        }
+    }
+
+    // Play item feedback SFX
+    private void PlayItemSfx(string itemName)
+    {
+        if (sfxSource == null) return;
+
+        AudioClip clip = null;
+        switch (itemName)
+        {
+            case "Bom":
+                clip = bombSound;
+                break;
+            case "Iceball":
+                clip = freezeSound;
+                break;
+            case "TimeReverse-3":
+            case "TimeReverse-5":
+            case "TimeReverse-7":
+                clip = timeReverseSound;
+                break;
+        }
+
+        if (clip != null)
+        {
+            sfxSource.PlayOneShot(clip);
         }
     }
 
