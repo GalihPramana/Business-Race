@@ -11,6 +11,8 @@ public class RotateWheel : MonoBehaviour
     [Header("References")]
     public QuizPopupManager quizPopup;  // drag QuizPopupManager dari scene ke sini lewat Inspector
 
+    public string currentMap = "Keuangan";
+
     // Callback untuk GameManager jika dibutuhkan
     public Action<string> OnSpinComplete;
 
@@ -24,7 +26,8 @@ public class RotateWheel : MonoBehaviour
                 return;
             }
             if (quizPopup != null)
-                quizPopup.ShowQuiz(difficulty);
+                //quizPopup.ShowQuiz(difficulty);
+                quizPopup.ShowQuiz(currentMap, difficulty);
             else
                 Debug.LogWarning("QuizPopupManager belum di-assign di RotateWheel!");
         };
