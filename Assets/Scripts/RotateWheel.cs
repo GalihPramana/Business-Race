@@ -16,12 +16,19 @@ public class RotateWheel : MonoBehaviour
     // Callback untuk GameManager jika dibutuhkan
     public Action<string> OnSpinComplete;
 
+    [Header("Spin Audio")]
+    public AudioSource spinAudioSource;      // Assign an AudioSource (on this GameObject or child)
+    public AudioClip spinClip;               // Your 2s spin SFX
+    [Tooltip("Durasi fade out di akhir spin")]
+    public float fadeOutDuration = 1.0f;     // Adjust as needed
+
+    private Coroutine audioRoutine;
+
     private void Start()
     {
-        // Hubungkan event hanya sekali
         OnSpinComplete += (difficulty) =>
         {
-            if(difficulty == "Lucky")
+            if (difficulty == "Lucky")
             {
                 return;
             }
@@ -42,6 +49,16 @@ public class RotateWheel : MonoBehaviour
     private IEnumerator SpinWheel()
     {
         isSpinning = true;
+
+        // Start looping audio
+        if (spinAudioSource != null && spinClip != null)
+        {
+            // Stop any previous routine (safety)
+            if (audioRoutine != null)
+                StopCoroutine(audioRoutine);
+
+            audioRoutine = StartCoroutine(PlaySpinSound());
+        }
 
         float speed = UnityEngine.Random.Range(500f, 1000f);
         float elapsed = 0f;
@@ -66,13 +83,41 @@ public class RotateWheel : MonoBehaviour
 
         Debug.Log($"Reward: {reward}");
 
-        // Jalankan event selesai spin
         OnSpinComplete?.Invoke(reward);
+    }
+
+    private IEnumerator PlaySpinSound()
+    {
+        // Basic validation
+        if (spinAudioSource == null || spinClip == null)
+            yield break;
+
+        spinAudioSource.clip = spinClip;
+        spinAudioSource.loop = true;
+        spinAudioSource.volume = 1f;
+        spinAudioSource.Play();
+
+        // Prevent negative wait if fadeOutDuration > spinDuration
+        float activeTime = Mathf.Max(0f, spinDuration - fadeOutDuration);
+        yield return new WaitForSeconds(activeTime);
+
+        // Fade out
+        float startVol = spinAudioSource.volume;
+        float t = 0f;
+        while (t < fadeOutDuration)
+        {
+            t += Time.deltaTime;
+            float k = t / fadeOutDuration;
+            spinAudioSource.volume = Mathf.Lerp(startVol, 0f, k);
+            yield return null;
+        }
+
+        spinAudioSource.Stop();
+        spinAudioSource.volume = startVol; // Reset for next spin
     }
 
     private string GetReward(float rot)
     {
-      
         if (rot >= 0 && rot < 45)
             return "Hard";
         else if (rot >= 45 && rot < 135)
