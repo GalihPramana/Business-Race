@@ -438,12 +438,598 @@ public class QuizPopupManager : MonoBehaviour
             { "Normal", new List<Question>() },
             { "Hard", new List<Question>() }
         };
-        questionBank["Pajak"] = new Dictionary<string, List<Question>>()
+
+        questionBank["Pajak"] = new Dictionary<string, List<Question>>();
+        questionBank["Pajak"]["Easy"] = new List<Question>
         {
-            { "Easy", new List<Question>() },
-            { "Normal", new List<Question>() },
-            { "Hard", new List<Question>() }
+            new Question
+            {
+                questionText = "Apa yang dimaksud dengan pajak?",
+                options = new string[]
+                {
+                    "Iuran wajib kepada negara berdasarkan undang-undang",
+                    "Pembayaran sukarela kepada pemerintah",
+                    "Iuran kepada lembaga swasta",
+                    "Pembayaran untuk mendapatkan layanan publik"
+                },
+                correctAnswer = "Iuran wajib kepada negara berdasarkan undang-undang"
+            },
+            new Question
+            {
+                questionText = "Siapa yang berhak memungut pajak?",
+                options = new string[]
+                {
+                    "Pemerintah pusat dan daerah",
+                    "Perusahaan swasta",
+                    "Bank swasta",
+                    "Organisasi non-profit"
+                },
+                correctAnswer = "Pemerintah pusat dan daerah"
+            },
+            new Question
+            {
+                questionText = "Pajak Penghasilan (PPh) dikenakan kepada:",
+                options = new string[]
+                {
+                    "Setiap tambahan kemampuan ekonomis",
+                    "Barang kebutuhan pokok",
+                    "Semua transaksi online",
+                    "Pembelian kendaraan"
+                },
+                correctAnswer = "Setiap tambahan kemampuan ekonomis"
+            },
+            new Question
+            {
+                questionText = "Pajak Pertambahan Nilai (PPN) dikenakan atas:",
+                options = new string[]
+                {
+                    "Penyerahan barang dan jasa kena pajak",
+                    "Gaji karyawan",
+                    "Pembayaran hutang",
+                    "Donasi"
+                },
+                correctAnswer = "Penyerahan barang dan jasa kena pajak"
+            },
+            new Question
+            {
+                questionText = "Faktur pajak diterbitkan oleh:",
+                options = new string[]
+                {
+                    "PKP (Pengusaha Kena Pajak)",
+                    "Pegawai pemerintah",
+                    "Karyawan perusahaan",
+                    "Bank BUMN"
+                },
+                correctAnswer = "PKP (Pengusaha Kena Pajak)"
+            },
+            new Question
+            {
+                questionText = "NPWP adalah singkatan dari:",
+                options = new string[]
+                {
+                    "Nomor Pokok Wajib Pajak",
+                    "Nomor Profil Wajib Pajak",
+                    "Nomor Pusat Wajib Pajak",
+                    "Nomor Pengenal Wajib Pendapatan"
+                },
+                correctAnswer = "Nomor Pokok Wajib Pajak"
+            },
+            new Question
+            {
+                questionText = "PPN di Indonesia dikenakan sebesar:",
+                options = new string[]
+                {
+                    "11%",
+                    "5%",
+                    "7%",
+                    "15%"
+                },
+                correctAnswer = "11%"
+            },
+            new Question
+            {
+                questionText = "Pajak daerah contoh paling umum adalah:",
+                options = new string[]
+                {
+                    "Pajak kendaraan bermotor",
+                    "Pajak penghasilan",
+                    "Pajak impor",
+                    "Pajak ekspor"
+                },
+                correctAnswer = "Pajak kendaraan bermotor"
+            },
+            new Question
+            {
+                questionText = "SSP (Surat Setoran Pajak) digunakan untuk:",
+                options = new string[]
+                {
+                    "Menyetor pajak ke kas negara",
+                    "Mengajukan restitusi pajak",
+                    "Membuat laporan tahunan",
+                    "Mengajukan keberatan pajak"
+                },
+                correctAnswer = "Menyetor pajak ke kas negara"
+            },
+            new Question
+            {
+                questionText = "Sanksi keterlambatan membayar pajak dapat berupa:",
+                options = new string[]
+                {
+                    "Denda atau bunga",
+                    "Hadiah",
+                    "Pembebasan pajak",
+                    "Pinjaman"
+                },
+                correctAnswer = "Denda atau bunga"
+            }
         };
+
+        questionBank["Pajak"]["Normal"] = new List<Question>
+{
+    new Question
+    {
+        questionText = "PPh 22 dikenakan pada transaksi …",
+        options = new string[]
+        {
+            "Penyerahan jasa profesional",
+            "Pembelian barang oleh bendahara pemerintah",
+            "Pembayaran sewa tanah dan bangunan",
+            "Penjualan saham di bursa"
+        },
+        correctAnswer = "Pembelian barang oleh bendahara pemerintah"
+    },
+    new Question
+    {
+        questionText = "PPh 23 atas pembayaran jasa konsultan Rp 10.000.000 adalah…",
+        options = new string[]
+        {
+            "Rp 100.000",
+            "Rp 200.000",
+            "Rp 250.000",
+            "Rp 300.000"
+        },
+        correctAnswer = "Rp 200.000"
+    },
+    new Question
+    {
+        questionText = "Apa yang dimaksud dengan PPh 24…",
+        options = new string[]
+        {
+            "Pajak atas penghasilan luar negeri yang dikreditkan di Indonesia",
+            "Pajak penghasilan final dalam negeri",
+            "Pajak atas penghasilan UMKM",
+            "Pajak penghasilan orang pribadi"
+        },
+        correctAnswer = "Pajak atas penghasilan luar negeri yang dikreditkan di Indonesia"
+    },
+    new Question
+    {
+        questionText = "PPh 25 merupakan…",
+        options = new string[]
+        {
+            "Pajak final atas UMKM",
+            "Pajak dipotong oleh pihak ketiga",
+            "Angsuran bulanan pajak penghasilan sendiri",
+            "Pajak penghasilan luar negeri"
+        },
+        correctAnswer = "Angsuran bulanan pajak penghasilan sendiri"
+    },
+    new Question
+    {
+        questionText = "Pegawai tetap bergaji Rp 7.500.000 per bulan, iuran pensiun Rp 100.000, status TK/0. Berapa PPh 21 per bulan menurut tarif progresif Pasal 17?",
+        options = new string[]
+        {
+            "Rp 150.000",
+            "Rp 145.000",
+            "Rp 155.000",
+            "Rp 200.000"
+        },
+        correctAnswer = "Rp 145.000"
+    },
+    new Question
+    {
+        questionText = "Penghasilan usaha UMKM dengan omzet ≤ Rp 500 juta per tahun akan…",
+        options = new string[]
+        {
+            "Dikenakan PPh Final 0,5%",
+            "Tidak dikenakan PPh Final 0,5%",
+            "Dikenakan tarif Pasal 17",
+            "Dikenakan tarif 1%"
+        },
+        correctAnswer = "Tidak dikenakan PPh Final 0,5%"
+    },
+    new Question
+    {
+        questionText = "Berdasarkan ketentuan yang berlaku, berapa Bea Materai yang harus ditempel pada dokumen perjanjian sewa rumah tahunan dengan nilai 25 juta/tahun?",
+        options = new string[]
+        {
+            "Rp 3.000",
+            "Rp 6.000",
+            "Rp 10.000",
+            "Tidak dikenakan Bea Materai"
+        },
+        correctAnswer = "Rp 10.000"
+    },
+    new Question
+    {
+        questionText = "Berikut yang termasuk objek PPh 21 adalah…",
+        options = new string[]
+        {
+            "Honorarium pejabat negara",
+            "Dividen luar negeri",
+            "Penghasilan dari usaha",
+            "Royalti kepada WP badan"
+        },
+        correctAnswer = "Honorarium pejabat negara"
+    },
+    new Question
+    {
+        questionText = "Tarif lapisan pertama PPh Orang Pribadi Pasal 17 UU HPP adalah…",
+        options = new string[]
+        {
+            "2%",
+            "5%",
+            "10%",
+            "15%"
+        },
+        correctAnswer = "5%"
+    },
+    new Question
+    {
+        questionText = "Peraturan pelaksana teknis yang dikeluarkan oleh Menteri Keuangan disebut…",
+        options = new string[]
+        {
+            "SE",
+            "PMK",
+            "PER",
+            "UU"
+        },
+        correctAnswer = "PMK"
+    },
+    new Question
+    {
+        questionText = "WP Badan memiliki omzet Rp 6.000.000.000 dan penghasilan kena pajak Rp 800.000.000. PPh terutang menurut Pasal 17 adalah…",
+        options = new string[]
+        {
+            "Rp 120.000.000",
+            "Rp 160.000.000",
+            "Rp 200.000.000",
+            "Rp 176.000.000"
+        },
+        correctAnswer = "Rp 176.000.000"
+    },
+    new Question
+    {
+        questionText = "PPh Final Pasal 4(2) berlaku atas…",
+        options = new string[]
+        {
+            "Dividen dalam negeri",
+            "Penghasilan sewa tanah dan bangunan",
+            "Jasa konsultan",
+            "Gaji pegawai"
+        },
+        correctAnswer = "Penghasilan sewa tanah dan bangunan"
+    },
+    new Question
+    {
+        questionText = "Pegawai tidak tetap menerima upah harian Rp 400.000 dan bekerja 20 hari. Apakah ada PPh 21 terutang?",
+        options = new string[]
+        {
+            "Ya, karena melebihi Rp 450.000/hari",
+            "Tidak, karena ≤ Rp 450.000/hari",
+            "Tidak, karena upah total < PTKP",
+            "Ya, karena lebih dari 15 hari kerja"
+        },
+        correctAnswer = "Tidak, karena ≤ Rp 450.000/hari"
+    },
+    new Question
+    {
+        questionText = "PT Arjuna menerima penghasilan bunga deposito Rp 10.000.000. PPh Final yang dipotong bank adalah…",
+        options = new string[]
+        {
+            "Rp 1.000.000",
+            "Rp 1.500.000",
+            "Rp 2.000.000",
+            "Rp 2.500.000"
+        },
+        correctAnswer = "Rp 2.000.000"
+    },
+    new Question
+    {
+        questionText = "Tarif PPh Final UMKM menurut PP 55/2022 adalah…",
+        options = new string[]
+        {
+            "1%",
+            "0,5%",
+            "0,25%",
+            "2%"
+        },
+        correctAnswer = "0,5%"
+    },
+    new Question
+    {
+        questionText = "Kredit pajak luar negeri (PPh 24) hanya boleh sebesar…",
+        options = new string[]
+        {
+            "Pajak yang dibayar di luar negeri",
+            "PPh terutang atas penghasilan luar negeri",
+            "Jumlah yang lebih kecil antara A dan B",
+            "Jumlah yang lebih besar antara A dan B"
+        },
+        correctAnswer = "Jumlah yang lebih kecil antara A dan B"
+    },
+    new Question
+    {
+        questionText = "Apa fungsi NPWP?",
+        options = new string[]
+        {
+            "Sebagai nomor identitas kependudukan",
+            "Sebagai tanda terdaftar sebagai Wajib Pajak",
+            "Sebagai bukti bayar PPh",
+            "Sebagai syarat pembuatan KTP"
+        },
+        correctAnswer = "Sebagai tanda terdaftar sebagai Wajib Pajak"
+    },
+    new Question
+    {
+        questionText = "PPh 23 atas pembayaran royalti Rp 50.000.000 adalah…",
+        options = new string[]
+        {
+            "Rp 7.000.000",
+            "Rp 7.250.000",
+            "Rp 7.500.000",
+            "Rp 8.000.000"
+        },
+        correctAnswer = "Rp 7.500.000"
+    },
+    new Question
+    {
+        questionText = "Apa dasar hukum terbaru pengaturan PPh 21, 22, 23, dan 26?",
+        options = new string[]
+        {
+            "UU No. 36 Tahun 2008",
+            "UU HPP (No. 7 Tahun 2021)",
+            "PP No. 55 Tahun 2022",
+            "PMK 168/PMK.03/2023"
+        },
+        correctAnswer = "UU HPP (No. 7 Tahun 2021)"
+    },
+    new Question
+    {
+        questionText = "Yang termasuk objek PPN adalah…",
+        options = new string[]
+        {
+            "Penyerahan barang kena pajak di dalam daerah pabean",
+            "Ekspor barang oleh pengusaha kecil",
+            "Penghasilan dari jasa konsultan",
+            "Penerimaan bunga deposito"
+        },
+        correctAnswer = "Penyerahan barang kena pajak di dalam daerah pabean"
+    }
+};
+
+        questionBank["Pajak"]["Hard"] = new List<Question>
+{
+    new Question
+    {
+        questionText = "PT Andalas membayar jasa konsultan hukum kepada Firma Adil sebesar Rp 100.000.000. Firma Adil telah memiliki NPWP. Berapa PPh 23 yang harus dipotong?",
+        options = new string[]
+        {
+            "Rp 1.000.000",
+            "Rp 1.500.000",
+            "Rp 2.000.000",
+            "Rp 2.500.000"
+        },
+        correctAnswer = "Rp 2.000.000"
+    },
+    new Question
+    {
+        questionText = "PT Arjuna memiliki penghasilan kena pajak Rp 2.000.000.000. Berapa PPh Badan terutang tahun 2025?",
+        options = new string[]
+        {
+            "Rp 400.000.000",
+            "Rp 440.000.000",
+            "Rp 450.000.000",
+            "Rp 500.000.000"
+        },
+        correctAnswer = "Rp 440.000.000"
+    },
+    new Question
+    {
+        questionText = "Dalam kerangka self-assessment system yang dianut Indonesia, mana pernyataan berikut yang paling tepat menjelaskan tanggung jawab pokok Wajib Pajak (WP)?",
+        options = new string[]
+        {
+            "WP hanya wajib menyetor pajak; perhitungan dan pelaporan dilakukan oleh Direktorat Jenderal Pajak (DJP).",
+            "WP wajib menghitung, membayar, dan melaporkan pajak sendiri; fiskus melakukan pemeriksaan pasca pelaporan.",
+            "WP bebas memilih apakah akan dilaporkan oleh DJP atau pihak ketiga.",
+            "WP hanya perlu menyimpan bukti pembayaran; pelaporan bersifat opsional."
+        },
+        correctAnswer = "WP wajib menghitung, membayar, dan melaporkan pajak sendiri; fiskus melakukan pemeriksaan pasca pelaporan."
+    },
+    new Question
+    {
+        questionText = "Dalam konteks PPN, konsep 'faktur pajak' paling tepat dianggap sebagai:",
+        options = new string[]
+        {
+            "Bukti pemungutan pajak yang hanya penting untuk penjual tetapi tidak memengaruhi pembeli.",
+            "Dokumen yang memberi hak kepada pembeli PKP untuk mengkreditkan Pajak Masukan sepanjang syarat formal & material terpenuhi.",
+            "Surat yang hanya dipakai untuk ekspor.",
+            "Dokumen opsional yang tidak memengaruhi hak kredit pajak."
+        },
+        correctAnswer = "Dokumen yang memberi hak kepada pembeli PKP untuk mengkreditkan Pajak Masukan sepanjang syarat formal & material terpenuhi."
+    },
+    new Question
+    {
+        questionText = "Apa maksud dengan biaya jabatan dalam perhitungan PPh pasal 21?",
+        options = new string[]
+        {
+            "Biaya yang dikeluarkan untuk membeli jabatan",
+            "Tunjangan jabatan yang diterima pegawai",
+            "Pengurangan penghasilan bruto sebesar 5% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun",
+            "Pengurangan penghasilan bruto sebesar 10% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun"
+        },
+        correctAnswer = "Pengurangan penghasilan bruto sebesar 5% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun"
+    },
+    new Question
+    {
+        questionText = "Apa perbedaan utama antara tax avoidance dan tax evasion?",
+        options = new string[]
+        {
+            "Tax avoidance legal, tax evasion illegal",
+            "Keduanya illegal",
+            "Keduanya legal",
+            "Tax evasion dilakukan dengan perencanaan"
+        },
+        correctAnswer = "Tax avoidance legal, tax evasion illegal"
+    },
+    new Question
+    {
+        questionText = "PT Surya memiliki angsuran PPh 25 sebesar Rp 80.000.000/bulan. Jika bulan Maret terlambat setor 10 hari, berapa sanksi bunga administrasi (2% per bulan)?",
+        options = new string[]
+        {
+            "Rp 1.600.000",
+            "Rp 800.000",
+            "Rp 1.160.000",
+            "Rp 530.333"
+        },
+        correctAnswer = "Rp 530.333"
+    },
+    new Question
+    {
+        questionText = "Pajak dipungut berdasarkan prinsip self assessment bertujuan untuk...",
+        options = new string[]
+        {
+            "Memberi kebebasan fiskus",
+            "Mendorong kesadaran wajib pajak",
+            "Mengurangi pengawasan pajak",
+            "Menghapus sanksi"
+        },
+        correctAnswer = "Mendorong kesadaran wajib pajak"
+    },
+    new Question
+    {
+        questionText = "PT Omega memiliki omzet Rp 3 miliar per tahun. Usahanya tergolong UMKM (PP 55/2022). Berapa tarif pajak final UMKM yang berlaku?",
+        options = new string[]
+        {
+            "0,5%",
+            "1%",
+            "0,75%",
+            "2%"
+        },
+        correctAnswer = "0,5%"
+    },
+    new Question
+    {
+        questionText = "Fungsi pajak sebagai alat pemerataan pendapatan disebut...",
+        options = new string[]
+        {
+            "Fungsi anggaran",
+            "Fungsi distribusi",
+            "Fungsi regulasi",
+            "Fungsi kontrol"
+        },
+        correctAnswer = "Fungsi distribusi"
+    },
+    new Question
+    {
+        questionText = "PT Fortuna memiliki laba kena pajak Rp 5 miliar pada 2024. Hitung PPh Badan terutang dengan tarif 22%.",
+        options = new string[]
+        {
+            "Rp 1.000.000.000",
+            "Rp 1.050.000.000",
+            "Rp 1.100.000.000",
+            "Rp 1.250.000.000"
+        },
+        correctAnswer = "Rp 1.100.000.000"
+    },
+    new Question
+    {
+        questionText = "PT Delta menyewa gedung dari pihak lain seharga Rp 200.000.000/tahun. Tarif PPh 4(2) untuk sewa tanah dan bangunan adalah 10%. Berapa pajak yang dipotong?",
+        options = new string[]
+        {
+            "Rp 10 juta",
+            "Rp 15 juta",
+            "Rp 20 juta",
+            "Rp 25 juta"
+        },
+        correctAnswer = "Rp 20 juta"
+    },
+    new Question
+    {
+        questionText = "PT Alfa membeli bahan baku dari pemasok dalam negeri seharga Rp 100.000.000 (tidak termasuk PPN). Barang tergolong bahan tertentu yang dikenai PPh 22 sebesar 0,25% oleh bendahara pemerintah. Berapa PPh 22 yang dipungut?",
+        options = new string[]
+        {
+            "Rp 125.000",
+            "Rp 250.000",
+            "Rp 500.000",
+            "Rp 1.000.000"
+        },
+        correctAnswer = "Rp 250.000"
+    },
+    new Question
+    {
+        questionText = "Menurut UU HPP, PPh Final UMKM 0,5% hanya dapat digunakan paling lama...",
+        options = new string[]
+        {
+            "1 tahun",
+            "3 tahun bagi badan, 7 tahun bagi orang pribadi",
+            "5 tahun untuk semua",
+            "Tanpa batas waktu"
+        },
+        correctAnswer = "3 tahun bagi badan, 7 tahun bagi orang pribadi"
+    },
+    new Question
+    {
+        questionText = "Seseorang memiliki tanah 1.200 meter persegi. Ia membangun pagar mewah dari batu alam yang menempel permanen di tanah dengan biaya Rp 60.000.000. Apakah pagar tersebut termasuk objek PBB?",
+        options = new string[]
+        {
+            "Tidak. PBB hanya melihat luas tanah.",
+            "Ya. Pagar permanen menambah nilai bangunan.",
+            "Tidak. Pagar tidak dihitung karena berada di luar bangunan utama.",
+            "Ya. Tetapi hanya jika nilai pagarnya di atas Rp 100.000.000."
+        },
+        correctAnswer = "Ya. Pagar permanen menambah nilai bangunan."
+    },
+    new Question
+    {
+        questionText = "PT Mega Jaya membayar jasa konsultan kepada CV Pandu sebesar Rp 80.000.000. CV Pandu tidak memiliki NPWP. Berapakah PPh Pasal 23 yang harus dipotong?",
+        options = new string[]
+        {
+            "Rp 1.600.000",
+            "Rp 1.920.000",
+            "Rp 2.400.000",
+            "Rp 3.200.000"
+        },
+        correctAnswer = "Rp 2.400.000"
+    },
+    new Question
+    {
+        questionText = "Dalam sistem pemajakan Indonesia, asas domisili berarti …",
+        options = new string[]
+        {
+            "Setiap penghasilan di Indonesia dikenai pajak tanpa memandang siapa penerimanya.",
+            "Wajib pajak luar negeri dikenakan pajak atas seluruh penghasilannya.",
+            "Wajib pajak dalam negeri dikenakan pajak atas seluruh penghasilannya, baik dari dalam maupun luar negeri.",
+            "Wajib pajak dikenakan pajak hanya atas penghasilan dalam negeri."
+        },
+        correctAnswer = "Wajib pajak dalam negeri dikenakan pajak atas seluruh penghasilannya, baik dari dalam maupun luar negeri."
+    },
+    new Question
+    {
+        questionText = "Kapan seseorang dianggap menjadi subjek pajak dalam negeri?",
+        options = new string[]
+        {
+            "Saat pertama kali bekerja di Indonesia.",
+            "Setelah berada di Indonesia lebih dari 183 hari dalam jangka 12 bulan.",
+            "Ketika memperoleh penghasilan di Indonesia.",
+            "Saat mendaftarkan NPWP."
+        },
+        correctAnswer = "Setelah berada di Indonesia lebih dari 183 hari dalam jangka 12 bulan."
+    }
+};
+
+
+
         questionBank["Marketing"] = new Dictionary<string, List<Question>>()
         {
             { "Easy", new List<Question>() },
