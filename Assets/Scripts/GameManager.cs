@@ -64,6 +64,11 @@ public class GameManager : MonoBehaviour
         {"TimeReverse-7", 150}
     };
 
+    [Header("Win UI")]
+    public GameObject winPanel;       // panel shown when someone wins
+    public TMP_Text playerWonText;    // text to display winner's name
+    public AudioClip wonSound;
+
     private void Awake()
     {
         // Ensure an AudioSource exists for SFX
@@ -956,8 +961,28 @@ public class GameManager : MonoBehaviour
     private void WinGame(Player winningPlayer)
     {
         gameOver = true;
-        if (diceButton != null)
-            diceButton.gameObject.SetActive(false);
+
+
+
+        // Show winner panel and set player name text
+        if (winPanel != null)
+            winPanel.SetActive(true);
+
+        if (playerWonText != null)
+            playerWonText.text = (winningPlayer != null && !string.IsNullOrEmpty(winningPlayer.playerName))
+                ? winningPlayer.playerName
+                : "Player";
+        // Play victory SFX (if assigned)
+        if (wonSound != null)
+        {
+            if (sfxSource == null)
+            {
+                sfxSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+                sfxSource.playOnAwake = false;
+            }
+            sfxSource.PlayOneShot(wonSound);
+        }
+
         Debug.Log(winningPlayer.playerName + " has won the game!");
     }
 
