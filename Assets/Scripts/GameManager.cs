@@ -49,6 +49,14 @@ public class GameManager : MonoBehaviour
     // SFX AudioSource to play item sounds
     private AudioSource sfxSource;
 
+    [Header("Blink Settings")]
+    public float blinkSpeed = 0.5f;
+    public Color blinkColor = Color.yellow; // Color when pawns blink
+
+    // Track which pawns are currently blinking
+    private List<BlinkEffect> currentBlinkingPawns = new List<BlinkEffect>();
+
+
     private string pendingItem = null;
     private bool waitingForTargetPawnSelection = false;
 
@@ -236,6 +244,12 @@ public class GameManager : MonoBehaviour
     public void OnPawnClicked(Player player, int pawnIndex)
     {
         Player currentPlayer = players[currentPlayerIndex];
+
+        // Stop blinking for the clicked pawn
+        if (player == currentPlayer)
+        {
+            StopPawnBlinking(player.pawns[pawnIndex]);
+        }
 
         // ==========================================================
         // MODE ITEM — memilih target pawn untuk efek item
@@ -480,6 +494,8 @@ public class GameManager : MonoBehaviour
     {
         UpdateAllPawnSorting();
 
+        StopAllPawnBlinking();
+
         Player currentPlayer = players[currentPlayerIndex];
         // Reset UI
         if (choicePanel != null) choicePanel.SetActive(false);
@@ -525,6 +541,17 @@ public class GameManager : MonoBehaviour
         {
             Collider2D col = pawn.GetComponent<Collider2D>();
             if (col != null) col.enabled = true;
+
+            // Check if pawn is already at home (finished)
+            PawnTracker tracker = pawn.GetComponent<PawnTracker>();
+            if (tracker != null && tracker.isHome)
+            {
+                // Don't blink pawns that are already finished
+                continue;
+            }
+
+            // Start blinking effect
+            StartPawnBlinking(pawn);
         }
     }
 
@@ -879,6 +906,7 @@ public class GameManager : MonoBehaviour
     }
     public void NextTurn()
     {
+        StopAllPawnBlinking();
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         canRoll = true;
         HandleCurrentTurn();
@@ -1174,4 +1202,70 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // === Helper Methods for Blinking ===
+
+    /// <summary>
+    /// Start blinking effect on a specific pawn
+    /// </summary>
+    private void StartPawnBlinking(Transform pawn)
+    {
+        if (pawn == null) return;
+
+        // Check if BlinkEffect component exists, if not add it
+        BlinkEffect blinkEffect = pawn.GetComponent<BlinkEffect>();
+        if (blinkEffect == null)
+        {
+            blinkEffect = pawn.gameObject.AddComponent<BlinkEffect>();
+
+            // Configure blink settings
+            blinkEffect.blinkInterval = blinkSpeed;
+            blinkEffect.method = BlinkEffect.BlinkMethod.Color;
+            blinkEffect.blinkColor = blinkColor;
+            blinkEffect.blinkCount = 0; // Infinite blink
+            blinkEffect.blinkOnStart = false;
+        }
+
+        // Start the blinking
+        blinkEffect.StartBlinking();
+
+        // Track this pawn
+        if (!currentBlinkingPawns.Contains(blinkEffect))
+        {
+            currentBlinkingPawns.Add(blinkEffect);
+        }
+
+        Debug.Log($"Started blinking for pawn: {pawn.name}");
+    }
+
+    /// <summary>
+    /// Stop all pawns from blinking
+    /// </summary>
+    private void StopAllPawnBlinking()
+    {
+        foreach (var blinkEffect in currentBlinkingPawns)
+        {
+            if (blinkEffect != null)
+            {
+                blinkEffect.StopBlinking();
+            }
+        }
+
+        currentBlinkingPawns.Clear();
+        Debug.Log("Stopped all pawn blinking");
+    }
+
+    /// <summary>
+    /// Stop blinking for a specific pawn (when selected)
+    /// </summary>
+    private void StopPawnBlinking(Transform pawn)
+    {
+        if (pawn == null) return;
+
+        BlinkEffect blinkEffect = pawn.GetComponent<BlinkEffect>();
+        if (blinkEffect != null)
+        {
+            blinkEffect.StopBlinking();
+            currentBlinkingPawns.Remove(blinkEffect);
+        }
+    }
 }
