@@ -1,0 +1,610 @@
+{
+  "Marketing": {
+    "Easy": [
+      {
+        "q": "Apa definisi utama dari CRM?",
+        "options": [
+          "Cara membuat produk baru",
+          "Metode promosi di media sosial",
+          "Strategi mengelola hubungan dengan pelanggan agar loyal",
+          "Sistem untuk meningkatkan jumlah karyawan"
+        ],
+        "answer": "Strategi mengelola hubungan dengan pelanggan agar loyal"
+      },
+      {
+        "q": "Memahami pelanggan dilakukan dengan cara…",
+        "options": [
+          "Mengabaikan data pembelian",
+          "Menurunkan kualitas layanan",
+          "Hanya menawarkan produk yang mahal",
+          "Mengamati kebiasaan beli dan kebutuhan pelanggan"
+        ],
+        "answer": "Mengamati kebiasaan beli dan kebutuhan pelanggan"
+      },
+      {
+        "q": "Tujuan utama melayani pelanggan adalah…",
+        "options": [
+          "Membuat proses jadi lebih lambat",
+          "Membuat pelanggan merasa dihargai",
+          "Mengurangi interaksi dengan pelanggan",
+          "Membuat pelanggan membeli sekali saja"
+        ],
+        "answer": "Membuat pelanggan merasa dihargai"
+      },
+      {
+        "q": "Mana contoh strategi mempertahankan pelanggan?",
+        "options": [
+          "Tidak membalas chat pelanggan",
+          "Menghapus data pelanggan",
+          "Menolak testimoni",
+          "Program loyalitas dan ucapan ulang tahun"
+        ],
+        "answer": "Program loyalitas dan ucapan ulang tahun"
+      },
+      {
+        "q": "Analytical CRM berfungsi untuk…",
+        "options": [
+          "Mengatur auto-reply WhatsApp",
+          "Membuat desain kemasan produk",
+          "Mengolah data pelanggan untuk keputusan",
+          "Mengintegrasikan komunikasi antar-channel"
+        ],
+        "answer": "Mengolah data pelanggan untuk keputusan"
+      },
+      {
+        "q": "Apa yang dimaksud dengan digital customer experience?",
+        "options": [
+          "Cara brand membuat produk baru",
+          "Total pengalaman pelanggan terhadap brand di platform digital",
+          "Promosi melalui selebriti",
+          "Pengalaman pelanggan saat membeli produk di toko fisik"
+        ],
+        "answer": "Total pengalaman pelanggan terhadap brand di platform digital"
+      },
+      {
+        "q": "Salah satu prinsip membuat website adalah seamless navigation. Apa maksudnya?",
+        "options": [
+          "Website harus penuh gambar",
+          "Website hanya bisa dibuka lewat laptop",
+          "Menu dibuat sebanyak mungkin",
+          "Pengunjung harus mudah menemukan informasi"
+        ],
+        "answer": "Pengunjung harus mudah menemukan informasi"
+      },
+      {
+        "q": "Website dikatakan responsive jika…",
+        "options": [
+          "Menggunakan banyak warna",
+          "Tidak menggunakan foto sama sekali",
+          "Mengikuti ukuran layar perangkat yang digunakan",
+          "Hanya dapat dibuka di komputer"
+        ],
+        "answer": "Mengikuti ukuran layar perangkat yang digunakan"
+      },
+      {
+        "q": "Mana yang termasuk contoh consistency dalam website?",
+        "options": [
+          "Menampilkan banyak iklan pop-up",
+          "Menggunakan warna dan font yang seragam di semua halaman",
+          "Warna, font, dan tampilan yang berubah-ubah di setiap halaman",
+          "Menghapus seluruh teks deskripsi"
+        ],
+        "answer": "Menggunakan warna dan font yang seragam di semua halaman"
+      },
+      {
+        "q": "Clear communication pada website berarti…",
+        "options": [
+          "Menghilangkan semua teks agar lebih simple",
+          "Menggunakan banyak istilah teknis",
+          "Informasi disampaikan dengan jelas dan cepat dipahami pelanggan",
+          "Pesan sulit dipahami agar terlihat eksklusif"
+        ],
+        "answer": "Informasi disampaikan dengan jelas dan cepat dipahami pelanggan"
+      },
+      {
+        "q": "Apa tujuan utama dari digital marketing?",
+        "options": [
+          "Menggunakan teknologi digital untuk interaksi dan engagement pelanggan",
+          "Menghapus proses promosi",
+          "Membuat produk tanpa riset pasar",
+          "Hanya untuk membuat website"
+        ],
+        "answer": "Menggunakan teknologi digital untuk interaksi dan engagement pelanggan"
+      },
+      {
+        "q": "Yang termasuk teknik akuisisi organik adalah…",
+        "options": [
+          "Email marketing",
+          "Iklan berbayar",
+          "Klik dari hasil pencarian tanpa iklan (SEO)",
+          "Banner display ads"
+        ],
+        "answer": "Klik dari hasil pencarian tanpa iklan (SEO)"
+      },
+      {
+        "q": "Rumus Customer Acquisition Cost (CAC) adalah…",
+        "options": [
+          "Marketing Expenditure × Total Pelanggan",
+          "No. of New Customers ÷ Marketing Expenditure",
+          "Marketing Expenditure + Total Pelanggan",
+          "Marketing Expenditure ÷ No. of New Customers"
+        ],
+        "answer": "Marketing Expenditure ÷ No. of New Customers"
+      },
+      {
+        "q": "Yang termasuk contoh conversion adalah…",
+        "options": [
+          "Membaca artikel",
+          "Menonton iklan",
+          "Melihat banner promosi",
+          "Mengklik tombol \"Sign Up\""
+        ],
+        "answer": "Mengklik tombol \"Sign Up\""
+      },
+      {
+        "q": "Strategi untuk meningkatkan retention adalah…",
+        "options": [
+          "Tidak memberi layanan purna jual",
+          "Mengurangi komunikasi dengan pelanggan",
+          "VIP offers dan loyalty program",
+          "Menghapus email pelanggan"
+        ],
+        "answer": "VIP offers dan loyalty program"
+      },
+      {
+        "q": "Apa isi utama dari marketing mix dalam digital marketing?",
+        "options": [
+          "Hanya social media",
+          "Hanya promosi",
+          "Hanya online ads",
+          "Product, Price, Place, Promotion, People, Process, Physical Evidence"
+        ],
+        "answer": "Product, Price, Place, Promotion, People, Process, Physical Evidence"
+      },
+      {
+        "q": "Dalam RACE Framework, tahap \"Reach\" bertujuan untuk…",
+        "options": [
+          "Menghapus data pelanggan",
+          "Mengubah pelanggan menjadi promotor",
+          "Membuat pelanggan berhenti menggunakan produk",
+          "Menjangkau audiens baru melalui saluran digital"
+        ],
+        "answer": "Menjangkau audiens baru melalui saluran digital"
+      },
+      {
+        "q": "Apa tujuan dari Customer Research?",
+        "options": [
+          "Memahami kebutuhan, perilaku, dan hambatan pelanggan",
+          "Menentukan warna logo",
+          "Mengurangi biaya produksi",
+          "Meningkatkan jumlah karyawan"
+        ],
+        "answer": "Memahami kebutuhan, perilaku, dan hambatan pelanggan"
+      },
+      {
+        "q": "Customer Persona berisi informasi tentang…",
+        "options": [
+          "Jumlah pesaing di pasar",
+          "Lokasi kantor perusahaan",
+          "Demografi, motivasi, dan pain points pelanggan",
+          "Hanya nama pelanggan"
+        ],
+        "answer": "Demografi, motivasi, dan pain points pelanggan"
+      },
+      {
+        "q": "Yang termasuk jenis digital marketing channel adalah…",
+        "options": [
+          "Jasa rental mobil",
+          "Departemen HRD",
+          "Tukang fotokopi",
+          "Performance Marketing, SEO, CRM, Social Media"
+        ],
+        "answer": "Performance Marketing, SEO, CRM, Social Media"
+      }
+    ],
+    "Medium": [
+      {
+        "q": "Apa itu brand?",
+        "options": [
+          "Identitas atau nilai dari produk/jasa",
+          "Harga produk",
+          "Nama toko saja",
+          "Jumlah pelanggan"
+        ],
+        "answer": "Identitas atau nilai dari produk/jasa"
+      },
+      {
+        "q": "Salah satu manfaat dari brand adalah…",
+        "options": [
+          "Menghapus nilai produk",
+          "Meningkatkan kepercayaan pelanggan",
+          "Membuat pelanggan bingung",
+          "Mengurangi kualitas produk"
+        ],
+        "answer": "Meningkatkan kepercayaan pelanggan"
+      },
+      {
+        "q": "Brand awareness berarti…",
+        "options": [
+          "Banyaknya iklan yang dibuat",
+          "Bagaimana brand mudah diingat dan masuk top of mind",
+          "Kemampuan pelanggan mengingat harga produk",
+          "Seberapa cepat produk dikirim"
+        ],
+        "answer": "Bagaimana brand mudah diingat dan masuk top of mind"
+      },
+      {
+        "q": "Yang termasuk brand asset adalah…",
+        "options": [
+          "Jumlah karyawan",
+          "Ukuran toko",
+          "Warna, slogan, cerita brand, dan suara khas",
+          "Stok gudang"
+        ],
+        "answer": "Warna, slogan, cerita brand, dan suara khas"
+      },
+      {
+        "q": "Physical availability dalam brand growth berarti…",
+        "options": [
+          "Banyaknya review online",
+          "Seberapa sering brand mengadakan event",
+          "Seberapa mudah produk ditemukan di pasar",
+          "Seberapa mahal produk"
+        ],
+        "answer": "Seberapa mudah produk ditemukan di pasar"
+      },
+      {
+        "q": "Apa yang dimaksud dengan sustainability?",
+        "options": [
+          "Praktik bisnis yang memperhatikan lingkungan, sosial, dan ekonomi",
+          "Praktik bisnis yang hanya fokus pada keuntungan",
+          "Cara promosi di media sosial",
+          "Strategi membuat produk baru"
+        ],
+        "answer": "Praktik bisnis yang memperhatikan lingkungan, sosial, dan ekonomi"
+      },
+      {
+        "q": "Planet dalam konsep sustainability berarti…",
+        "options": [
+          "Fokus pada hak pekerja",
+          "Mengurangi dampak negatif terhadap lingkungan",
+          "Menaikkan harga produk",
+          "Meningkatkan profit bisnis"
+        ],
+        "answer": "Mengurangi dampak negatif terhadap lingkungan"
+      },
+      {
+        "q": "Contoh hubungan sustainability dan digital marketing adalah…",
+        "options": [
+          "Membuat iklan tanpa konsep",
+          "Komunikasi nilai keberlanjutan dan transparansi",
+          "Menghapus semua konten edukasi",
+          "Hanya menampilkan diskon"
+        ],
+        "answer": "Komunikasi nilai keberlanjutan dan transparansi"
+      },
+      {
+        "q": "Mana yang termasuk strategi sustainability dalam digital marketing?",
+        "options": [
+          "Storytelling tentang dampak sosial brand",
+          "Menghindari kolaborasi dengan komunitas",
+          "Menggunakan file visual berukuran besar",
+          "Meningkatkan jumlah spam message"
+        ],
+        "answer": "Storytelling tentang dampak sosial brand"
+      },
+      {
+        "q": "Greenwashing adalah…",
+        "options": [
+          "Proses daur ulang kemasan",
+          "Kampanye pengurangan limbah",
+          "Strategi kolaborasi dengan NGO",
+          "Klaim palsu bahwa produk ramah lingkungan"
+        ],
+        "answer": "Klaim palsu bahwa produk ramah lingkungan"
+      },
+      {
+        "q": "Apa itu email marketing?",
+        "options": [
+          "Menghubungi pelanggan lewat telepon",
+          "Mengirim paket ke rumah pelanggan",
+          "Mengirim pesan promosi, update, atau penawaran melalui email",
+          "Mengirim pesan melalui SMS"
+        ],
+        "answer": "Mengirim pesan promosi, update, atau penawaran melalui email"
+      },
+      {
+        "q": "Apa yang diukur dengan Open Rate?",
+        "options": [
+          "Berapa orang membeli produk",
+          "Berapa banyak gambar dalam email",
+          "Berapa orang membuka email dari total yang menerimanya",
+          "Berapa orang menghapus email"
+        ],
+        "answer": "Berapa orang membuka email dari total yang menerimanya"
+      },
+      {
+        "q": "Jenis email yang berisi pesan \"Selamat datang!\" termasuk…",
+        "options": [
+          "Informational message",
+          "Welcoming message",
+          "Transactional message",
+          "Reminder message"
+        ],
+        "answer": "Welcoming message"
+      },
+      {
+        "q": "CTA (Call to Action) berfungsi untuk…",
+        "options": [
+          "Menentukan harga produk",
+          "Membuat email lebih panjang",
+          "Memberitahu pembaca tindakan apa yang harus dilakukan",
+          "Menghapus gambar dalam email"
+        ],
+        "answer": "Memberitahu pembaca tindakan apa yang harus dilakukan"
+      },
+      {
+        "q": "Salah satu cara menghindari email masuk ke spam adalah…",
+        "options": [
+          "Menggunakan kata-kata seperti \"FREE!!!\" dan \"ACT NOW!\"",
+          "Mengirim email tanpa izin",
+          "Menggunakan subject line yang natural dan tidak spammy",
+          "Mengirim banyak lampiran besar"
+        ],
+        "answer": "Menggunakan subject line yang natural dan tidak spammy"
+      },
+      {
+        "q": "Apa tujuan utama dari sebuah campaign?",
+        "options": [
+          "Menghapus konten di media sosial",
+          "Menghentikan aktivitas promosi",
+          "Mengurangi jumlah pelanggan",
+          "Mengkomunikasikan produk/layanan untuk mencapai tujuan marketing"
+        ],
+        "answer": "Mengkomunikasikan produk/layanan untuk mencapai tujuan marketing"
+      },
+      {
+        "q": "Campaign berbeda dari marketing karena…",
+        "options": [
+          "Campaign bersifat jangka panjang",
+          "Marketing hanya dilakukan saat ada diskon",
+          "Campaign memiliki periode waktu tertentu seperti 12.12 atau 11.11",
+          "Marketing hanya terdiri dari iklan berbayar"
+        ],
+        "answer": "Campaign memiliki periode waktu tertentu seperti 12.12 atau 11.11"
+      },
+      {
+        "q": "Salah satu tujuan campaign adalah…",
+        "options": [
+          "Menghapus data pelanggan",
+          "Membuat pelanggan berhenti membeli",
+          "Menyambut pengguna baru",
+          "Mengurangi aktivitas brand"
+        ],
+        "answer": "Menyambut pengguna baru"
+      },
+      {
+        "q": "Apa isi dari campaign briefing?",
+        "options": [
+          "Harga produk kompetitor",
+          "Desain logo perusahaan",
+          "Background, goals, target, dan metrics campaign",
+          "Jadwal liburan tim marketing"
+        ],
+        "answer": "Background, goals, target, dan metrics campaign"
+      },
+      {
+        "q": "Apa yang dimaksud dengan media plan?",
+        "options": [
+          "Membuat desain postingan",
+          "Mengatur shift kerja karyawan",
+          "Menentukan channel, target, budget, dan cara mengukur campaign",
+          "Rencana pengeluaran kantor"
+        ],
+        "answer": "Menentukan channel, target, budget, dan cara mengukur campaign"
+      }
+    ],
+    "Hard": [
+      {
+        "q": "Apa itu content writing?",
+        "options": [
+          "Mendesain logo brand",
+          "Proses membuat video promosi",
+          "Proses membuat tulisan untuk tujuan tertentu di berbagai platform",
+          "Mengedit foto untuk media sosial"
+        ],
+        "answer": "Proses membuat tulisan untuk tujuan tertentu di berbagai platform"
+      },
+      {
+        "q": "Content marketing adalah…",
+        "options": [
+          "Menghapus konten lama",
+          "Membuat dan menyebarkan konten untuk audiens tertentu agar mereka melakukan tindakan yang diharapkan",
+          "Membuat konten asal-asalan",
+          "Hanya mempromosikan produk lewat iklan TV"
+        ],
+        "answer": "Membuat dan menyebarkan konten untuk audiens tertentu agar mereka melakukan tindakan yang diharapkan"
+      },
+      {
+        "q": "Salah satu ciri content writing adalah…",
+        "options": [
+          "Tidak boleh menggunakan kreativitas",
+          "Menggunakan bahasa yang rumit dan panjang",
+          "Harus fokus pada membuat tulisan yang jelas dan informatif",
+          "Tidak perlu memahami audiens"
+        ],
+        "answer": "Harus fokus pada membuat tulisan yang jelas dan informatif"
+      },
+      {
+        "q": "Berikut ini yang termasuk jenis content writing adalah…",
+        "options": [
+          "Mengelola keuangan perusahaan",
+          "Membuat poster fisik",
+          "Memasak resep makanan",
+          "Blogging, copywriting, dan product description"
+        ],
+        "answer": "Blogging, copywriting, dan product description"
+      },
+      {
+        "q": "Tujuan perusahaan menggunakan content writing adalah…",
+        "options": [
+          "Menurunkan jumlah pengunjung website",
+          "Menghilangkan identitas brand",
+          "Meningkatkan pendapatan dan mengedukasi pelanggan",
+          "Mengurangi engagement pelanggan"
+        ],
+        "answer": "Meningkatkan pendapatan dan mengedukasi pelanggan"
+      },
+      {
+        "q": "Apa yang dimaksud dengan brand?",
+        "options": [
+          "Nama produk saja",
+          "Identitas atau nilai dari sebuah produk atau layanan",
+          "Jumlah pelanggan",
+          "Tempat perusahaan berdiri"
+        ],
+        "answer": "Identitas atau nilai dari sebuah produk atau layanan"
+      },
+      {
+        "q": "Salah satu manfaat dari brand adalah…",
+        "options": [
+          "Mengurangi loyalitas",
+          "Mengurangi kualitas produk",
+          "Meningkatkan kepercayaan dari pelanggan",
+          "Membuat produk lebih sulit dikenal"
+        ],
+        "answer": "Meningkatkan kepercayaan dari pelanggan"
+      },
+      {
+        "q": "Jika sebuah produk tidak memiliki brand, maka…",
+        "options": [
+          "Produk mudah masuk top of mind",
+          "Nilai lebih bergantung pada penjual dan layanan",
+          "Lebih dipercaya oleh pelanggan",
+          "Nilainya tetap sama seperti brand besar"
+        ],
+        "answer": "Nilai lebih bergantung pada penjual dan layanan"
+      },
+      {
+        "q": "Brand statement digunakan untuk…",
+        "options": [
+          "Mengatur keuangan perusahaan",
+          "Merangkum apa yang dilakukan bisnis dan apa yang membuatnya unik",
+          "Menentukan harga produk",
+          "Menjelaskan warna logo"
+        ],
+        "answer": "Merangkum apa yang dilakukan bisnis dan apa yang membuatnya unik"
+      },
+      {
+        "q": "Dalam membuat brand positioning, \"Benefit\" berarti…",
+        "options": [
+          "Siapa pesaing utama",
+          "Warna utama yang digunakan brand",
+          "Apa manfaat utama yang ditawarkan brand",
+          "Berapa biaya produksi"
+        ],
+        "answer": "Apa manfaat utama yang ditawarkan brand"
+      },
+      {
+        "q": "Apa tujuan utama dari copywriting?",
+        "options": [
+          "Membuat konten persuasif untuk meningkatkan konversi dan penjualan",
+          "Menulis artikel panjang",
+          "Menghibur pembaca tanpa tujuan",
+          "Membuat desain visual"
+        ],
+        "answer": "Membuat konten persuasif untuk meningkatkan konversi dan penjualan"
+      },
+      {
+        "q": "Bagian \"Body\" dalam copywriting berfungsi untuk…",
+        "options": [
+          "Menampilkan logo",
+          "Mengisi ruang kosong",
+          "Menjelaskan headline dan memberikan informasi utama",
+          "Menentukan warna desain"
+        ],
+        "answer": "Menjelaskan headline dan memberikan informasi utama"
+      },
+      {
+        "q": "Ciri body copy yang baik adalah…",
+        "options": [
+          "Fokus pada fitur, bukan manfaat",
+          "Tulisannya panjang tanpa jeda",
+          "Menggunakan bahasa yang kaku dan formal",
+          "Jelas, fokus pada manfaat, dan tidak berbohong"
+        ],
+        "answer": "Jelas, fokus pada manfaat, dan tidak berbohong"
+      },
+      {
+        "q": "CTA (Call to Action) bertujuan untuk…",
+        "options": [
+          "Menghias konten agar lebih panjang",
+          "Mengarahkan pembaca melakukan tindakan tertentu",
+          "Mengulang informasi yang sudah dijelaskan",
+          "Menghapus kesalahan penulisan"
+        ],
+        "answer": "Mengarahkan pembaca melakukan tindakan tertentu"
+      },
+      {
+        "q": "Contoh bahasa urgensi dalam copywriting adalah…",
+        "options": [
+          "\"Silakan lihat nanti saja\"",
+          "\"Tidak ada batas waktu\"",
+          "\"Promo terbatas, jangan sampai kehabisan!\"",
+          "\"Terserah mau beli atau tidak\""
+        ],
+        "answer": "\"Promo terbatas, jangan sampai kehabisan!\""
+      },
+      {
+        "q": "Apa tujuan utama dari sebuah campaign?",
+        "options": [
+          "Mengomunikasikan produk atau layanan untuk mencapai tujuan marketing",
+          "Menghapus konten lama",
+          "Menghindari interaksi dengan pelanggan",
+          "Mengurangi jumlah pelanggan"
+        ],
+        "answer": "Mengomunikasikan produk atau layanan untuk mencapai tujuan marketing"
+      },
+      {
+        "q": "Campaign bersifat…",
+        "options": [
+          "Program tanpa batas waktu",
+          "Kegiatan spesifik dengan periode waktu tertentu seperti 12.12",
+          "Aktivitas internal perusahaan",
+          "Kegiatan jangka panjang selama 1 tahun"
+        ],
+        "answer": "Kegiatan spesifik dengan periode waktu tertentu seperti 12.12"
+      },
+      {
+        "q": "Tactical campaign biasanya berisi…",
+        "options": [
+          "Event edukasi",
+          "Konten branding jangka panjang",
+          "Promosi, diskon, atau aktivitas jangka pendek",
+          "Review dari pelanggan"
+        ],
+        "answer": "Promosi, diskon, atau aktivitas jangka pendek"
+      },
+      {
+        "q": "Contoh media channel \"Owned\" adalah…",
+        "options": [
+          "Iklan berbayar",
+          "Liputan berita",
+          "Website, aplikasi, atau media sosial milik brand",
+          "Testimoni pelanggan"
+        ],
+        "answer": "Website, aplikasi, atau media sosial milik brand"
+      },
+      {
+        "q": "A/B Testing dilakukan untuk…",
+        "options": [
+          "Menghapus semua materi campaign",
+          "Menghindari pembuatan konten baru",
+          "Menghabiskan lebih banyak anggaran",
+          "Menguji respons pasar terhadap visual atau konten sebelum mengeluarkan lebih banyak budget"
+        ],
+        "answer": "Menguji respons pasar terhadap visual atau konten sebelum mengeluarkan lebih banyak budget"
+      }
+    ]
+  }
+}

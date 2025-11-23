@@ -8084,7 +8084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1606260132
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9133,6 +9133,9 @@ MonoBehaviour:
   - {fileID: 2143112553}
   - {fileID: 685672908}
   - {fileID: 485526133}
+  pajakJSON: {fileID: 4900000, guid: bdb51314ea8c60549a25784a36faec2e, type: 3}
+  keuanganJSON: {fileID: 4900000, guid: 8f66bceaae1f84a4aa3287e54281020b, type: 3}
+  marketingJSON: {fileID: 4900000, guid: 84eb06ef33e89c54da3252be96efc901, type: 3}
 --- !u!4 &1693194316
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,610 @@
+{
+  "Pajak": {
+    "Easy": [
+      {
+        "q": "Pajak adalah...",
+        "options": [
+          "Iuran sukarela kepada negara tanpa ada paksaan",
+          "Iuran wajib kepada negara yang dapat ditagih berdasarkan undang-undang tanpa imbalan langsung",
+          "Sumbangan yang diberikan masyarakat kepada pemerintah",
+          "Biaya administrasi yang dikenakan untuk pelayanan publik"
+        ],
+        "answer": "Iuran wajib kepada negara yang dapat ditagih berdasarkan undang-undang tanpa imbalan langsung"
+      },
+      {
+        "q": "Fungsi utama pajak bagi negara adalah...",
+        "options": [
+          "Sebagai alat investasi",
+          "Sebagai sumber pendapatan negara",
+          "Sebagai alat pembayaran utang pribadi",
+          "Sebagai dana hibah"
+        ],
+        "answer": "Sebagai sumber pendapatan negara"
+      },
+      {
+        "q": "Kepanjangan dari PMK adalah...",
+        "options": [
+          "Peraturan Menteri Keuangan",
+          "Peraturan Menteri Koperasi",
+          "Pedoman Mengatur Keuangan",
+          "Peraturan Moneter Keuangan"
+        ],
+        "answer": "Peraturan Menteri Keuangan"
+      },
+      {
+        "q": "Sistem pemungutan pajak yang berlaku di Indonesia adalah, kecuali ...",
+        "options": [
+          "Official assessment system",
+          "Self assessment system",
+          "Withholding system",
+          "Controlled assessment system"
+        ],
+        "answer": "Controlled assessment system"
+      },
+      {
+        "q": "Yang termasuk pajak pusat adalah...",
+        "options": [
+          "Pajak kendaraan bermotor",
+          "Pajak reklame",
+          "Pajak pertambahan nilai (PPN)",
+          "Pajak hotel"
+        ],
+        "answer": "Pajak pertambahan nilai (PPN)"
+      },
+      {
+        "q": "Pajak yang dikenakan kepada orang pribadi atas penghasilan disebut...",
+        "options": [
+          "PPN",
+          "PPh Pasal 23",
+          "PPh Orang Pribadi",
+          "Bea Masuk"
+        ],
+        "answer": "PPh Orang Pribadi"
+      },
+      {
+        "q": "PTKP adalah singkatan dari...",
+        "options": [
+          "Penghasilan Tidak Kena Pajak",
+          "Penghasilan Tetap Kena Pajak",
+          "Pendapatan Tidak Kena Potongan",
+          "Penghasilan Tidak Kena Pendapatan"
+        ],
+        "answer": "Penghasilan Tidak Kena Pajak"
+      },
+      {
+        "q": "Yang menjadi dasar pengenaan PPh adalah...",
+        "options": [
+          "Pengeluaran",
+          "Penghasilan",
+          "Kekayaan",
+          "Barang"
+        ],
+        "answer": "Penghasilan"
+      },
+      {
+        "q": "NPWP digunakan untuk...",
+        "options": [
+          "Nomor Pengenal Warga Pajak",
+          "Nomor Pokok Wajib Pajak",
+          "Nomor Pajak Wajib Pengusaha",
+          "Nomor Penetapan Wajib Pajak"
+        ],
+        "answer": "Nomor Pokok Wajib Pajak"
+      },
+      {
+        "q": "Surat yang digunakan Wajib Pajak untuk melaporkan pajaknya disebut...",
+        "options": [
+          "SKP",
+          "SPT",
+          "SKPKB",
+          "SSP"
+        ],
+        "answer": "SPT"
+      },
+      {
+        "q": "Pajak daerah dipungut oleh...",
+        "options": [
+          "Pemerintah pusat",
+          "Direktorat Jenderal Pajak",
+          "Pemerintah daerah (provinsi/kabupaten/kota)",
+          "Bank Indonesia"
+        ],
+        "answer": "Pemerintah daerah (provinsi/kabupaten/kota)"
+      },
+      {
+        "q": "Fungsi mengatur (regulerend) dari pajak berarti...",
+        "options": [
+          "Mengatur perilaku ekonomi masyarakat",
+          "Mengatur gaji pegawai",
+          "Mengatur kegiatan sosial",
+          "Mengatur keuangan pribadi"
+        ],
+        "answer": "Mengatur perilaku ekonomi masyarakat"
+      },
+      {
+        "q": "PPN dikenakan atas...",
+        "options": [
+          "Barang tidak berwujud saja",
+          "Barang dan jasa yang dikonsumsi di luar negeri",
+          "Barang dan jasa yang dikonsumsi di dalam negeri",
+          "Semua jenis penghasilan"
+        ],
+        "answer": "Barang dan jasa yang dikonsumsi di dalam negeri"
+      },
+      {
+        "q": "Tarif PPN umum yang berlaku sejak 1 April 2022 adalah...",
+        "options": [
+          "10%",
+          "11%",
+          "12%",
+          "15%"
+        ],
+        "answer": "11%"
+      },
+      {
+        "q": "Yang bukan termasuk ciri-ciri pajak adalah...",
+        "options": [
+          "Bersifat memaksa",
+          "Ada imbalan langsung",
+          "Berdasarkan undang-undang",
+          "Dipungut oleh negara"
+        ],
+        "answer": "Ada imbalan langsung"
+      },
+      {
+        "q": "Wajib Pajak adalah...",
+        "options": [
+          "Semua penduduk Indonesia",
+          "Orang pribadi atau badan yang mempunyai hak dan kewajiban perpajakan",
+          "Semua perusahaan swasta",
+          "Semua orang yang bekerja"
+        ],
+        "answer": "Orang pribadi atau badan yang mempunyai hak dan kewajiban perpajakan"
+      },
+      {
+        "q": "Pihak yang berwenang memungut PPN adalah...",
+        "options": [
+          "Pemerintah Daerah",
+          "Kantor Bea Cukai",
+          "Direktorat Jenderal Pajak (DJP)",
+          "Bank Sentral"
+        ],
+        "answer": "Direktorat Jenderal Pajak (DJP)"
+      },
+      {
+        "q": "Pajak penghasilan (PPh) dikenakan pada penghasilan yang diperoleh dalam...",
+        "options": [
+          "1 bulan",
+          "1 tahun pajak",
+          "6 bulan",
+          "Setiap hari kerja"
+        ],
+        "answer": "1 tahun pajak"
+      },
+      {
+        "q": "Dasar hukum utama yang mengatur ketentuan umum dan tata cara perpajakan adalah...",
+        "options": [
+          "UU KUP",
+          "UU PPh",
+          "UU PPN",
+          "PP 55/2022"
+        ],
+        "answer": "UU KUP"
+      },
+      {
+        "q": "Jika seorang Wajib Pajak tidak melaporkan SPT Tahunan, maka dapat dikenakan...",
+        "options": [
+          "Hadiah pajak",
+          "Denda administrasi",
+          "Penghapusan NPWP",
+          "Keringanan pajak"
+        ],
+        "answer": "Denda administrasi"
+      }
+    ],
+    "Medium": [
+      {
+        "q": "PPh 22 dikenakan pada transaksi …",
+        "options": [
+          "Penyerahan jasa profesional",
+          "Pembelian barang oleh bendahara pemerintah",
+          "Pembayaran sewa tanah dan bangunan",
+          "Penjualan saham di bursa"
+        ],
+        "answer": "Pembelian barang oleh bendahara pemerintah"
+      },
+      {
+        "q": "PPh 23 atas pembayaran jasa konsultan Rp 10.000.000 adalah…",
+        "options": [
+          "Rp 100.000",
+          "Rp 200.000",
+          "Rp 250.000",
+          "Rp 300.000"
+        ],
+        "answer": "Rp 200.000"
+      },
+      {
+        "q": "Apa yang dimaksud dengan PPh 24…",
+        "options": [
+          "Pajak atas penghasilan luar negeri yang dikreditkan di Indonesia",
+          "Pajak penghasilan final dalam negeri",
+          "Pajak atas penghasilan UMKM",
+          "Pajak penghasilan orang pribadi"
+        ],
+        "answer": "Pajak atas penghasilan luar negeri yang dikreditkan di Indonesia"
+      },
+      {
+        "q": "PPh 25 merupakan…",
+        "options": [
+          "Pajak final atas UMKM",
+          "Pajak dipotong oleh pihak ketiga",
+          "Angsuran bulanan pajak penghasilan sendiri",
+          "Pajak penghasilan luar negeri"
+        ],
+        "answer": "Angsuran bulanan pajak penghasilan sendiri"
+      },
+      {
+        "q": "Pegawai tetap bergaji Rp 7.500.000 per bulan, iuran pensiun Rp 100.000, status TK/0. Berapa PPh 21 per bulan menurut tarif progresif Pasal 17?",
+        "options": [
+          "Rp 150.000",
+          "Rp 145.000",
+          "Rp 155.000",
+          "Rp 200.000"
+        ],
+        "answer": "Rp 145.000"
+      },
+      {
+        "q": "Penghasilan usaha UMKM dengan omzet ≤ Rp 500 juta per tahun akan…",
+        "options": [
+          "Dikenakan PPh Final 0,5%",
+          "Tidak dikenakan PPh Final 0,5%",
+          "Dikenakan tarif Pasal 17",
+          "Dikenakan tarif 1%"
+        ],
+        "answer": "Tidak dikenakan PPh Final 0,5%"
+      },
+      {
+        "q": "Berdasarkan ketentuan yang berlaku, berapa Bea Materai yang harus ditempel pada dokumen perjanjian sewa rumah tahunan nilai Rp 25 juta/tahun adalah?",
+        "options": [
+          "Rp 3.000",
+          "Rp 6.000",
+          "Rp 10.000",
+          "Tidak dikenakan Bea Materai"
+        ],
+        "answer": "Rp 10.000"
+      },
+      {
+        "q": "Berikut yang termasuk objek PPh 21 adalah…",
+        "options": [
+          "Honorarium pejabat negara",
+          "Dividen luar negeri",
+          "Penghasilan dari usaha",
+          "Royalti kepada WP badan"
+        ],
+        "answer": "Honorarium pejabat negara"
+      },
+      {
+        "q": "Tarif lapisan pertama PPh Orang Pribadi Pasal 17 UU HPP adalah…",
+        "options": [
+          "2%",
+          "5%",
+          "10%",
+          "15%"
+        ],
+        "answer": "5%"
+      },
+      {
+        "q": "Peraturan pelaksana teknis yang dikeluarkan oleh Menteri Keuangan disebut…",
+        "options": [
+          "SE",
+          "PMK",
+          "PER",
+          "UU"
+        ],
+        "answer": "PMK"
+      },
+      {
+        "q": "Wajib Pajak badan memiliki omzet Rp 6.000.000.000 dan penghasilan kena pajak Rp 800.000.000. PPh terutang dengan tarif Pasal 17 adalah…",
+        "options": [
+          "Rp 120.000.000",
+          "Rp 160.000.000",
+          "Rp 200.000.000",
+          "Rp 176.000.000"
+        ],
+        "answer": "Rp 160.000.000"
+      },
+      {
+        "q": "PPh Final Pasal 4(2) berlaku atas…",
+        "options": [
+          "Dividen dalam negeri",
+          "Penghasilan sewa tanah dan bangunan",
+          "Jasa konsultan",
+          "Gaji pegawai"
+        ],
+        "answer": "Penghasilan sewa tanah dan bangunan"
+      },
+      {
+        "q": "Pegawai tidak tetap menerima upah Rp 400.000 per hari dan bekerja 20 hari. Apakah ada PPh 21 terutang?",
+        "options": [
+          "Ya, karena melebihi Rp 450.000/hari",
+          "Tidak, karena ≤ Rp 450.000/hari",
+          "Tidak, karena upah total < PTKP",
+          "Ya, karena lebih dari 15 hari kerja"
+        ],
+        "answer": "Tidak, karena ≤ Rp 450.000/hari"
+      },
+      {
+        "q": "PT Arjuna menerima penghasilan bunga deposito Rp 10.000.000. PPh Final yang dipotong bank adalah…",
+        "options": [
+          "Rp 1.000.000",
+          "Rp 1.500.000",
+          "Rp 2.000.000",
+          "Rp 2.500.000"
+        ],
+        "answer": "Rp 2.000.000"
+      },
+      {
+        "q": "Tarif PPh Final UMKM menurut PP 55/2022 adalah…",
+        "options": [
+          "1%",
+          "0,5%",
+          "0,25%",
+          "2%"
+        ],
+        "answer": "0,5%"
+      },
+      {
+        "q": "Kredit pajak luar negeri (PPh 24) hanya boleh sebesar…",
+        "options": [
+          "Pajak yang dibayar di luar negeri",
+          "PPh terutang atas penghasilan luar negeri",
+          "Jumlah yang lebih kecil antara A dan B",
+          "Jumlah yang lebih besar antara A dan B"
+        ],
+        "answer": "Jumlah yang lebih kecil antara A dan B"
+      },
+      {
+        "q": "Apa fungsi NPWP?",
+        "options": [
+          "Sebagai nomor identitas kependudukan",
+          "Sebagai tanda terdaftar sebagai Wajib Pajak",
+          "Sebagai bukti bayar PPh",
+          "Sebagai syarat pembuatan KTP"
+        ],
+        "answer": "Sebagai tanda terdaftar sebagai Wajib Pajak"
+      },
+      {
+        "q": "PPh 23 atas pembayaran royalti Rp 50.000.000 adalah…",
+        "options": [
+          "Rp 7.000.000",
+          "Rp 7.250.000",
+          "Rp 7.500.000",
+          "Rp 8.000.000"
+        ],
+        "answer": "Rp 7.500.000"
+      },
+      {
+        "q": "Apa dasar hukum terbaru pengaturan PPh 21, 22, 23, dan 26?",
+        "options": [
+          "UU No. 36 Tahun 2008",
+          "UU HPP (No. 7 Tahun 2021)",
+          "PP No. 55 Tahun 2022",
+          "PMK 168/PMK.03/2023"
+        ],
+        "answer": "PP No. 55 Tahun 2022"
+      },
+      {
+        "q": "Yang termasuk objek PPN adalah…",
+        "options": [
+          "Penyerahan barang kena pajak di dalam daerah pabean",
+          "Ekspor barang oleh pengusaha kecil",
+          "Penghasilan dari jasa konsultan",
+          "Penerimaan bunga deposito"
+        ],
+        "answer": "Penyerahan barang kena pajak di dalam daerah pabean"
+      }
+    ],
+    "Hard": [
+      {
+        "q": "PT Andalas membayar jasa konsultan hukum kepada Firma Adil sebesar Rp 100.000.000. Firma Adil telah memiliki NPWP. Berapa PPh 23 yang harus dipotong?",
+        "options": [
+          "Rp 1.000.000",
+          "Rp 1.500.000",
+          "Rp 2.000.000",
+          "Rp 2.500.000"
+        ],
+        "answer": "Rp 2.000.000"
+      },
+      {
+        "q": "PT Arjuna memiliki penghasilan kena pajak Rp 2.000.000.000. Berapa PPh Badan terutang tahun 2025?",
+        "options": [
+          "Rp 400.000.000",
+          "Rp 440.000.000",
+          "Rp 450.000.000",
+          "Rp 500.000.000"
+        ],
+        "answer": "Rp 440.000.000"
+      },
+      {
+        "q": "Dalam kerangka self-assessment system yang dianut Indonesia, mana pernyataan berikut yang paling tepat menjelaskan tanggung jawab pokok Wajib Pajak (WP)?",
+        "options": [
+          "WP hanya wajib menyetor pajak; perhitungan dan pelaporan dilakukan oleh Direktorat Jenderal Pajak (DJP).",
+          "WP wajib menghitung, membayar, dan melaporkan pajak sendiri; fiskus melakukan pemeriksaan pasca pelaporan.",
+          "WP bebas memilih apakah akan dilaporkan oleh DJP atau pihak ketiga.",
+          "WP hanya perlu menyimpan bukti pembayaran; pelaporan bersifat opsional."
+        ],
+        "answer": "WP wajib menghitung, membayar, dan melaporkan pajak sendiri; fiskus melakukan pemeriksaan pasca pelaporan."
+      },
+      {
+        "q": "Dalam konteks PPN, konsep \"faktur pajak\" paling tepat dianggap sebagai:",
+        "options": [
+          "Bukti pemungutan pajak yang hanya penting untuk penjual tetapi tidak memengaruhi pembeli.",
+          "Dokumen yang memberi hak kepada pembeli PKP untuk mengkreditkan Pajak Masukan sepanjang syarat formal & material terpenuhi.",
+          "Surat yang hanya dipakai untuk ekspor.",
+          "Dokumen opsional yang tidak memengaruhi hak kredit pajak."
+        ],
+        "answer": "Dokumen yang memberi hak kepada pembeli PKP untuk mengkreditkan Pajak Masukan sepanjang syarat formal & material terpenuhi."
+      },
+      {
+        "q": "Apa maksud dengan biaya jabatan dalam perhitungan PPh pasal 21?",
+        "options": [
+          "Biaya yang dikeluarkan untuk membeli jabatan",
+          "Tunjangan jabatan yang diterima pegawai",
+          "Pengurangan penghasilan bruto sebesar 5% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun",
+          "Pengurangan penghasilan bruto sebesar 10% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun"
+        ],
+        "answer": "Pengurangan penghasilan bruto sebesar 5% dari penghasilan bruto, dengan maksimal 500 ribu/Bulan dan maksimal Rp 6 juta/tahun"
+      },
+      {
+        "q": "Apa perbedaan utama antara tax avoidance dan tax evasion?",
+        "options": [
+          "Tax avoidance legal, tax evasion illegal",
+          "Keduanya illegal",
+          "Keduanya legal",
+          "Tax evasion dilakukan dengan perencanaan"
+        ],
+        "answer": "Tax avoidance legal, tax evasion illegal"
+      },
+      {
+        "q": "PT Surya memiliki angsuran PPh 25 sebesar Rp 80.000.000/bulan. Jika bulan Maret terlambat setor 10 hari, berapa sanksi bunga administrasi (2% per bulan)?",
+        "options": [
+          "Rp 1.600.000",
+          "Rp 800.000",
+          "Rp 1.160.000",
+          "Rp 530.333"
+        ],
+        "answer": "Rp 530.333"
+      },
+      {
+        "q": "Pajak dipungut berdasarkan prinsip self assessment bertujuan untuk...",
+        "options": [
+          "Memberi kebebasan fiskus",
+          "Mendorong kesadaran wajib pajak",
+          "Mengurangi pengawasan pajak",
+          "Menghapus sanksi"
+        ],
+        "answer": "Mendorong kesadaran wajib pajak"
+      },
+      {
+        "q": "PT Omega memiliki omzet Rp 3 miliar per tahun. Usahanya tergolong UMKM (PP 55/2022). Berapa tarif pajak final UMKM yang berlaku?",
+        "options": [
+          "0,5%",
+          "1%",
+          "0,75%",
+          "2%"
+        ],
+        "answer": "0,5%"
+      },
+      {
+        "q": "Fungsi pajak sebagai alat pemerataan pendapatan disebut...",
+        "options": [
+          "Fungsi anggaran",
+          "Fungsi distribusi",
+          "Fungsi regulasi",
+          "Fungsi kontrol"
+        ],
+        "answer": "Fungsi distribusi"
+      },
+      {
+        "q": "PT Fortuna memiliki laba kena pajak Rp 5 miliar pada 2024. Hitung PPh Badan terutang dengan tarif 22%.",
+        "options": [
+          "Rp 1.000.000.000",
+          "Rp 1.050.000.000",
+          "Rp 1.100.000.000",
+          "Rp 1.250.000.000"
+        ],
+        "answer": "Rp 1.100.000.000"
+      },
+      {
+        "q": "PT Delta menyewa gedung dari pihak lain seharga Rp 200.000.000/tahun. Tarif PPh 4(2) untuk sewa tanah dan bangunan adalah 10%. Berapa pajak yang dipotong?",
+        "options": [
+          "Rp 10 juta",
+          "Rp 15 juta",
+          "Rp 20 juta",
+          "Rp 25 juta"
+        ],
+        "answer": "Rp 20 juta"
+      },
+      {
+        "q": "PT Alfa membeli bahan baku dari pemasok dalam negeri seharga Rp 100.000.000 (tidak termasuk PPN). Barang tergolong bahan tertentu yang dikenai PPh 22 sebesar 0,25% oleh bendahara pemerintah. Berapa PPh 22 yang dipungut?",
+        "options": [
+          "Rp 125.000",
+          "Rp 250.000",
+          "Rp 500.000",
+          "Rp 1.000.000"
+        ],
+        "answer": "Rp 250.000"
+      },
+      {
+        "q": "Menurut UU HPP, PPh Final UMKM 0,5% hanya dapat digunakan paling lama...",
+        "options": [
+          "1 tahun",
+          "3 tahun bagi badan, 7 tahun bagi orang pribadi",
+          "5 tahun untuk semua",
+          "Tanpa batas waktu"
+        ],
+        "answer": "3 tahun bagi badan, 7 tahun bagi orang pribadi"
+      },
+      {
+        "q": "Seseorang memiliki tanah 1.200 meter persegi. Ia membangun pagar mewah dari batu alam. Apakah pagar tersebut termasuk objek PBB?",
+        "options": [
+          "Tidak. PBB hanya melihat luas tanah.",
+          "Ya. Pagar permanen menambah nilai bangunan.",
+          "Tidak. Pagar tidak dihitung karena berada di luar bangunan utama.",
+          "Ya. Tetapi hanya jika nilai pagarnya di atas Rp 100.000.000."
+        ],
+        "answer": "Ya. Pagar permanen menambah nilai bangunan."
+      },
+      {
+        "q": "PT Mega Jaya membayar jasa konsultan kepada CV Pandu sebesar Rp 80.000.000. CV Pandu tidak memiliki NPWP. Berapakah PPh Pasal 23 yang harus dipotong?",
+        "options": [
+          "Rp 1.600.000",
+          "Rp 1.920.000",
+          "Rp 2.400.000",
+          "Rp 3.200.000"
+        ],
+        "answer": "Rp 2.400.000"
+      },
+      {
+        "q": "Dalam sistem pemajakan Indonesia, asas domisili berarti …",
+        "options": [
+          "Setiap penghasilan di Indonesia dikenai pajak tanpa memandang siapa penerimanya.",
+          "Wajib pajak luar negeri dikenakan pajak atas seluruh penghasilannya.",
+          "Wajib pajak dalam negeri dikenakan pajak atas seluruh penghasilannya, baik dari dalam maupun luar negeri.",
+          "Wajib pajak dikenakan pajak hanya atas penghasilan dalam negeri."
+        ],
+        "answer": "Wajib pajak dalam negeri dikenakan pajak atas seluruh penghasilannya, baik dari dalam maupun luar negeri."
+      },
+      {
+        "q": "Kapan seseorang dianggap menjadi subjek pajak dalam negeri?",
+        "options": [
+          "Saat pertama kali bekerja di Indonesia.",
+          "Setelah berada di Indonesia lebih dari 183 hari dalam jangka 12 bulan.",
+          "Ketika memperoleh penghasilan di Indonesia.",
+          "Saat mendaftarkan NPWP."
+        ],
+        "answer": "Setelah berada di Indonesia lebih dari 183 hari dalam jangka 12 bulan."
+      },
+      {
+        "q": "Salah satu prinsip penting pemungutan pajak adalah asas kepastian hukum. Yang paling tepat mencerminkan asas ini adalah …",
+        "options": [
+          "Pajak hanya dipungut bila wajib pajak setuju.",
+          "Semua peraturan pajak harus jelas, tidak menimbulkan tafsir ganda, dan diumumkan secara resmi.",
+          "Pajak bisa dipungut dengan kebijakan spontan pemerintah.",
+          "Pemerintah dapat mengubah tarif pajak tanpa dasar hukum."
+        ],
+        "answer": "Semua peraturan pajak harus jelas, tidak menimbulkan tafsir ganda, dan diumumkan secara resmi."
+      },
+      {
+        "q": "Objek pajak dalam PPh tidak termasuk...",
+        "options": [
+          "Gaji dan honor",
+          "Hadiah Sundian",
+          "Hibah kepada keluarga sedarah",
+          "Keuntungan usaha"
+        ],
+        "answer": "Hibah kepada keluarga sedarah"
+      }
+    ]
+  }
+}
